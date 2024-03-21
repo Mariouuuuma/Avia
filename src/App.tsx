@@ -4,6 +4,7 @@ import './App.css';
 import RightSideBar from './Components/RightSideBar';
 import Messenging from './Pages/Messenging';
 import WelcomeOperator from './Pages/Authentication';
+import ForgotPass from './Pages/ForgotPassword';
 
 
 
@@ -15,7 +16,7 @@ function App() {
   return (
     <div className="App">
  
- <WelcomeOperator></WelcomeOperator>
+ <ForgotPass></ForgotPass>
 
     </div>
   );

@@ -1,0 +1,43 @@
+.Image{
+    width: 36.19px;
+height: 36px;
+border-radius: 36.19px;
+}
+
+.Cameron-Williams h1{
+ color: #212121;
+
+font-family: Poppins;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+text-transform: capitalize;
+
+}
+
+.Cameron-Williams h3{
+    color: #E73737;
+
+font-family: Poppins;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 166.667% */
+text-transform: capitalize;
+}
+
+.Cameron-Williams{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+}
+
+
+.NavBar{
+    display: flex;
+width: 1068px;
+padding: 6px 20px 6px 30px;
+justify-content: space-between;
+align-items: center;
+}

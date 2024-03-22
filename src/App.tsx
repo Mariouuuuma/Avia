@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
  
- <ForgotPass></ForgotPass>
+ <Messenging></Messenging>
 
     </div>
   );

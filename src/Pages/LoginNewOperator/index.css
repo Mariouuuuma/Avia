@@ -1,0 +1,114 @@
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    background-image: url(C:\Users\user\OneDrive\Desktop\day5\templates\src\Assets\tayara.jpg);
+    width: 100%;
+    height:100%;
+    opacity:0.9;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border: 2px solid #E73838;
+    }
+    
+    .login-form h2 {
+      margin-bottom: 30px;
+      margin-top: 40px;
+      text-align: center;
+      font-size: 22px;
+    }
+    
+    .login-form h3 {
+      font-weight: normal;
+      text-align: center;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+    
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .form-group {
+      flex-basis: calc(50% - 10px);
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="checkbox"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    
+    .form-row button {
+      display:flex;
+      width: 100%;
+      padding: 15px;
+      background-color: #E73838;
+      margin-top: 10px;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+      .form-group button {
+      width: 95%;
+      padding: 15px;
+      background-color:#E73838;
+      margin-left:10px;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+        
+      
+    
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+    
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    p a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    
+    p a:hover {
+      text-decoration: underline;
+    }
+    
+    .checkboxi {
+      display: flex;
+      align-items: center;
+    }
+    
+    #rememberMe {
+      margin-right: 5px;
+      
+    }

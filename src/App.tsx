@@ -7,6 +7,9 @@ import WelcomeOperator from './Pages/Authentication/Welcome';
 import ForgotPass from './Pages/ForgotPassword';
 import LoginNewOperator from './Pages/LoginNewOperator'
 import '../src/Pages/Authentication/Welcome/index.css'
+import ResetPassword from './Pages/ResetPassword';
+import AccountVerification from './Pages/AccountVerification';
+import ForgotPassword from './Pages/ForgotPassword';
 
 
 
@@ -17,7 +20,7 @@ function App() {
   return (
     <div className="App">
  
- <LoginNewOperator/>
+ <ForgotPassword/>
 
     </div>
   );

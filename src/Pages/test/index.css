@@ -1,0 +1,29 @@
+.container{
+    display: flex;
+padding: 35px 55px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 35px;
+border-radius: 20px;
+border: 2px solid #E73838;
+background: #FFF;
+box-shadow: 0px 5px 0px 0px rgba(231, 55, 55, 0.15);
+}
+
+.formulaire{
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 25px;
+}
+
+.input{
+    display: flex;
+width: 445px;
+padding: 14px 18px;
+align-items: center;
+gap: 10px;
+border-radius:"5px",
+}

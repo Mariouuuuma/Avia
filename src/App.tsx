@@ -5,8 +5,8 @@ import RightSideBar from './Components/RightSideBar';
 import Messenging from './Pages/Messenging';
 import WelcomeOperator from './Pages/Authentication/Welcome';
 import ForgotPass from './Pages/ForgotPassword';
-import LoginNewOperator from './Pages/LoginNewOperator';
-
+import LoginNewOperator from './Pages/LoginNewOperator'
+import '../src/Pages/Authentication/Welcome/index.css'
 
 
 

@@ -31,7 +31,7 @@ export default function Messenging(){
             alignSelf: 'stretch'
         }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '28px', justifyContent: 'space-between' }}>
-                <Button size="small" content="All" bgcolor="Red" colour="white" />
+                <Button size="small" content="All" bgcolor="#E73838" colour="white" />
                 <Button size="small" content="Unread" bgcolor="white" colour="black" />
                 <Button size="small" content="Unresolved" bgcolor="white" colour="black" />
                 <Button size="small" content="Resolved" bgcolor="white" colour="black" />

@@ -21,6 +21,12 @@ function AccountVerification(){
               <button type="submit">Verify</button>
             </div>
           </div>
+<div style={{flex: "1 0 0"}}>
+  <span className="first">If you didn't receive a code!</span>
+  &thinsp;
+  <span className="second">Resend</span>
+</div>
+
         </form>
       </div>
     )

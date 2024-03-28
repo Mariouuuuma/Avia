@@ -98,3 +98,16 @@ width: 30.159px;
 height: 30px;
 border-radius: 9px;
     }
+
+
+    .analytics,.setting, .bold , .notifications , .inbox ,.archived , .imagehomme , .flag , .search  {
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .analytics:hover,.setting:hover, .bold:hover , .notifications:hover , .inbox:hover ,.archived:hover, .imagehomme:hover, .flag:hover , .search:hover   {
+        transform: scale(1.1);
+    }
+    
+
+    

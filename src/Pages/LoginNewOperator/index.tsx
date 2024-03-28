@@ -1,5 +1,6 @@
 import Logo from '../../Assets/Images/logoAvia.png';
 import './index.css';
+import {Link} from 'react-router-dom'
 
 function LoginNewOperator() {
   return (
@@ -52,7 +53,7 @@ function LoginNewOperator() {
               <button type="submit">Login</button>
             </div>
           </div>
-          <p><a href="#">Forgot your password?</a></p>
+          <p><Link to="/ForgotPassword">Forgot your password?</Link></p>
         </form>
       </div>
     </div>

@@ -70,13 +70,13 @@ body {
     text-align: center;
   }
   
-  p a {
+  p Link {
     color: #007bff;
     text-decoration: none;
     margin-bottom:5px;
   }
   
-  p a:hover {
+  p Link:hover {
     text-decoration: underline;
   }
   

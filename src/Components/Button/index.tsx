@@ -1,10 +1,11 @@
 import React from 'react';
+ import '../Button/index.css'
 
 interface ButtonProps {
   size: 'small' | 'medium' | 'large';
   content: string;
-  bgcolor: string;
-  colour: string;
+  bgcolor: 'white' | '#E73838';
+  colour: 'white' | 'black';
 }
 
 const Button: React.FC<ButtonProps> = ({ size, content, bgcolor, colour }) => {
@@ -17,7 +18,9 @@ const Button: React.FC<ButtonProps> = ({ size, content, bgcolor, colour }) => {
     borderRadius: '5px',
     cursor: 'pointer',
     outline: 'none',
+    transition: 'transform 0.2s',  
   };
+
   const contentStyle: React.CSSProperties = {
     fontFamily: 'Poppins',
     fontSize: '12px',
@@ -26,14 +29,17 @@ const Button: React.FC<ButtonProps> = ({ size, content, bgcolor, colour }) => {
     lineHeight: 'normal',
     textTransform: 'capitalize',
   };
-  
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    transform: 'scale(1.05)', // Agrandissement de 5% lors du survol
+  };
 
   return (
-    <button style={buttonStyle}>
+    <button style={buttonStyle} className="Button:hover">
       <span style={contentStyle}>{content}</span>
     </button>
   );
 };
 
 export default Button;
-

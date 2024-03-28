@@ -8,6 +8,7 @@ import imagev from '../../Assets/Images/image-v.png'
 import link from '../../Assets/Images/link.png'
 import u_grin from '../../Assets/Images/u_grin.png'
 import send from '../../Assets/Images/send.png'
+import './index.css'
 
 export default function InputContainer() {
     return (
@@ -19,23 +20,25 @@ export default function InputContainer() {
             style={{ width: '100%', height: '50px', padding: '0 50px', boxSizing: 'border-box' }}
           />
           <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '10px', display: 'flex', gap: '10px' }}>
-            <img src={u_grin} 
+            <img src={u_grin} className='Grin Grin:hover'
             />
-            <img src={send} 
-             />
+      <img 
+    src={send} className="Envoyer Envoyer:hover"
+/>
+             
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', width: '100%' }}>
-          <img src={bold} 
+          <img src={bold} className="bold bold:hover"
            />
-          <img src={italic}
+          <img src={italic} className="italic italic:hover"
            />
-          <img src={underline} 
+          <img src={underline} className="underline underline:hover"
           />
-          <img src={Vector}  />
-          <img src={clip}  />
-          <img src={imagev} />
-          <img src={link}  />
+          <img src={Vector} className="Vector Vector:hover" />
+          <img src={clip} className="clip clip:hover" />
+          <img src={imagev} className="imagev imagev:hover"/>
+          <img src={link} className="link link:hover"  />
         </div>
       </div>
     );

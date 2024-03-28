@@ -10,7 +10,10 @@ import '../src/Pages/Authentication/Welcome/index.css'
 import ResetPassword from './Pages/ResetPassword';
 import AccountVerification from './Pages/AccountVerification';
 import ForgotPassword from './Pages/ForgotPassword';
-
+import ChatBubble from './Components/LeftChatBubble/LeftChatBubble';
+import RightChatBubble from './Components/RightChatBubble/RightChatBubble';
+import LeftChatBubble from './Components/LeftChatBubble/LeftChatBubble';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 
 
 
@@ -18,11 +21,35 @@ import ForgotPassword from './Pages/ForgotPassword';
  
 function App() {
   return (
-    <div className="App">
- 
- <ForgotPassword/>
+    
+  
+  <Router>
+    <Switch>
+      <Route exact path="/Messenging">
+      <Messenging/>
+      </Route>
+      <Route exact path="/Reset">
+      <ResetPassword/>
+      </Route>
+      <Route exact path="/AccountVerification">
+      <AccountVerification/>
+      </Route>
+      <Route exact path="/WelcomeOperator">
+      <WelcomeOperator/>
+      </Route>
+      <Route exact path="/LoginNewOperator">
+      <LoginNewOperator/>
+      </Route>
+      <Route exact path="/ForgotPassword">
+      <ForgotPass/>
+      </Route>
+    </Switch>
+   
+  </Router>
 
-    </div>
+
+
+    
   );
 }
 

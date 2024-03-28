@@ -1,7 +1,8 @@
 import React from 'react';
-import './WelcomeOperator/index.css'
+import '../Welcome/index.css'
 
-import Logo from '../../Assets/Images/logoAvia.png'
+import Logo from '../../../Assets/Images/logoAvia.png'
+import {Link} from 'react-router-dom'
 
 
         const WelcomeOperator = () => {
@@ -26,7 +27,7 @@ import Logo from '../../Assets/Images/logoAvia.png'
                 <div className="form-group">
                   <button type="submit">Login</button>
                 </div>
-                <p><a href="C:\Users\user\OneDrive\Desktop\day5\templates\src\pages\ForgotPassword\ForgotPassword.jsx">Forgot your password?</a></p>
+                <p><Link to="/ForgotPassword" >Forgot your password?</Link></p>
               </form>
             </div>
           </div>

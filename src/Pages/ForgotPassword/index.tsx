@@ -1,5 +1,6 @@
 import LogoImage from '../../Assets/Images/logoAvia.png'
 import '../ForgotPassword/index.css'
+import {Link} from 'react-router-dom'
 
 function ForgotPass(){
     return(
@@ -14,10 +15,10 @@ function ForgotPass(){
                   <input type="text" id="emailPhone" name="emailPhone" required />
                 </div>
                 <div className="form-group">
-                  <button type="submit">Send</button>
+                  <button type="submit"><Link to="/AccountVerification">Send</Link></button>
                 </div>
                 <p>Have already an account?</p>
-                <p style={{marginBottom: '5px'}}><a href="C:\Users\user\OneDrive\Desktop\day5\templates\src\pages\ForgotPassword\ForgotPassword.jsx">Login</a></p>
+                <p style={{marginBottom: '5px'}}><Link to="/WelcomeOperator">Login</Link></p>
               </form>
             </div>
           </div>

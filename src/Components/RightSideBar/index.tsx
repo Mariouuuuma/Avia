@@ -11,7 +11,11 @@ import CommentElement from '../CommentSection'
 
 export default function RightSideBar() {
     return (
-        <div style={{ width: "386px", height: "194px" }}>
+        <div style={{  maxWidth: "386px",
+        maxHeight: "100%",
+        overflowY: "auto"}}>
+      
+        
             <div style={{ marginBottom: "10px" }}>
                 <ActualUser
                     UserName="John Doe"

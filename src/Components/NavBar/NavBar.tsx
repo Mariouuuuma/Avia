@@ -1,8 +1,11 @@
 import React from 'react'
 import threedots from '../../Assets/Images/threedots.png'
-
-export default function NavBar(){
-
+ interface NavbarProps{
+  status:string;
+ }
+ const NavBar: React.FC<NavbarProps> = ({ 
+  status
+  }) => {
 
     return(
 <div className="navbar bg-white">
@@ -17,7 +20,7 @@ export default function NavBar(){
     </div>
     <div className="ml-2">
       <a className="btn btn-ghost text-xl text-black">Cameron Williamson</a>
-      <h3 className="text-2xl" style={{ fontFamily: 'Poppins', fontSize: '1rem', fontStyle: 'normal', fontWeight: '400', lineHeight: '20px', textTransform: 'capitalize', color: '#E73737' }}>Étudiant</h3>
+      <h3 className="text-2xl" style={{ fontFamily: 'Poppins', fontSize: '1rem', fontStyle: 'normal', fontWeight: '400', lineHeight: '20px', textTransform: 'capitalize', color: '#E73737' }}>{status}</h3>
     </div>
   </div>
   {/* Resolved button */}
@@ -62,4 +65,6 @@ export default function NavBar(){
     )
 
     }
+
+    export default NavBar;
     

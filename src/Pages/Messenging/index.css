@@ -1,0 +1,14 @@
+.MessengingContainer {
+    display: flex;
+    /*justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    margin-left: auto;
+    margin-right: auto;
+   /* margin-left: 1rem; /* Pour ajouter un espace de 1rem à gauche */
+    /*margin-right: 1rem;  /* Pour ajouter un espace de 1rem à droite */
+  }
+  
+  .RightSideBar{
+    margin-top:-50px;
+  }

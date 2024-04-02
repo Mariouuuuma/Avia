@@ -13,32 +13,32 @@ import './index.css'
 export default function InputContainer() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ position: 'relative', width: '1028px' }}>
+        <div style={{ position: 'relative', width: '100%', marginTop:"1rem" }}>
           <input
             type="text"
             defaultValue="Send a message.."
-            style={{ width: '100%', height: '50px', padding: '0 50px', boxSizing: 'border-box' }}
+            style={{ width: '100%' /**height: '50px'**/, padding: '0 50px', boxSizing: 'border-box' }}
           />
           <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '10px', display: 'flex', gap: '10px' }}>
-            <img src={u_grin} className='Grin Grin:hover'
-            />
-      <img 
+           <button> <img src={u_grin} className='Grin Grin:hover'
+            /></button>
+      <button><img 
     src={send} className="Envoyer Envoyer:hover"
-/>
+/></button>
              
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', width: '100%' }}>
-          <img src={bold} className="bold bold:hover"
-           />
-          <img src={italic} className="italic italic:hover"
-           />
-          <img src={underline} className="underline underline:hover"
-          />
-          <img src={Vector} className="Vector Vector:hover" />
-          <img src={clip} className="clip clip:hover" />
-          <img src={imagev} className="imagev imagev:hover"/>
-          <img src={link} className="link link:hover"  />
+          <button><img src={bold} className="bold bold:hover"
+           /></button>
+          <button><img src={italic} className="italic italic:hover"
+           /></button>
+          <button><img src={underline} className="underline underline:hover"></img></button>
+          
+         <button><img src={Vector} className="Vector Vector:hover" /></button> 
+        <button> <img src={clip} className="clip clip:hover" /></button> 
+        <button> <img src={imagev} className="imagev imagev:hover"/></button> 
+          <button><img src={link} className="link link:hover"  /></button>
         </div>
       </div>
     );

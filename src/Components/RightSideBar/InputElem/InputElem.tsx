@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './index.css'
 interface Props {
   Name: string;
   UrlImage:string;
@@ -13,8 +13,8 @@ const InputElem: React.FC<Props> = ({ Name,UrlImage }) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       alignSelf: 'stretch',
-      width:"386px",
-      height:"40px"
+      width:"100%",
+      height:"2rem"
   }}>
       <img src={UrlImage} style={{width: "40px",
 height: "40px",
@@ -38,18 +38,9 @@ borderRadius:"40px"}}alt="Avatar" />
   lineHeight: "normal",
   textTransform: "capitalize"
 }}>
- <div style={{
-    display: 'flex',
-    width: '91px',
-    height: '37px',
-    padding: '10px',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '10px',
-    borderRadius: '6px',
-    border: '1px solid var(--Other-Pink, #ED3863)'
-}}>
-  <p style={{
+
+
+ <button style={{
   color: "var(--Other-Pink, #ED3863)",
   textAlign: "center",
   fontFamily: "Poppins",
@@ -57,9 +48,20 @@ borderRadius:"40px"}}alt="Avatar" />
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "normal",
-  textTransform: "capitalize"
-}}> change</p>
-  </div>
+  textTransform: "capitalize",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100px", // Ajustez la largeur selon vos besoins
+  height: "40px", // Ajustez la hauteur selon vos besoins
+  border: "1px solid var(--Other-Pink, #ED3863)",
+  borderRadius: "5px", // Ajoutez une bordure arrondie si nécessaire
+  
+}}>
+  Change
+</button>
+
+  
    
       </div>
     </div>

@@ -14,6 +14,7 @@ import ChatBubble from './Components/LeftChatBubble/LeftChatBubble';
 import RightChatBubble from './Components/RightChatBubble/RightChatBubble';
 import LeftChatBubble from './Components/LeftChatBubble/LeftChatBubble';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import AppRoutes from './Routes';
 
 
 
@@ -23,30 +24,7 @@ function App() {
   return (
     
   
-  <Router>
-    <Switch>
-      <Route exact path="/Messenging">
-      <Messenging/>
-      </Route>
-      <Route exact path="/Reset">
-      <ResetPassword/>
-      </Route>
-      <Route exact path="/AccountVerification">
-      <AccountVerification/>
-      </Route>
-      <Route exact path="/WelcomeOperator">
-      <WelcomeOperator/>
-      </Route>
-      <Route exact path="/LoginNewOperator">
-      <LoginNewOperator/>
-      </Route>
-      <Route exact path="/ForgotPassword">
-      <ForgotPass/>
-      </Route>
-    </Switch>
-   
-  </Router>
-
+<AppRoutes></AppRoutes>
 
 
     

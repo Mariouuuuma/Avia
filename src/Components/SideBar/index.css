@@ -1,12 +1,18 @@
 .SideBar{
     display: inline-flex;
-    height: 1080px;
-    padding: 25px 12px;
+    height: 100%;
+    padding: 1.5rem 0.75rem;
     flex-direction: column;
-    justify-content: space-between;
+    gap:10%;
     align-items: center;
     flex-shrink: 0;
     
+}
+
+button :hover{
+    transform: scale(
+        1.1
+    );
 }
 
 
@@ -14,34 +20,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    
     
 }
 .lowerside{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 1.5rem;
+    margin-top:4rem;
     
 }
 
 .photo{
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     flex-shrink: 0;
 }
 
 .logo{
-    width: 56.126px;
-    height: 56.004px;
-    margin-right: 20px;
-    margin-bottom: 30px;
+    width: 3rem;
+    height: 3rem;
+    margin-top:-3.5rem;
+    margin-left: 1.75rem;
+    margin-right: 1.5rem;
+    margin-bottom: 1.5rem;
     
 }
 
 .Inbox{
  display: flex;
-width: 74px;
+width: 2.5rem;
+height:2.5rem;
 padding: 7px 5px;
 flex-direction: column;
 justify-content: center;
@@ -49,14 +61,16 @@ align-items: center;
 gap: 2px;
 }
 .Analytics{ display: flex;
-    width: 74px;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 7px 5px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2px;}
 .Notifs{ display: flex;
-    width: 74px;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 7px 5px;
     flex-direction: column;
     justify-content: center;
@@ -64,14 +78,16 @@ gap: 2px;
     gap: 2px;
 }
 .Archived{ display: flex;
-    width: 74px;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 7px 5px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2px;}
 .Settings{ display: flex;
-    width: 74px;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 7px 5px;
     flex-direction: column;
     justify-content: center;
@@ -88,26 +104,18 @@ gap: 2px;
         line-height: normal;
     }
 
-    .photoMan{
-        display: flex;
-padding: 10px;
-justify-content: center;
-align-items: center;
-gap: 10px;
-width: 30.159px;
-height: 30px;
-border-radius: 9px;
-    }
+
+    
 
 
-    .analytics,.setting, .bold , .notifications , .inbox ,.archived , .imagehomme , .flag , .search  {
+    
+    button:hover  {
         cursor: pointer;
         transition: transform 0.2s;
     }
     
-    .analytics:hover,.setting:hover, .bold:hover , .notifications:hover , .inbox:hover ,.archived:hover, .imagehomme:hover, .flag:hover , .search:hover   {
-        transform: scale(1.1);
-    }
+   
+    
     
 
     

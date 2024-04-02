@@ -1,47 +1,36 @@
 import React from 'react';
 import threedots from '../../Assets/Images/threedots.png'
 
-type Color = string | "#ED3863" | "white"|"#7BC600";
+ 
 
-interface NavbarProps {
+interface CommentElementProps {
   username: string;
   avatarUrl: string;
   date: string;
   Message: string;
-  
 }
 
-const CommentElement: React.FC<NavbarProps> = ({ username, avatarUrl, date, Message }) => {
+const CommentElement: React.FC<CommentElementProps> = ({ username, avatarUrl, date, Message }) => {
   return (
-    <div style={{
-      display: 'flex',
-      padding: '15px 20px 10px 20px',
-      alignItems: 'flex-start',
-      gap: '10px',
-      width:"386px",
-      height:"115px",
-      border: '1px solid rgba(0, 0, 0, 0.1)'
-  }}>
+    <div className="flex items-start w-full border border-gray-200 rounded p-4 mb-4">
       <div className="flex items-center">
         <a className="btn btn-ghost">
-          <img alt="Avatar" src={avatarUrl} style={{width:'45px', height:'45px',borderRadius:'48px'}} />
+          <img alt="Avatar" src={avatarUrl} className="w-12 h-12 rounded-full" />
         </a>
-        <div className="ml-2 flex flex-col space-y-2">
-          <span className="text-xs text-gray-700">{username}</span>
-          <span className="text-xs text-gray-500">{Message}</span>
+        <div className="ml-4 flex flex-col space-y-2">
+          <span className="text-sm text-gray-700">{username}</span>
+          <span className="text-sm text-gray-500">{Message}</span>
         </div>
       </div>
-      <div className="ml-auto flex flex-col items-end">
-        <div style={{display:"flex", flexDirection:"row"}}>
-            
-        <span className="text-sm text-gray-700">{date}</span>
-        <img src={threedots} style={{width:"18px", height:"18px", flexShrink:"0"}}></img>
-        </div>
-
-
-        <div className="mt-2">
-          <div className="relative">
-            <span className="absolute top-0 right-0 -mt-2 -mr-1 inline-flex items-center justify-center h-4 w-4 rounded-full text-white text-xs"></span>
+      <div className="ml-auto flex items-center">
+        <span className="text-sm text-gray-700 mr-4">{date}</span>
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="5" r="1" />
+              <circle cx="10" cy="10" r="1" />
+              <circle cx="10" cy="15" r="1" />
+            </svg>
           </div>
         </div>
       </div>
@@ -50,3 +39,4 @@ const CommentElement: React.FC<NavbarProps> = ({ username, avatarUrl, date, Mess
 };
 
 export default CommentElement;
+

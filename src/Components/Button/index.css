@@ -1,17 +1,8 @@
 .Button:hover{
     transform: scale(1.2);
 }
-.button {
-    padding: 5px 10px;
-    font-size: 12px;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: black;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-    transition: transform 0.2s;
-  }
+
+
   
   .button.large {
     padding: 15px 30px;

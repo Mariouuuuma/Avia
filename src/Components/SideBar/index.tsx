@@ -17,29 +17,33 @@ export default function Messangingsidebar(){
     <img src={logo}
      className="logo"></img>
     <div className="Inbox">
-    <img src={inbox} className="photo  inbox inbox:hover"></img>
+    <img src={inbox} className="photo   "></img>
     <h6 className="title">Inbox</h6>
     </div>
-  <div className="Analytics"> <img src={analytics} className="photo analytics analytics:hover"></img>
+  <div className="Analytics"> <button><img src={analytics} className="photo  "></img></button>
     <h6 className="title">Analytics</h6></div>
-   <div className="Settings">   <img src={setting} className="photo setting setting:hover"></img>
+   <div className="Settings">  <button> <img src={setting} className="photo  "></img></button> 
     <h6 className="title">Settings</h6></div>
- <div className="Notifs">  <img src={notifications} className="photo notifications notifications:hover"></img>
+ <div className="Notifs">  <button> <img src={notifications} className="photo  "></img></button>
   <h6 className="title">Notifications</h6></div>
-<div className="Archived"> <img src={archived} className="photo archived archived:hover"></img>
+<div className="Archived"> <button> <img src={archived} className="photo  "></img></button>
+</div>
 
 
 
+
+
+</div>
 <div className="lowerside">
-<img src={imagehomme}className="photoMan imagehomme imagehomme:hover"></img>
-    <img src={flag} className="photo flag flag:hover"></img>
-    <img src={search} className="photo search search:hover"></img>
+  <button><img src={imagehomme}className="photo 
+   "></img></button>
+<button>  <img src={flag} className="photo 
+ "></img></button>
+  <button>   <img src={search} className="photo  "></img></button>
+ 
 </div>
-
-
 </div>
-</div>
-</div>
+ 
 )
   
 };

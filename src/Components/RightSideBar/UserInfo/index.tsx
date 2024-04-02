@@ -2,19 +2,19 @@ export default function UserInfo({ id, Name, Mail, Phone, CreatedAt }: { id: num
     return (
       <div style={{
         display: 'flex',
-        width: '386px',
+        width: '100%',
         padding: '0px 20px',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: "140px"
+         
       }}>
    <div style={{
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: '10px',
-    width: '71px',
-    height: '140px'
+    gap: '2rem',
+    width: '100%px',
+    //height: '140px'
 }}>
     <p style={{
         color: '#737373',
@@ -68,7 +68,7 @@ export default function UserInfo({ id, Name, Mail, Phone, CreatedAt }: { id: num
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '10px',
-    width: '178px',
+    width: '100%',
     height: '140px'
 }}>
     <p style={{

@@ -14,7 +14,7 @@ interface NavbarProps {
 
 const Inbox: React.FC<NavbarProps> = ({ username, avatarUrl, MessageState, nowText, Message, bgcolor,ButtonColor }) => {
   return (
-    <div className="navbar bg-base-100 border border-gray-300 h-11 flex justify-between items-center w-73 rounded-lg px-15 py-14 gap-16" style={{ backgroundColor: bgcolor }}>
+    <div className="navbar bg-base-100 border border-gray-300  flex justify-between items-center w-73 rounded-lg px-15 py-14 gap-16" style={{ backgroundColor: bgcolor }}>
       <div className="flex items-center">
         <a className="btn btn-ghost">
           <img alt="Avatar" src={avatarUrl} className="w-10 rounded-full" />

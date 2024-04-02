@@ -5,7 +5,7 @@ export default function OneSegment({ bgColour, content, colour }: { bgColour: "#
     return (
         <div style={{
             display: 'flex',
-            height: '31px',
+           /**height: '31px',*/ 
             backgroundColor: bgColour,
             padding: '10px',
             justifyContent: 'center',

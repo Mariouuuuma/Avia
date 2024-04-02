@@ -10,7 +10,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ size, content, bgcolor, colour }) => {
   const buttonStyle = {
-    padding: size === 'large' ? '15px 30px' : size === 'medium' ? '10px 20px' : '5px 10px',
+    padding: size === 'large' ? '30px 40px' : size === 'medium' ? '15px 30px' : '8px 10px',
     fontSize: size === 'large' ? '20px' : size === 'medium' ? '16px' : '12px',
     backgroundColor: bgcolor,
     border: '1px solid rgba(0, 0, 0, 0.1)',
@@ -36,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({ size, content, bgcolor, colour }) => {
   };
 
   return (
-    <button style={buttonStyle} className="Button:hover">
+    <button style={buttonStyle} className="Button">
       <span style={contentStyle}>{content}</span>
     </button>
   );

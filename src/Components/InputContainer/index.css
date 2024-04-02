@@ -1,9 +1,10 @@
-.Envoyer ,.Grin, .bold , .italic , .underline , .Vector , .clip , .imagev , .link {
+
+button{
     cursor: pointer;
     transition: transform 0.2s;
 }
 
-.Envoyer:hover , .Grin:hover , .bold:hover , .italic:hover , .underline:hover , .Vector:hover , .clip:hover , .imagev:hover , .link:hover  {
+ button:hover  {
     transform: scale(1.1);
 }
 

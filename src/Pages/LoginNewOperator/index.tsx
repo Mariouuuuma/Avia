@@ -1,11 +1,14 @@
 import Logo from '../../Assets/Images/logoAvia.png';
+ 
 import './index.css';
 import {Link} from 'react-router-dom'
 
 function LoginNewOperator() {
+
+
   return (
     <div className="LoginAdmin flex items-center justify-center p-20">
-      <div className="container">
+      <div className="containerNewOp">
         <form action="#" className="login-form">
           <div className="flex justify-center">
             <img src={Logo} className="Logo" alt="Logo" />
@@ -13,31 +16,31 @@ function LoginNewOperator() {
           <h2>Welcome to Operator View</h2>
           <h3>An account is required. Please ask an existing member for an invitation or log in to continue.</h3>
           <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" required />
+            <div className="formNewOp-group">
+              <label htmlFor="firstNameNewOp">First Name</label>
+              <input type="text" id="firstNameNewOp" className='n1' name="firstName" required />
             </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" required />
+            <div className="formNewOp-group">
+              <label htmlFor="lastNameNewOp">Last Name</label>
+              <input type="text" id="lastNameNewOp" name="lastName" required />
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group">
+            <div className="formNewOp-group">
               <label htmlFor="email">Email</label>
               <input type="email" id="email" name="email" required />
             </div>
-            <div className="form-group">
+            <div className="formNewOp-group">
               <label htmlFor="phoneNumber">Phone Number</label>
               <input type="tel" id="phoneNumber" name="phoneNumber" required />
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group">
+            <div className="formNewOp-group">
               <label htmlFor="password">Password</label>
               <input type="password" id="password" name="password" required />
             </div>
-            <div className="form-group">
+            <div className="formNewOp-group">
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input type="password" id="confirmPassword" name="confirmPassword" required />
             </div>
@@ -49,7 +52,7 @@ function LoginNewOperator() {
             </div>
           </div>
           <div className="form-group">
-            <div className="form-group">
+            <div className="formNewOp-group">
               <button type="submit">Login</button>
             </div>
           </div>

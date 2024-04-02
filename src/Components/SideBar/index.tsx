@@ -17,7 +17,7 @@ export default function Messangingsidebar(){
     <img src={logo}
      className="logo"></img>
     <div className="Inbox">
-    <img src={inbox} className="photo   "></img>
+    <button><img src={inbox} className="photo"></img></button>
     <h6 className="title">Inbox</h6>
     </div>
   <div className="Analytics"> <button><img src={analytics} className="photo  "></img></button>

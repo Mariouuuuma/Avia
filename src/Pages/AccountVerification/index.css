@@ -1,19 +1,19 @@
 
     
-    .container {
-      max-width: 500px;
+    .containerVerf {
+      max-width: 32rem;
       margin: 50px auto;
       background-color: #fff;
-      height:490px;
-      padding: 60px;
+      height:32rem;
+      padding: 3rem;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border: 2px solid #E73838;
     }
     
     .verification-form h2 {
-      margin-bottom: 30px;
-      margin-top: 40px;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
       text-align: center;
       font-size: 22px;
     }
@@ -23,41 +23,42 @@
       text-align: center;
       padding: 5px;
       margin-top: 5px;
-      margin-bottom: 40px;
+      margin-bottom: 2rem;
       font-size: 17px;
     }
     
-    .form-group {
+    .formVerf-group {
       display: flex;
       justify-content: space-between;
     }
     
-    .form-group input[type="text"] {
+    .formVerf-group input[type="text"] {
       width: calc(25% - 5px);
-      padding: 10px;
+      padding: 0.8rem;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
       text-align: center;
     }
     
-    .form-group input[type="text"]:focus {
+    .formVerf-group input[type="text"]:focus {
       outline: none;
       border-color: #007bff;
     }
     
-    .form-group input[type="text"]::-webkit-input-placeholder {
+    .formVerf-group input[type="text"]::-webkit-input-placeholder {
       text-align: center;
     }
     
-    .form-group button {
-      width: 100%;
-      padding: 15px;
+    .formVerf-group button {
+      width: 8rem;
+      padding: 1rem;
       background-color: #E73838;
-      margin-top: 10px;
+      margin-top: 0.8rem;
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 0.6rem;
+      margin-bottom:1rem
     }  
 
     .Logo{

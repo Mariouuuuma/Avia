@@ -27,8 +27,9 @@ console.log(InputValue)
           const handleSubmit=(e:SubmitEvent)=>{ e.preventDefault();
           console.log(InputValue)}
 
-            return(        <div className="LoginAdmin flex items-center justify-center p-20">
-            <div className="containerWelc w-555 h-640 mx-auto">
+            return(        <div style={{display:"flex",alignItems:"center",justifyContent:"center",padding:"1.25rem", marginTop:"2rem",marginBottom:"10rem"}}
+             >
+            <div className="containerWelc">
               <img src={Logo} className="LogoWelc mx-auto" alt="Logo" />
               <form action="#" className="WelcForm">
                 <h2>Welcome to Operator View</h2>
@@ -47,8 +48,11 @@ console.log(InputValue)
 </div>
 
              
-                <div className="form-group">
+                <div className="ButtonWelc">
+                  <div className="Welcgroup">
                   <button type="submit">Login</button>
+                  </div>
+                 
                 </div>
                 <p><Link to="/ForgotPassword" >Forgot your password?</Link></p>
                 

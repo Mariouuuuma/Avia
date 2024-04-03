@@ -12,8 +12,8 @@ export default function UserInfo({ id, Name, Mail, Phone, CreatedAt }: { id: num
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: '2rem',
-    width: '100%px',
+    gap: '1.5rem',
+   
     //height: '140px'
 }}>
     <p style={{
@@ -66,10 +66,10 @@ export default function UserInfo({ id, Name, Mail, Phone, CreatedAt }: { id: num
 <div style={{
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: '10px',
-    width: '100%',
-    height: '140px'
+    alignItems: 'flex-end',
+    gap: '1.5rem',
+   
+    
 }}>
     <p style={{
         color: '#212121',

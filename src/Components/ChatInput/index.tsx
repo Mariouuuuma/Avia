@@ -6,7 +6,7 @@ export default function SendInput({ValeurParDefaut}:{ValeurParDefaut:string}){
        alignItems: "center",
        /*gap: "15px",*/
        backgroundColor: "#F5F7F9",
-       padding:"10px",
+      
        borderRadius: "8px",
        border: "1px solid #E5E7EB",
       width:"100%",
@@ -15,7 +15,7 @@ export default function SendInput({ValeurParDefaut}:{ValeurParDefaut:string}){
         <input
        type="text"
        defaultValue={ValeurParDefaut}
-       style={{ width: '100%', height:'21px',alignItems:'center'}}
+       style={{ width: '100%', height:'2.25rem',alignItems:'center'}}
               
      />
       

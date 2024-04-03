@@ -4,8 +4,8 @@ import {Link} from 'react-router-dom'
 
 function ForgotPass(){
     return(
-        <div className="flex items-center justify-center p-5">
-            <div className="containerForgotPass w-555 h-600 mx-auto">
+        <div className="flex items-center justify-center " style={{padding:"1rem"}}>
+            <div className="containerForgotPass  mx-auto">
               <img src={LogoImage} className="Logo mx-auto" alt="Logo" />
               <form action="#" className="ForgotpassForm">
                 <h1>Forgot Password</h1>

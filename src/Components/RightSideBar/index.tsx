@@ -11,7 +11,7 @@ import CommentElement from '../CommentSection'
 
 export default function RightSideBar() {
     return (
-        <div style={{ display: "flex", flexDirection: "column", marginTop: "-1px" }}>
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "1.9rem" }}>
             <div style={{ width: "100%" }}>
                 <ActualUser
                     UserName="John Doe"
@@ -70,9 +70,9 @@ export default function RightSideBar() {
                     <div style={{
                         display: 'flex',
                         width: '100%',
-                        padding: '0px 20px',
+                         
                         justifyContent: 'space-between',
-                        alignItems: 'center'
+                         
                     }}>
                         <UserInfo 
                             id={32644} 

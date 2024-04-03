@@ -48,14 +48,15 @@ export default function ChatRoom() {
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: "10px",marginTop:"1rem" }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: "10px",marginTop:"1rem" ,backgroundColor:"white" , width:"100%"}}>
         <Button size="small" content="Reply" bgcolor='#E73838'  colour="white" />
         <Button size="small" content="Note" bgcolor="white"  colour="black" />
         <Button size="small" content="Reminder" bgcolor="white"  colour="black" />
         <Button size="small" content="Shortcuts"   bgcolor="white"  colour="black" />
         <Button size="small" content="Helpdesk"  bgcolor="white"  colour="black" />
       </div>
-      <InputContainer />
+      <div style={{width:"100%", backgroundColor:"white"}}>  <InputContainer /></div>
+    
     </div>
   );
       }  

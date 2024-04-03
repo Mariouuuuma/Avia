@@ -1,10 +1,11 @@
 
     .containerNewOp {
-      max-width: 600px;
-      height: 680px;
-      margin: 50px auto;
+      max-width: 35rem;
+      height: 40.5rem;
+      margin-top:-3rem;
+      
       background-color: #fff;
-      padding: 60px;
+      padding: 3rem;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border: 2px solid #E73838;
@@ -12,10 +13,10 @@
     }
     
     .login-form h2 {
-      margin-bottom: 30px;
-      margin-top: 40px;
+      margin-bottom: 1.5rem;
+      margin-top: 1.75rem;
       text-align: center;
-      font-size: 22px;
+      font-size: 1.25rem;
     }
     
     .login-form h3 {
@@ -23,11 +24,11 @@
       text-align: center;
       padding: 5px;
       margin-top: 5px;
-      margin-bottom: 40px;
-      font-size: 17px;
+      margin-bottom: 1.75rem;
+      font-size: 1rem;
     }
     
-    .form-row {
+    .formRow {
       display: flex;
       justify-content: space-between;
     }
@@ -61,10 +62,12 @@
 
 
     }
-    .form-row button {
+    .formRow button {
       display:flex;
-      width: 100%;
-      padding: 15px;
+      width: 80%;
+      padding: 1rem;
+    justify-content: center;
+    align-items: center;
       background-color: #E73838;
       margin-top: 10px;
       color: #fff;
@@ -72,18 +75,26 @@
       border-radius: 10px;
       cursor: pointer;
     }
-      .formNewOp-group button {
+    .formNewOp-group {
+      text-align: center; /* Centrer le contenu horizontalement */
+    }
+    
+    .formNewOp-group button {
+      display:flex;
+      width: 100%;
+      padding: 1rem;
+    justify-content: center;
+    align-items: center;
       width: 95%;
-      padding: 15px;
-      background-color:#E73838;
-      margin-left:10px;
+      margin: 5px auto;
+      padding: 1rem;
+      background-color: #E73838;
       color: #fff;
       border: none;
-      margin-top:"5px";
-      border-radius: 10px;
+      border-radius: 0.75rem;
       cursor: pointer;
     }
-        
+    
       
     
     .formNewOp-group button:hover {
@@ -92,7 +103,7 @@
     
     p {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 1.25rem;
     }
     
     p a {
@@ -119,7 +130,7 @@
 
       .input-style {
         width: 100%;
-        padding: 10px;
+        padding: 0.75rem;
         border: 1px solid #ccc;
      
         
@@ -127,6 +138,23 @@
       
       
       #confirmPassword,#password,#phoneNumber,#email,#lastNameNewOp,#firstNameNewOp{
-        width:200px;
-        height:40px
+        width:12rem;
+        height:2.5rem
+      }
+
+      .SignUp{
+        display:flex;   
+        padding: 1rem;
+        width:10rem;
+      justify-content: center;
+      align-items: center;
+      background-color: #E73838;
+      color: #fff;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      }
+      .ButtonDisp{
+        display:flex;
+        justify-content:center
       }

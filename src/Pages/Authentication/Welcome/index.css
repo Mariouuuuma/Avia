@@ -1,12 +1,10 @@
 
   
   .containerWelc {
-    max-width: 555px;
-    height:620px;
- 
-    
+    max-width: 33rem;
+    height: 40rem;
     background-color: #fff;
-    padding: 60px;
+    padding: 2.5rem;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: 2px solid #E73838;
@@ -14,43 +12,43 @@
   
   .WelcForm h3{
     font-weight:normal;
-    font-size: 18px;
+    font-size: 1.25rem;
     padding:0 auto;
-    margin:20px
+    margin:1.5rem
   }
   
   .WelcForm h2 {
-    margin-bottom: 30px;
-    margin-top:10px;
+    margin-bottom: 1.75rem;
+    margin-top:1rem;
     text-align: center;
-      font-size: 22px;
+      font-size: 1.25rem;
   }
   
   .Welcgroup {
  
-    padding:5px
+    padding:0.25rem
     
   }
   
   .Welcgroup label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.25rem;
   }
   
   .Welcgroup input[type="text"],
   .Welcgroup input[type="password"],
   .Welcgroup input[type="checkbox"] {
     width: 96%;
-    padding: 10px;
+    padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
   
   .Welcgroup button {
-    width: 95%;
-    padding: 15px;
+    width: 10rem;
+    padding: 1rem;
     background-color:#E73838;
-    margin-left:10px;
+    margin: left 0.75rem;
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -82,8 +80,8 @@
   }
   
   .LogoWelc{
-    width: 56.126px;
-height: 56.004px;
+    width: 4rem;
+height: 4rem;
 flex-shrink: 0;
 fill: linear-gradient(90deg, #EE4546 0.03%, #E02A29 99.99%);
 
@@ -94,4 +92,7 @@ fill: linear-gradient(90deg, #EE4546 0.03%, #E02A29 99.99%);
 
  } 
 
- 
+ .ButtonWelc{
+display:flex;
+justify-content:center
+ }

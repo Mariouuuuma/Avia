@@ -1,11 +1,11 @@
 
     .containerNewOp {
       max-width: 35rem;
-      height: 40.5rem;
+      height: 41rem;
       margin-top:-3rem;
       
       background-color: #fff;
-      padding: 3rem;
+      padding: 2.35rem;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border: 2px solid #E73838;
@@ -158,3 +158,5 @@
         display:flex;
         justify-content:center
       }
+      .SignUp:hover{   background-color: #0056b3;}
+   

@@ -1,50 +1,66 @@
-import React from 'react'
+import React, { useContext } from 'react'
  
 
-import NavBar from '../NavBar/NavBar'
-import ChatBubble from '../LeftChatBubble/LeftChatBubble'
+import NavBar from '../NavBar/NavBar' 
 import Button from '../Button'
 import InputContainer from '../InputContainer'
-import RightChatBubble from '../RightChatBubble/RightChatBubble'
+import LeftMessage from '../LeftMessage/LeftMessage';
+import RightChatBubble from '../RightChatBubble/RightChatBubble';
+import { MessengingContext } from '../../Contexts/MessengingContext';
+
+ 
+
+
 
 export default function ChatRoom() {
+  const {messagesent}=useContext(MessengingContext)
   return (
     <div >
       <NavBar status="Etudiant" />
-      <div style={{ backgroundColor: "#F6F7FB", overflowY:"auto",maxHeight:"30rem",height:"100%"}}>
-      <RightChatBubble 
-                    content="Hello there!" 
-                    DateSent={new Date()} 
+      <div style={{ backgroundColor: "#F6F7FB", overflowY:"auto",height:"29rem"}}>
+      <LeftMessage
+                    message="Hello there!" 
+                  
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                <RightChatBubble 
-                    content="How are you?" 
-                    DateSent={new Date()} 
+                <LeftMessage 
+                    message="How are you?" 
+                    
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                     <RightChatBubble 
-                    content="Hello there!" 
-                    DateSent={new Date()} 
+                     <RightChatBubble
+                    message="Hello there!" 
+                  
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                <RightChatBubble 
-                    content="How are you?" 
-                    DateSent={new Date()} 
+                <LeftMessage
+                    message="How are you?" 
+                 
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                    <RightChatBubble 
-                    content="How are you?" 
-                    DateSent={new Date()} 
+                    <LeftMessage
+                    message="How are you?" 
+                   
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                     <RightChatBubble 
-                    content="Hello there!" 
-                    DateSent={new Date()} 
+                     <LeftMessage 
+                    message="Hello there!" 
+                   
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
-                <RightChatBubble 
-                    content="How are you?" 
-                    DateSent={new Date()} 
+                <LeftMessage 
+                    message="How are you?" 
+                   
+                    ImageUrl="https://example.com/avatar.jpg" 
+                />
+                   <LeftMessage
+                    message="How are you?" 
+                   
+                    ImageUrl="https://example.com/avatar.jpg" 
+                />
+                   <RightChatBubble
+                    message={messagesent} 
+                  
                     ImageUrl="https://example.com/avatar.jpg" 
                 />
       </div>

@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import logo from '../../Assets/Images/logoAvia.png'
-import inbox from '../../Assets/Images//inbox.png'
-import analytics from '../../Assets/Images//analytics.png'
-import imagehomme from '../../Assets/Images//image homme.png'
-import flag from'../../Assets/Images//flag language.png'
-import search from'../../Assets/Images//search.png'
-import setting from '../../Assets/Images//settings .png'
+import inbox from '../../Assets/Images/inbox.png'
+import analytics from '../../Assets/Images/analytics.png'
+import flag from'../../Assets/Images/flag language.png'
+import search from'../../Assets/Images/search.png'
+import setting from '../../Assets/Images/settings .png'
 import notifications from '../../Assets/Images//notif .png'
-import archived from'../../Assets/Images//archived.png'
+import archived from'../../Assets/Images/archived.png'
 import './index.css'
-
+import { SideBarContext } from '../../Contexts/SideBarContext'
 export default function Messangingsidebar(){
+  const { clicked, setClicked } = useContext(SideBarContext);
+  const [myBooleanVariable, setMyBooleanVariable] = useState(false);
+
+  const handleClick = () => {
+    const newClickedValue = !myBooleanVariable;
+    setMyBooleanVariable(newClickedValue);
+    setClicked(newClickedValue); 
+   console.log(clicked)
+   
+  };
+  
   return(
     <div className="SideBar">
     <div className="upperSide">
@@ -26,7 +36,8 @@ export default function Messangingsidebar(){
     <h6 className="title">Settings</h6></div>
  <div className="Notifs">  <button> <img src={notifications} className="photo  "></img></button>
   <h6 className="title">Notifications</h6></div>
-<div className="Archived"> <button> <img src={archived} className="photo  "></img></button>
+<div className="Archived"><button> <img src={archived} className="photo  "></img></button>
+<h6 className="title">Archived</h6>
 </div>
 
 
@@ -35,11 +46,11 @@ export default function Messangingsidebar(){
 
 </div>
 <div className="lowerside">
-  <button><img src={imagehomme}className="photo 
-   "></img></button>
+  <button><img className="photo 
+   " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdA9hKFHkeThXlgaoAjby9HKLjWxQMeQOgWIhZmlPodA&s"></img></button>
 <button>  <img src={flag} className="photo 
  "></img></button>
-  <button>   <img src={search} className="photo  "></img></button>
+  <button onClick={handleClick}><img src={search} className="photo" ></img></button>
  
 </div>
 </div>

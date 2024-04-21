@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 type Color = string | "#ED3863" | "white"|"#7BC600";
 
@@ -8,14 +8,17 @@ interface NavbarProps {
   MessageState: string;
   nowText: string;
   Message: string;
-  bgcolor: Color;
   ButtonColor:Color;
+  children?: React.ReactNode; 
 }
 
-const Inbox: React.FC<NavbarProps> = ({ username, avatarUrl, MessageState, nowText, Message, bgcolor,ButtonColor }) => {
+const Inbox: React.FC<NavbarProps> = ({ username, avatarUrl, MessageState, nowText, Message ,ButtonColor }) => {
+  const [bgcolor, setBgColor] = useState<string>('');
   return (
-    <div className="navbar bg-base-100 border border-gray-300  flex justify-between items-center w-73 rounded-lg px-15 py-14 gap-16" style={{ backgroundColor: bgcolor }}>
-      <div className="flex items-center">
+    <div className="navbar bg-base-100 border border-gray-300  flex justify-between items-center w-73 rounded-lg px-15 py-14 gap-16" style={{ backgroundColor: bgcolor,cursor:"pointer", transition: "background-color 0.3s ease" }}  // Changer la couleur de fond au survol
+    onMouseEnter={() => setBgColor('#F0F1F3')} // Changer la couleur de fond lorsque survolé
+    onMouseLeave={() => setBgColor('')}>
+      <div className="flex items-center" >
         <a className="btn btn-ghost">
           <img alt="Avatar" src={avatarUrl} className="w-10 rounded-full" />
         </a>

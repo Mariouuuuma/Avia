@@ -22,10 +22,10 @@ export default function SelectButton({
 }) {
     return (
         <div  style={{
-            backgroundColor: '#F5F7F9',
+            backgroundColor: '#Ffff',
             display: "flex",
             width: "100%",  
-            padding: "2rem ",
+            padding: "1rem ",
             justifyContent: "space-between",
             alignItems: "center",
             

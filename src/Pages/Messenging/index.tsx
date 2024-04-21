@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import SideBar from '../../Components/SideBar'
 import Button from '../../Components/Button'
 import YellowBand from '../../Components/YellowBand';
@@ -7,14 +7,21 @@ import threedots from '../../Assets/Images/threedots.png'
 import ChatRoom from '../../Components/ChatRoom/ChatRoom';
 import RightSideBar from '../../Components/RightSideBar';
 import './index.css'
-export default function Messenging(){
+
+interface MessagingProps {
+ 
+  children: ReactNode; // Définir le type des enfants comme ReactNode
+}
+  // Vous pouvez ajouter d'autres props selon les besoins
+  const Messenging: React.FC<MessagingProps> = ({ children }) => {
+
     return(
         <div  className="MessengingContainer"   
          >
-           <div  style={{width:"4%"   }} >
+           <div className="SideBar" style={{width:"4%"   }} >
         <SideBar />
         </div>
-        <div style={{
+        <div className="BoxContainer" style={{
         width:"21%",
     maxHeight:'100%',
     display: 'flex',
@@ -53,32 +60,22 @@ export default function Messenging(){
         </div>
         
     </div>
-  <YellowBand></YellowBand>
+    <div className="YellowBand">  <YellowBand></YellowBand></div>
+
   <span style={{ width: '100%', maxHeight: '35rem', overflowY: 'auto',height:"100%",marginBottom:"1rem" }}>
     <div style={{
         display: 'flex',
         flexDirection: 'column',
         gap: '20px',
     }}>
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-            <Inbox username="Mariem" avatarUrl="C:\Users\user\OneDrive\Desktop\tt\appli\src\Assets\Images\image homme.png" MessageState="4" nowText="Active" Message="Hello" bgcolor="white" ButtonColor="#7BC600" />
-
+         {children}
+           
         </div>
     </span>
 </div>
 <div
 style={{ 
-height:"100%" ,width:"52%"}} ><ChatRoom ></ChatRoom></div>
+height:"100%" ,width:"52%"}} className="chatRoom" ><ChatRoom ></ChatRoom></div>
 <div className="RightSideBar" style={{maxHeight:"100%",width:"24%",overflowY:"scroll"}}>
 <RightSideBar></RightSideBar></div>
 
@@ -86,3 +83,4 @@ height:"100%" ,width:"52%"}} ><ChatRoom ></ChatRoom></div>
       
     );
 }
+export default Messenging;

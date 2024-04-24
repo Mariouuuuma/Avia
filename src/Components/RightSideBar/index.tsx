@@ -1,4 +1,4 @@
-import React from'react'
+import React, { useContext } from'react'
 import ActualUser from './ActualUser/ActualUser'
 import InputElem from './InputElem/InputElem'
 import SelectButton from './selctButton'
@@ -7,14 +7,16 @@ import SendInput from '../ChatInput'
 import UserInfo from './UserInfo'
 import YellowInput from '../YellowInput'
 import CommentElement from '../CommentSection'
+import { SideBarContext } from '../../Contexts/SideBarContext'
  
 
 export default function RightSideBar() {
+    const {sender}=useContext(SideBarContext)
     return (
         <div style={{ display: "flex", flexDirection: "column", marginTop: "1.9rem" }}>
             <div style={{ width: "100%" }}>
                 <ActualUser
-                    UserName="John Doe"
+                    UserName={`${sender.firstName} ${sender.lastName}`}
                     UrlAvatar="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     State="Available"
                     colour="green"

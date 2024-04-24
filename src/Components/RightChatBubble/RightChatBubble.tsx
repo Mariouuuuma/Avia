@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
  
 import { MessengingContext } from '../../Contexts/MessengingContext';
+ 
 
 interface RightChatBubbleProps {
   message: string;
@@ -9,7 +10,8 @@ interface RightChatBubbleProps {
 }
 
 const RightChatBubble: React.FC<RightChatBubbleProps> = ({ message, ImageUrl }) => {
-  const {messagesent}=useContext(MessengingContext)
+ 
+ 
   return (
     <div className="chat chat-end" style={{marginTop:"1rem",}}>
         <div className="chat-image avatar" >
@@ -19,7 +21,7 @@ const RightChatBubble: React.FC<RightChatBubbleProps> = ({ message, ImageUrl }) 
         </div>
       
       
-        <div className="chat-bubble" style={{backgroundColor:"#E73737",color:"white"}}>{messagesent}</div>
+        <div className="chat-bubble" style={{backgroundColor:"#E73737",color:"white"}}>{message}</div>
       
     </div>
 );

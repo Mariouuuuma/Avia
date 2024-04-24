@@ -12,6 +12,7 @@ import { SideBarContext } from '../../Contexts/SideBarContext'
 export default function Messangingsidebar(){
   const { clicked, setClicked } = useContext(SideBarContext);
   const [myBooleanVariable, setMyBooleanVariable] = useState(false);
+ 
 
   const handleClick = () => {
     const newClickedValue = !myBooleanVariable;
@@ -58,4 +59,3 @@ export default function Messangingsidebar(){
 )
   
 };
-    

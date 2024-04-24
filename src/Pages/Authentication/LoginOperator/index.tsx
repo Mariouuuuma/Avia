@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { FormikHelpers } from 'formik';
@@ -7,6 +7,7 @@ import { useFormikContext } from 'formik';
 import Logo from '../../../Assets/Images/logoAvia.png';
 import supabase from '../../../Utils/api';
 import { AuthContext } from '../../../Contexts/AuthContext';
+import { SideBarContext } from '../../../Contexts/SideBarContext';
  
 
 // Interface pour les valeurs du formulaire
@@ -25,6 +26,8 @@ const validationSchema = Yup.object().shape({
 
 const WelcomeOperator: React.FC = () => {
   const {currentuser,setCurrentuser}=useContext(AuthContext)
+  const { setUser, setSender,sender } = useContext(SideBarContext);
+  const [err, setErr] = useState<boolean>(false);
   const history = useHistory(); 
   const handleSubmit = async (
     values: FormValues,
@@ -39,16 +42,33 @@ setCurrentuser(data.user)
  
 console.log(error)
 console.log(values.emailPhoneWelc)
-console.log(values.passwordWelc)
 if(!error){
     history.push("/Messenging");
 }
+const { data: senderData, error: senderError } = await supabase
+.from('Agents')
+.select('firstName, lastName')
+.eq('Email', values.emailPhoneWelc);
 
+if (senderError) {
+// Gérer spécifiquement les erreurs de type PostgrestError
+console.error('Erreur lors de la recherche de l\'expéditeur :', senderError);
+setErr(true);
+} else {
+if (senderData && senderData.length > 0) {
+  // Expéditeur trouvé, utilisez le premier résultat
+  setSender(senderData[0]);
+  console.log('Sender:', senderData[0]);
+} else {
+  // Aucun expéditeur trouvé
 
-
+  console.log('Aucun expéditeur trouvé.');
+}
+}
   };
- 
 
+console.log(currentuser)
+console.log(sender)
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', marginTop: '2rem', marginBottom: '10rem' }}>
       <div className="containerWelc">
@@ -97,7 +117,3 @@ if(!error){
 };
 
 export default WelcomeOperator;
-
-
-
-

@@ -75,7 +75,7 @@ const SearchBar: React.FC = () => {
       {user && (
         <Inbox
           username={`${user.firstName} ${user.lastName}`}
-          avatarUrl={user.avatarUrl || 'placeholder.jpg'}
+          avatarUrl="{user.avatarUrl || 'placeholder.jpg'}"
           MessageState="active"
           nowText="now"
           Message="none"

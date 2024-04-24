@@ -5,7 +5,7 @@ type MessengingProviderProps = {
 };
 export const MessengingContext = createContext({
  // Placeholder function
-  messagesent: "Mariem",
+  messagesent: "",
   setMessagesent: (name: string) => {} // Placeholder function
 });
 

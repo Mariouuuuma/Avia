@@ -12,14 +12,17 @@ import send from '../../Assets/Images/send.png';
 import {MessengingContext,MessengingProvider} from '../../Contexts/MessengingContext'
 import {AuthContext} from '../../Contexts/AuthContext'
 import supabase from '../../Utils/api';
+import { SideBarContext } from '../../Contexts/SideBarContext';
 
 
 
 export default function InputContainer () 
  {
 const {setMessagesent}=useContext(MessengingContext)
+const {user,sender}=useContext(SideBarContext)
 const{messagesent}=useContext(MessengingContext)
 const{currentuser}=useContext(AuthContext)
+const [error, setError] = useState<string>(''); 
   const [message, setMessage] = useState<string>('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,32 +32,46 @@ const{currentuser}=useContext(AuthContext)
 
   const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
-    const { data: insertData, error: insertError } = await supabase
-    .from('AgentChats')
-    .insert({
-      name: "Nour Smadhi",
-      OwnerId:currentuser?.id,
-      message:messagesent
-    });
-    if (insertError) {
-      console.error('Erreur lors de l\'ajout de l\'agent :', insertError.message);
-      // Gérer les erreurs liées à l'ajout de l'agent dans la base de données
-    } else {
-      console.log('Agent ajouté avec succès :', insertData);
-      // L'agent a été ajouté avec succès à la base de données
-  
-  };
-  
+    
+    if (!messagesent.trim()) {
+      console.error('Le message est vide ou ne contient que des espaces.');
+      return; // Arrêtez l'exécution si le message est vide ou ne contient que des espaces
+    }
+    try {
+      const { data: insertData, error: insertError } = await supabase
+        .from('AgentChats')
+        .insert({
+          name: `${user?.firstName} ${user?.lastName}`,
+          OwnerFirstName: sender?.firstName,
+          OwnerLastName: sender?.lastName,
+          message: messagesent.trim(), // Utilisez messagesent après suppression des espaces avant et après
+        });
+
+        if (insertError) {
+          setError(`Erreur lors de l'ajout du message : ${insertError.message}`);
+        } else {
+          // Réinitialiser le champ de message après l'insertion réussie
+          setMessagesent(''); // Effacer le contenu de l'input
+          setError(''); // Effacer les erreurs précédentes
+          console.log('Message ajouté avec succès :');
+        }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du message :', error);
+      // Gérer les erreurs générales liées à l'ajout du message
+    }
+   
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ position: 'relative', width: '100%', marginTop: '1rem' }}>
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-          <input
-            type="text"
-            placeholder="Send a message.."
-            onChange={handleInputChange}
+        <input
+          type="text"
+          placeholder="Send a message.."
+          value={messagesent}
+          onChange={handleInputChange}
+          required
         
             style={{ width: '100%', padding: '10px', boxSizing: 'border-box' , border:'none' }}
           />

@@ -1,0 +1,20 @@
+.MessengingContainerCli {
+  display: flex;
+}
+
+.RightSideBarCli {
+  margin-top: -50px;
+}
+@media (max-width: 400px) {
+  .SideBarCli {
+    display: none;
+  }
+
+  .RightSideBarCli {
+    display: none;
+  }
+
+  .chatRoomCli {
+    display: none;
+  }
+}

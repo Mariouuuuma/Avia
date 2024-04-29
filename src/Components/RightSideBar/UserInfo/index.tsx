@@ -6,6 +6,7 @@ export default function UserInfo({ id, Name, Mail, Phone, CreatedAt }: { id: num
         padding: '0px 20px',
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor:'white'
  
          
       }}>

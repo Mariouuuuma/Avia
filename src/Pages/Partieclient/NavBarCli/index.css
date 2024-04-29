@@ -1,10 +1,10 @@
-.Image {
+.ImageCli {
   width: 36.19px;
   height: 36.19px;
   border-radius: 36.19px;
 }
 
-.Cameron-Williams h1 {
+.Cameron-WilliamsCli h1 {
   color: #212121;
 
   font-family: Poppins;
@@ -15,7 +15,7 @@
   text-transform: capitalize;
 }
 
-.Cameron-Williams h3 {
+.Cameron-WilliamsCli h3 {
   color: #e73737;
 
   font-family: Poppins;
@@ -26,13 +26,13 @@
   text-transform: capitalize;
 }
 
-.Cameron-Williams {
+.Cameron-WilliamsCli {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.NavBar {
+.NavBarCli {
   display: flex;
   width: 1068px;
   padding: 6px 20px 6px 30px;

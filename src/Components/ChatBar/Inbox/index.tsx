@@ -21,7 +21,7 @@ const Inbox: React.FC<InboxProps> = ({ username, avatarUrl, MessageState, nowTex
   const { currentuser } = useContext(AuthContext);
   const { searchTerm } = useContext(SideBarContext);
   const { inboxClicked, setInboxClicked } = useContext(SideBarContext);
- const { user,setUser, setSender } = useContext(SideBarContext);
+ const {receiver,setReceiver, setSender } = useContext(SideBarContext);
   const [err, setErr] = useState<boolean>(false);
 
   const handleInboxClick = async () => {
@@ -36,8 +36,8 @@ console.log(searchTerm)
       const { data: userData, error: userError } = await supabase
         .from('Agents')
         .select()
-        .ilike('firstName', user.firstName)
-        .ilike('lastName', user.lastName);
+        .ilike('firstName', receiver.firstName)
+        .ilike('lastName', receiver.lastName);
 
       if (userError) {
         console.error('Erreur lors de la recherche de l\'utilisateur :', userError.message);
@@ -45,11 +45,11 @@ console.log(searchTerm)
       } else {
         if (userData && userData.length > 0) {
           // Utilisateur trouvé, utilisez le premier résultat
-          setUser(userData[0]);
+          setReceiver(userData[0]);
           console.log('Utilisateur trouvé :', userData[0]);
         } else {
           // Aucun utilisateur trouvé
-          setUser(null);
+          setReceiver(null);
           console.log('Aucun utilisateur trouvé.');
         }
       }

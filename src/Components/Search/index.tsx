@@ -6,7 +6,7 @@ import { SideBarContext } from '../../Contexts/SideBarContext';
 
 const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const {user, setUser} = useContext(SideBarContext); // Utilisateur trouvé après la recherche
+  const {receiver, setReceiver} = useContext(SideBarContext); // Utilisateur trouvé après la recherche
   const [err, setErr] = useState<boolean>(false);
   const {inboxClicked, setInboxClicked} = useContext(SideBarContext);
 
@@ -35,12 +35,12 @@ const SearchBar: React.FC = () => {
 
       if (data && data.length > 0) {
         // Utilisateur trouvé, utilisez le premier résultat
-        setUser(data[0]);
+        setReceiver(data[0]);
      
         
       } else {
         // Aucun utilisateur trouvé
-        setUser(null);
+        setReceiver(null);
       }
     } catch (error) {
       console.error('Erreur lors de la recherche :', (error as Error).message);
@@ -49,9 +49,9 @@ const SearchBar: React.FC = () => {
 
   };
   useEffect(() => {
-    console.log('user:', user);
+    console.log('user:', receiver);
    
-  }, [user]);
+  }, [receiver]);
 
   const handleInboxClick = () => {
     setInboxClicked(!inboxClicked); // Inverser l'état du clic de l'Inbox
@@ -72,9 +72,9 @@ const SearchBar: React.FC = () => {
       </form>
 
       {/* Affiche le composant Inbox si un utilisateur est trouvé */}
-      {user && (
+      {receiver && (
         <Inbox
-          username={`${user.firstName} ${user.lastName}`}
+          username={`${receiver.firstName} ${receiver.lastName}`}
           avatarUrl="{user.avatarUrl || 'placeholder.jpg'}"
           MessageState="active"
           nowText="now"

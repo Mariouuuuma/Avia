@@ -8,19 +8,27 @@ import UserInfo from './UserInfo'
 import YellowInput from '../YellowInput'
 import CommentElement from '../CommentSection'
 import { SideBarContext } from '../../Contexts/SideBarContext'
- 
+
+
+
 
 export default function RightSideBar() {
-    const {sender}=useContext(SideBarContext)
+    const {receiver,inboxClicked }=useContext(SideBarContext)
+
     return (
         <div style={{ display: "flex", flexDirection: "column", marginTop: "1.9rem" }}>
             <div style={{ width: "100%" }}>
-                <ActualUser
-                    UserName={`${sender.firstName} ${sender.lastName}`}
+            {inboxClicked ? <ActualUser
+                    UserName={`${receiver.firstName} ${receiver.lastName}`}
                     UrlAvatar="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     State="Available"
                     colour="green"
-                />
+                /> : <ActualUser
+                UserName={`user`}
+                UrlAvatar="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                State="Available"
+                colour="green"
+            />}
             </div>
             <div style={{ height: "100%", overflowY: "auto", maxHeight: "32rem", padding: "10px", marginTop: "0" }}>
                 <div style={{ marginBottom: "2rem" }}>

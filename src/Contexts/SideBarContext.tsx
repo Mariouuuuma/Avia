@@ -18,40 +18,45 @@ const emptyPerson: Person = {
 type SideContextType = {
   clicked: boolean;
   setClicked: (value: boolean) => void;
-  user: Person;
-  setUser: (value: any) => void;
+  receiver: Person;
+  setReceiver: (value: any) => void;
   inboxClicked: boolean;
   setInboxClicked: (value: boolean) => void;
   sender: Person; // sender is always of type Person
   setSender: Dispatch<SetStateAction<Person>>; 
   searchTerm:string;
-  setSearchTerm:(value:string)=>void// Use Dispatch with SetStateAction<Person>
+  setSearchTerm:(value:string)=>void
+  clickedName:boolean;
+  setClickedname:(value:boolean)=>void;
+  LogoutC:boolean;
+  setLogoutC:(value:boolean)=>void
 };
 
 export const SideBarContext = createContext<SideContextType>({
   clicked: false,
   setClicked: (value: boolean) => {},
-  user: {firstName:"",lastName:""},
-  setUser: (value: any) => {},
+  receiver: {firstName:"",lastName:""},
+  setReceiver: (value: any) => {},
   inboxClicked: false,
   setInboxClicked: (value: boolean) => {},
-  sender: emptyPerson, // Initialize sender as an empty Person object
+  sender: emptyPerson, 
   setSender: () => {},
   searchTerm:"",
-  setSearchTerm:()=>{} // Default empty function for setSender
+  setSearchTerm:()=>{} ,
+  clickedName:false,
+  setClickedname:(value:boolean)=>{},
+  LogoutC:false,
+  setLogoutC:(value:boolean)=>{}
 });
 
 export const SideBarProvider: React.FC<SideBarProviderProps> = ({ children }) => {
   const [clicked, setClicked] = useState(false);
   const [sender, setSender] = useState<Person>(emptyPerson);
   const [searchTerm, setSearchTerm] = useState<string>(''); // Initialize sender with emptyPerson
-
-
-  
-
-  const [user, setUser] = useState<any>(null);
+  const [receiver, setReceiver] = useState<any>(null);
   const [inboxClicked, setInboxClicked] = useState<boolean>(false);
-
+  const [clickedName, setClickedname] = useState<boolean>(false);
+  const [LogoutC, setLogoutC] = useState<boolean>(false);
   const updateClicked = (value: boolean) => {
     setClicked(value);
   };
@@ -61,14 +66,19 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({ children }) =>
       value={{
         clicked,
         setClicked: updateClicked,
-        user,
-        setUser,
+        receiver,
+        setReceiver,
         inboxClicked,
         setInboxClicked,
         sender,
         setSender,
         searchTerm,
-        setSearchTerm // Use setSender to update the state
+        setSearchTerm,
+        clickedName,
+        setClickedname ,
+        LogoutC,
+        setLogoutC
+      
       }}
     >
       {children}

@@ -12,7 +12,7 @@ const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
 
   const handleInboxClick = async () => {
     try {
-      setClickedname(!clickedName); // Inverser l'état du clic de l'Inbox
+      setClickedname(!clickedName);
       console.log("Inbox clicked!");
     } catch (error) {
       console.error("Erreur lors du clic :", error);
@@ -21,7 +21,6 @@ const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
 
   return (
     <div className="navbar bg-white">
-      {/* Avatar and user info */}
       <div className="flex items-center">
         <div className="dropdown dropdown-end">
           <div
@@ -94,7 +93,7 @@ const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
           </div>
         </div>
       </div>
-      {/* Menu button */}
+
       <div className="flex-none">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

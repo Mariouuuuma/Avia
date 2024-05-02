@@ -21,9 +21,10 @@ interface MessagingProps {
 const Messenging: React.FC<MessagingProps> = ({ children }) => {
   const { clickedName } = useContext(SideBarContext);
   const { clicked, sender } = useContext(SideBarContext);
-  const { currentuser, loggedOut } = useContext(AuthContext);
+  const { currentuser, setCurrentuser, loggedOut } = useContext(AuthContext);
   const [userFirstname, setUserFirstname] = useState<String>("");
   const [userLastname, setUserLastname] = useState<String>("");
+  const { logoInbox, setLogoinbox } = useContext(SideBarContext);
 
   let mainComponent;
   if (clicked) {
@@ -39,8 +40,6 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
 
   const getChat = async () => {
     try {
-      const user = await supabase.auth.getUser();
-
       const { data, error } = await supabase
         .from("Agents")
         .select("firstName , lastName")
@@ -61,12 +60,13 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
       alert(error);
     }
   };
-
+  console.log(logoInbox);
   return (
     <div className="MessengingContainer">
       <div className="SideBar" style={{ width: "4%" }}>
         <SideBar />
       </div>
+      (
       <div
         className="BoxContainer"
         style={{
@@ -170,6 +170,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
           </div>
         </span>
       </div>
+      )
       <div
         style={{
           height: "100%",

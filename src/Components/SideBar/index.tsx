@@ -13,6 +13,8 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import Logout from "../Logout";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Button from "../Button";
+import Profile from "../../Components/Profile/Profile";
 interface MessangingsidebarProps {
   backgroundColor?: string; // Define the type of backgroundColor prop
 }
@@ -23,6 +25,8 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
   const { clicked, setClicked } = useContext(SideBarContext);
   const [myBooleanVariable, setMyBooleanVariable] = useState(false);
   const { loggedOut } = useContext(AuthContext);
+  const [ProfileClicked, setProfileClicked] = useState<boolean>(false);
+  const [logoInbox, setLogoinbox] = useState<boolean>(false);
 
   const handleClick = () => {
     const newClickedValue = !myBooleanVariable;
@@ -30,13 +34,19 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
     setClicked(newClickedValue);
     console.log(clicked);
   };
-
+  function hundleClickProfile() {
+    setProfileClicked(!ProfileClicked);
+  }
+  function handleClickInbox() {
+    setLogoinbox(!logoInbox);
+    console.log(logoInbox);
+  }
   return (
     <div className="SideBar" style={{ backgroundColor: backgroundColor }}>
       <div className="upperSide">
         <img src={logo} className="logo"></img>
         <div className="Inbox">
-          <button>
+          <button onClick={handleClickInbox}>
             <img src={inbox} className="photo"></img>
           </button>
           <h6 className="title">Inbox</h6>
@@ -88,11 +98,9 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Profile</a>
+                <button onClick={hundleClickProfile}>Profile</button>
               </li>
-              <li>
-                <a>Settings</a>
-              </li>
+
               <li>
                 <Link to="./" className="logout-link">
                   Logout
@@ -113,6 +121,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
           <img src={search} className="photo"></img>
         </button>
       </div>
+      {ProfileClicked && <Profile Avatar="bhdcgdiyz" />}
     </div>
   );
 };

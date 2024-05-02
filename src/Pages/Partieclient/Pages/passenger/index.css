@@ -1,0 +1,150 @@
+.passenger {
+  background-image: url("https://cdn-forum.inibuilds.com/monthly_2022_05/1969414645_Capturadepantalla(3485).png.b711db33dce055ea46cc5f56359a4258.png");
+}
+.containerNewOpCli {
+  max-width: 30rem;
+  height: 41rem;
+  margin-top: -3rem;
+  background-color: #fff;
+
+  padding: 2.35rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e73838;
+}
+
+.login-formCli h1 {
+  margin-bottom: 1.5rem;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.login-formCli h3 {
+  font-weight: normal;
+  text-align: center;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 1.75rem;
+  font-size: 1rem;
+}
+
+.formRowCli {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formNewOp-groupCli {
+  flex-basis: calc(50% - 10px);
+}
+
+.formNewOp-groupCli input[type="text"],
+.formNewOp-groupCli input[type="password"],
+.formNewOp-groupCli input[type="email"],
+.formNewOp-groupCli input[type="tel"],
+.formNewOp-groupCli input[type="checkbox"] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.formRowCli button {
+  display: flex;
+  width: 80%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  margin-top: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.formNewOp-groupCli {
+  text-align: center;
+}
+
+.formNewOp-groupCli button {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  margin: 5px auto;
+  padding: 1rem;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.formNewOp-groupCli button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 1.25rem;
+}
+
+p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+.checkboxiCli {
+  display: flex;
+  align-items: center;
+}
+
+#rememberMeCli {
+  margin-right: 5px;
+}
+
+.input-style {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+}
+
+#confirmPasswordCli,
+#passwordCli,
+#phoneNumberCli,
+#emailCli,
+#lastNameNewOpCli,
+#firstNameNewOpCli {
+  width: 12rem;
+  height: 2.5rem;
+}
+
+.SignUpCli {
+  display: flex;
+  padding: 1rem;
+  width: 10rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.ButtonDispCli {
+  display: flex;
+  justify-content: center;
+}
+
+.SignUpCli:hover {
+  background-color: #0056b3;
+}

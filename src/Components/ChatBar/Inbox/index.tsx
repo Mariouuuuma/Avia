@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 //import { SideBarContext } from '../../../Contexts/SideBarContext';
-import { AuthContext } from '../../../Contexts/AuthContext';
-import supabase from '../../../Utils/api';
-import { SideBarContext } from '../../../Contexts/SideBarContext';
+import { AuthContext } from "../../../Contexts/AuthContext";
+import supabase from "../../../Utils/api";
+import { SideBarContext } from "../../../Contexts/SideBarContext";
 
 type Color = string | "#ED3863" | "white" | "#7BC600";
-type ClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+type ClickHandler = (
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => void;
 
 interface InboxProps {
   username: string;
@@ -16,41 +18,50 @@ interface InboxProps {
   ButtonColor: Color;
 }
 
-const Inbox: React.FC<InboxProps> = ({ username, avatarUrl, MessageState, nowText, Message, ButtonColor }) => {
-  const [bgcolor, setBgColor] = useState<string>('');
+const Inbox: React.FC<InboxProps> = ({
+  username,
+  avatarUrl,
+  MessageState,
+  nowText,
+  Message,
+  ButtonColor,
+}) => {
+  const [bgcolor, setBgColor] = useState<string>("");
   const { currentuser } = useContext(AuthContext);
   const { searchTerm } = useContext(SideBarContext);
   const { inboxClicked, setInboxClicked } = useContext(SideBarContext);
- const {receiver,setReceiver, setSender } = useContext(SideBarContext);
+  const { receiver, setReceiver, setSender } = useContext(SideBarContext);
   const [err, setErr] = useState<boolean>(false);
 
   const handleInboxClick = async () => {
-    const [firstName, lastName] = searchTerm.split(' ');
-console.log(searchTerm)
+    const [firstName, lastName] = searchTerm.split(" ");
+    console.log(searchTerm);
     try {
       setInboxClicked(!inboxClicked); // Inverser l'état du clic de l'Inbox
-      console.log('Inbox clicked!');
- 
+      console.log("Inbox clicked!");
 
       // Requête pour rechercher un utilisateur par prénom et nom
       const { data: userData, error: userError } = await supabase
-        .from('Agents')
+        .from("Agents")
         .select()
-        .ilike('firstName', receiver.firstName)
-        .ilike('lastName', receiver.lastName);
+        .ilike("firstName", receiver.firstName)
+        .ilike("lastName", receiver.lastName);
 
       if (userError) {
-        console.error('Erreur lors de la recherche de l\'utilisateur :', userError.message);
+        console.error(
+          "Erreur lors de la recherche de l'utilisateur :",
+          userError.message
+        );
         setErr(true);
       } else {
         if (userData && userData.length > 0) {
           // Utilisateur trouvé, utilisez le premier résultat
           setReceiver(userData[0]);
-          console.log('Utilisateur trouvé :', userData[0]);
+          console.log("Utilisateur trouvé :", userData[0]);
         } else {
           // Aucun utilisateur trouvé
           setReceiver(null);
-          console.log('Aucun utilisateur trouvé.');
+          console.log("Aucun utilisateur trouvé.");
         }
       }
 
@@ -75,20 +86,23 @@ console.log(searchTerm)
           console.log('Aucun expéditeur trouvé.');
         }
       }
-    }*/ }
-    catch (error) {
-      console.error('Erreur lors du clic :', error);
+    }*/
+    } catch (error) {
+      console.error("Erreur lors du clic :", error);
       setErr(true);
     }
-  }
-
+  };
 
   return (
     <div
       className="navbar bg-base-100 border border-gray-300 flex justify-between items-center w-73 rounded-lg px-15 py-14 gap-16"
-      style={{ backgroundColor: bgcolor, cursor: 'pointer', transition: 'background-color 0.3s ease' }}
-      onMouseEnter={() => setBgColor('#F0F1F3')}
-      onMouseLeave={() => setBgColor('')}
+      style={{
+        backgroundColor: bgcolor,
+        cursor: "pointer",
+        transition: "background-color 0.3s ease",
+      }}
+      onMouseEnter={() => setBgColor("#F0F1F3")}
+      onMouseLeave={() => setBgColor("")}
       onClick={handleInboxClick}
     >
       <div className="flex items-center">
@@ -118,11 +132,3 @@ console.log(searchTerm)
 };
 
 export default Inbox;
-
-
-
-
-
-
-      
-    

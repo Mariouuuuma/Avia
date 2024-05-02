@@ -14,6 +14,8 @@ import supabase from "../Utils/api";
 import { AuthError, Session } from "@supabase/supabase-js";
 import Logout from "../Components/Logout";
 import MessengingClient from "../Pages/Partieclient/Pages/Messenging";
+import Reservation from "../Pages/Partieclient/Pages/passenger/Passenger";
+import Passenger from "../Pages/Partieclient/Pages/passenger/Passenger";
 
 interface ProtectedRouteProps extends RouteProps {
   children: React.ReactNode;
@@ -69,6 +71,12 @@ export default function AppRoutes() {
       </Route>
       <Route exact path="/ForgotPassword">
         <ForgotPass />
+      </Route>
+      <Route exact path="/Reservation">
+        <Reservation />
+      </Route>
+      <Route exact path="/Passenger">
+        <Passenger />
       </Route>
     </BrowserRouter>
   );

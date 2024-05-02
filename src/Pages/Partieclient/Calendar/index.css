@@ -1,0 +1,138 @@
+/* Styles.css */
+
+/* Définition des couleurs */
+:root {
+  --white: #ffffff;
+  --ltGrey: #efefef;
+  --mdGrey: #c0c0c0;
+  --dkGrey: #cccccc;
+  --secondary: #e73737;
+  --dkSecondary: #ad2424; /* Calculé manuellement en diminuant la luminosité */
+  --ltSecondary: #fce3e3; /* Calculé manuellement en augmentant la luminosité */
+}
+
+/* Styles */
+.vertical-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background: var(--ltGrey);
+}
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.calendar {
+  display: block;
+  background: var(--white);
+  width: 330px;
+  border: solid 1px var(--dkGrey);
+  margin: 10px auto;
+  box-shadow: 0 0 15px 0 var(--mdGrey);
+  font-size: 1.3rem;
+  text-align: center;
+  border-radius: 8px;
+  padding: 38px;
+  font-size: 16px;
+}
+
+.calendar header {
+  display: block;
+  cursor: default;
+  font-size: 1.4rem;
+  font-weight: bold;
+  user-select: none;
+  color: var(--secondary);
+}
+
+.calendar header .month-display {
+  align-items: center;
+  height: 40px;
+}
+
+.calendar header .month-display .month-label {
+  flex: 1;
+  text-align: left;
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.calendar header .arrow {
+  flex-basis: 6%;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar .week:first-child {
+  border-top: none;
+}
+
+.calendar .day-names {
+  color: var(--secondary);
+  font-weight: bold;
+  cursor: default;
+  font-size: 16px;
+}
+
+.calendar .day-names .day:hover {
+  background: inherit;
+}
+
+.calendar .day {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 6px;
+}
+
+.calendar .day:hover {
+  background: var(--ltGrey);
+}
+
+.calendar .day:first-child {
+  border-left: none;
+}
+
+.calendar .day.today {
+  background: var(--ltSecondary);
+  border-radius: 50%;
+  width: 35px;
+  max-width: 35px;
+  height: 35px;
+}
+
+.calendar .day.different-month {
+  color: var(--mdGrey);
+}
+
+.calendar .day.selected {
+  background: var(--secondary);
+  color: var(--white);
+  border-radius: 50%;
+  width: 35px;
+  max-width: 35px;
+  height: 35px;
+}
+.arrow {
+  flex-basis: 6%;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

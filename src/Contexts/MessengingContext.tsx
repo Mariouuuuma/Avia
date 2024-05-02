@@ -1,19 +1,25 @@
 // OtherContext.js
-import { createContext, useState,ReactNode } from "react";
+import { createContext, useState, ReactNode } from "react";
 type MessengingProviderProps = {
   children: ReactNode; // Explicitly type children as ReactNode
 };
 export const MessengingContext = createContext({
- // Placeholder function
+  // Placeholder function
   messagesent: "",
-  setMessagesent: (name: string) => {} // Placeholder function
+  setMessagesent: (name: string) => {},
+  messageInbox: false,
+  setmessageInbox: (name: boolean) => {}, // Placeholder function
 });
 
-export const MessengingProvider: React.FC<MessengingProviderProps> = ({ children }) => {
+export const MessengingProvider: React.FC<MessengingProviderProps> = ({
+  children,
+}) => {
   const [messagesent, setMessagesent] = useState("");
-
+  const [messageInbox, setmessageInbox] = useState<boolean>(false);
   return (
-    <MessengingContext.Provider value={{  messagesent, setMessagesent }}>
+    <MessengingContext.Provider
+      value={{ messagesent, setMessagesent, messageInbox, setmessageInbox }}
+    >
       {children}
     </MessengingContext.Provider>
   );

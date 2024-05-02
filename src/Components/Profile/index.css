@@ -1,0 +1,7 @@
+.profile-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-270%, -60%);
+  z-index: 9999; /* Valeur de z-index élevée */
+}

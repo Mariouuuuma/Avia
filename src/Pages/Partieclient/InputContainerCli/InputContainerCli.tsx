@@ -6,22 +6,22 @@ import React, {
   useEffect,
 } from "react";
 import "./index.css";
-import bold from "../../../src/Assets/Images/bold.png";
-import italic from "../../Assets/Images/italic.png";
-import underline from "../../Assets/Images/underline.png";
-import Vector from "../../Assets/Images/Vector.png";
-import clip from "../../Assets/Images/paperclip.png";
-import imagev from "../../Assets/Images/image-v.png";
-import link from "../../Assets/Images/link.png";
-import u_grin from "../../Assets/Images/u_grin.png";
-import send from "../../Assets/Images/send.png";
+import bold from "../../../../src/Assets/Images/bold.png";
+import italic from "../../../Assets/Images/italic.png";
+import underline from "../../../Assets/Images/underline.png";
+import Vector from "../../../Assets/Images/Vector.png";
+import clip from "../../../Assets/Images/paperclip.png";
+import imagev from "../../../Assets/Images/image-v.png";
+import link from "../../../Assets/Images/link.png";
+import u_grin from "../../../Assets/Images/u_grin.png";
+import send from "../../../Assets/Images/send.png";
 import {
   MessengingContext,
   MessengingProvider,
-} from "../../Contexts/MessengingContext";
-import { AuthContext } from "../../Contexts/AuthContext";
-import supabase from "../../Utils/api";
-import { SideBarContext } from "../../Contexts/SideBarContext";
+} from "../../../Contexts/MessengingContext";
+import { AuthContext } from "../../../Contexts/AuthContext";
+import supabase from "../../../Utils/api";
+import { SideBarContext } from "../../../Contexts/SideBarContext";
 import { UUID } from "crypto";
 import { User } from "@supabase/supabase-js";
 
@@ -50,8 +50,8 @@ export default function InputContainer() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setmessageInbox(!messageInbox);
     e.preventDefault();
-
-    const {
+  };
+  /* const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!messagesent.trim()) {
@@ -80,7 +80,7 @@ export default function InputContainer() {
       console.error("Erreur lors de l'ajout du message :", error);
       // Gérer les erreurs générales liées à l'ajout du message
     }
-  };
+  };*/
 
   return (
     <div
@@ -97,6 +97,7 @@ export default function InputContainer() {
             style={{
               width: "100%",
               padding: "10px",
+              borderColor: "transparent",
               boxSizing: "border-box",
               border: "none",
             }}
@@ -105,6 +106,7 @@ export default function InputContainer() {
             style={{
               position: "absolute",
               top: "50%",
+
               transform: "translateY(-50%)",
               right: "10px",
               display: "flex",

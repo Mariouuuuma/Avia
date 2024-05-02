@@ -7,12 +7,15 @@ import RightChatBubble from "../RightChatBubble/RightChatBubble";
 import { MessengingContext } from "../../Contexts/MessengingContext";
 import { SideBarContext } from "../../Contexts/SideBarContext"; // Assuming SenderType is defined in SideBarContext
 import supabase from "../../Utils/api";
+import { User } from "@supabase/supabase-js";
 import image from "../../Assets/Images/logoAvia.png";
 import { createClient } from "@supabase/supabase-js";
+import { UUID } from "crypto";
 interface ChatMessage {
   message: string;
   receiverFN: string;
   receiverLN: string;
+  id: UUID;
 }
 
 interface ChatRoomProps {
@@ -23,21 +26,31 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const { messagesent } = useContext(MessengingContext);
   const { sender, receiver, inboxClicked } = useContext(SideBarContext);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const fetchData = async () => {
-    const { data, error } = await supabase
-      .from("AgentChats")
-      .select("message, OwnerFirstName, OwnerLastName");
-
-    if (data) {
-      const formattedMessages: ChatMessage[] = data.map((msg: any) => ({
-        message: msg.message,
-        receiverFN: msg.OwnerFirstName,
-        receiverLN: msg.OwnerLastName,
-      }));
-      setChatMessages(formattedMessages);
-    }
-  };
+  const [User, setUser] = useState<User | null>();
   useEffect(() => {
+    const fetchData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      console.log(user);
+      setUser(user);
+      const { data, error } = await supabase
+        .from("AgentChats")
+        .select("message, OwnerFirstName, OwnerLastName,SenderUID");
+
+      if (data) {
+        const formattedMessages: ChatMessage[] = data.map((msg: any) => ({
+          message: msg.message,
+          receiverFN: msg.OwnerFirstName,
+          receiverLN: msg.OwnerLastName,
+          id: msg.SenderUID,
+        }));
+        setChatMessages(formattedMessages);
+      }
+    };
+
+    fetchData();
+
     const realtimeSubscription = supabase
       .channel("AgentChats")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload) => {
@@ -48,8 +61,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
     return () => {
       realtimeSubscription.unsubscribe();
     };
-  }, []);
-  fetchData();
+  }, [chatMessages]);
 
   return (
     <div>
@@ -63,7 +75,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           }}
         >
           {chatMessages.map((message, index) => {
-            if (message.receiverFN === receiver.firstName) {
+            if (message.receiverFN === receiver?.firstName) {
               return (
                 <LeftMessage
                   key={index}
@@ -71,7 +83,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                   ImageUrl="https://example.com/avatar.jpg"
                 />
               );
-            } else if (message.receiverFN === sender.firstName) {
+            } else if (message.id === User?.id) {
               return (
                 <RightChatBubble
                   key={index}

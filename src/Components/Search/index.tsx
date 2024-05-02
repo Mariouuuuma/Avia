@@ -1,14 +1,14 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
-import './index.css'; // Fichier de style CSS pour le composant (facultatif)
-import supabase from '../../Utils/api';
-import Inbox from '../ChatBar/Inbox';
-import { SideBarContext } from '../../Contexts/SideBarContext';
+import React, { useState, useRef, useContext, useEffect } from "react";
+import "./index.css"; // Fichier de style CSS pour le composant (facultatif)
+import supabase from "../../Utils/api";
+import Inbox from "../ChatBar/Inbox";
+import { SideBarContext } from "../../Contexts/SideBarContext";
 
 const SearchBar: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const {receiver, setReceiver} = useContext(SideBarContext); // Utilisateur trouvé après la recherche
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const { receiver, setReceiver } = useContext(SideBarContext); // Utilisateur trouvé après la recherche
   const [err, setErr] = useState<boolean>(false);
-  const {inboxClicked, setInboxClicked} = useContext(SideBarContext);
+  const { inboxClicked, setInboxClicked } = useContext(SideBarContext);
 
   const inputRef = useRef<HTMLInputElement>(null); // Référence à l'élément <input>
 
@@ -16,7 +16,9 @@ const SearchBar: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     if (!searchTerm.trim()) {
@@ -24,40 +26,35 @@ const SearchBar: React.FC = () => {
       return;
     }
 
-    const [firstName, lastName] = searchTerm.split(' ');
+    const [firstName, lastName] = searchTerm.split(" ");
     setErr(false);
 
     try {
       const { data, error } = await supabase
-        .from('Agents')
+        .from("Agents")
         .select()
-        .ilike('firstName', firstName).ilike('lastName',lastName);
+        .ilike("firstName", firstName)
+        .ilike("lastName", lastName);
 
       if (data && data.length > 0) {
-        // Utilisateur trouvé, utilisez le premier résultat
         setReceiver(data[0]);
-     
-        
       } else {
-        // Aucun utilisateur trouvé
         setReceiver(null);
       }
     } catch (error) {
-      console.error('Erreur lors de la recherche :', (error as Error).message);
+      console.error("Erreur lors de la recherche :", (error as Error).message);
       setErr(true);
     }
-
   };
   useEffect(() => {
-    console.log('user:', receiver);
-   
+    console.log("receiver:", receiver);
   }, [receiver]);
 
   const handleInboxClick = () => {
     setInboxClicked(!inboxClicked); // Inverser l'état du clic de l'Inbox
     // Autres actions à exécuter lors du clic de l'Inbox
-    console.log('Inbox clicked!');
-  }
+    console.log("Inbox clicked!");
+  };
   return (
     <div className="search-bar-container">
       <form onSubmit={handleSearchSubmit}>
@@ -80,8 +77,6 @@ const SearchBar: React.FC = () => {
           nowText="now"
           Message="none"
           ButtonColor="#ED3863"
-         
-          
         />
       )}
     </div>
@@ -89,6 +84,3 @@ const SearchBar: React.FC = () => {
 };
 
 export default SearchBar;
-
-
- 

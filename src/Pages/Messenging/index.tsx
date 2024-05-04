@@ -66,7 +66,6 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
       <div className="SideBar" style={{ width: "4%" }}>
         <SideBar />
       </div>
-      (
       <div
         className="BoxContainer"
         style={{
@@ -170,7 +169,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
           </div>
         </span>
       </div>
-      )
+
       <div
         style={{
           height: "100%",
@@ -188,7 +187,9 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
           overflowY: "scroll",
         }}
       >
-        {clickedName && <RightSideBar />}
+        {clickedName && (
+          <RightSideBar UrlAvatar="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        )}
       </div>
     </div>
   );

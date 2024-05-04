@@ -3,8 +3,8 @@ import threedots from "../../Assets/Images/threedots.png";
 import { SideBarContext } from "../../Contexts/SideBarContext";
 import { AuthContext } from "../../Contexts/AuthContext";
 interface NavbarProps {
-  status: string;
-  Image: string;
+  status?: string;
+  Image?: string;
 }
 const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
   const { sender, receiver, clickedName, setClickedname } =

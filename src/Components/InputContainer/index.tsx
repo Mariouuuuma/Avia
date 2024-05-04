@@ -29,7 +29,7 @@ interface ChatMessage {
   message: string;
   receiverFN: string;
   receiverLN: string;
-  id: UUID; // Assuming SenderType is an enum or string type for sender identification
+  id: UUID;
 }
 
 export default function InputContainer() {
@@ -56,7 +56,7 @@ export default function InputContainer() {
     } = await supabase.auth.getUser();
     if (!messagesent.trim()) {
       console.error("Le message est vide ou ne contient que des espaces.");
-      return; // Arrêtez l'exécution si le message est vide ou ne contient que des espaces
+      return;
     }
     try {
       const { data: insertData, error: insertError } = await supabase
@@ -71,14 +71,12 @@ export default function InputContainer() {
       if (insertError) {
         setError(`Erreur lors de l'ajout du message : ${insertError.message}`);
       } else {
-        // Réinitialiser le champ de message après l'insertion réussie
-        setMessagesent(""); // Effacer le contenu de l'input
-        setError(""); // Effacer les erreurs précédentes
+        setMessagesent("");
+        setError("");
         console.log("Message ajouté avec succès :");
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout du message :", error);
-      // Gérer les erreurs générales liées à l'ajout du message
     }
   };
 

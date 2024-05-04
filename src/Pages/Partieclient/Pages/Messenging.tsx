@@ -10,7 +10,7 @@ import ChatRoom from "../../../Components/ChatRoom/ChatRoom";
 import image from "../../../Assets/Images/logoAvia.png";
 import ChatRoomCli from "../ChatRoom/ChatRoomCli";
 import SideBarCli from "../SideBarCli/SideBarCli";
-import "./index.css";
+import "../Pages/index.css";
 export default function MessengingClient() {
   const { clickedName } = useContext(SideBarContext);
   const { clicked, sender } = useContext(SideBarContext);

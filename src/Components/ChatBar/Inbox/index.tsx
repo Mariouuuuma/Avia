@@ -16,6 +16,7 @@ interface InboxProps {
   nowText: string;
   Message: string;
   ButtonColor: Color;
+  onClick?: () => void;
 }
 
 const Inbox: React.FC<InboxProps> = ({
@@ -25,6 +26,7 @@ const Inbox: React.FC<InboxProps> = ({
   nowText,
   Message,
   ButtonColor,
+  onClick,
 }) => {
   const [bgcolor, setBgColor] = useState<string>("");
   const { currentuser } = useContext(AuthContext);
@@ -37,13 +39,12 @@ const Inbox: React.FC<InboxProps> = ({
     const [firstName, lastName] = searchTerm.split(" ");
     console.log(searchTerm);
     try {
-      setInboxClicked(!inboxClicked); // Inverser l'état du clic de l'Inbox
+      setInboxClicked(!inboxClicked);
       console.log("Inbox clicked!");
 
-      // Requête pour rechercher un utilisateur par prénom et nom
       const { data: userData, error: userError } = await supabase
         .from("Agents")
-        .select()
+        .select("firstName,lastName")
         .ilike("firstName", receiver.firstName)
         .ilike("lastName", receiver.lastName);
 
@@ -64,29 +65,6 @@ const Inbox: React.FC<InboxProps> = ({
           console.log("Aucun utilisateur trouvé.");
         }
       }
-
-      // Requête pour rechercher l'expéditeur par e-mail actuel de l'utilisateur connecté
-      /*const { data: senderData, error: senderError } = await supabase
-        .from('Agents')
-        .select('firstName, lastName')
-        .eq('Email', currentuser?.email);
-
-      if (senderError) {
-        // Gérer spécifiquement les erreurs de type PostgrestError
-        console.error('Erreur lors de la recherche de l\'expéditeur :', senderError);
-        setErr(true);
-      } else {
-        if (senderData && senderData.length > 0) {
-          // Expéditeur trouvé, utilisez le premier résultat
-          setSender(senderData[0]);
-          console.log('Sender:', senderData[0]);
-        } else {
-          // Aucun expéditeur trouvé
-       
-          console.log('Aucun expéditeur trouvé.');
-        }
-      }
-    }*/
     } catch (error) {
       console.error("Erreur lors du clic :", error);
       setErr(true);
@@ -103,7 +81,7 @@ const Inbox: React.FC<InboxProps> = ({
       }}
       onMouseEnter={() => setBgColor("#F0F1F3")}
       onMouseLeave={() => setBgColor("")}
-      onClick={handleInboxClick}
+      onClick={onClick}
     >
       <div className="flex items-center">
         <a className="btn btn-ghost">

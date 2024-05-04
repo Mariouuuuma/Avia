@@ -16,6 +16,7 @@ import Logout from "../Components/Logout";
 import MessengingClient from "../Pages/Partieclient/Pages/Messenging";
 import Reservation from "../Pages/Partieclient/Pages/passenger/Passenger";
 import Passenger from "../Pages/Partieclient/Pages/passenger/Passenger";
+import Settings from "../Components/Settings/Settings";
 
 interface ProtectedRouteProps extends RouteProps {
   children: React.ReactNode;
@@ -77,6 +78,9 @@ export default function AppRoutes() {
       </Route>
       <Route exact path="/Passenger">
         <Passenger />
+      </Route>
+      <Route exact path="/Settings">
+        <Settings />
       </Route>
     </BrowserRouter>
   );

@@ -1,4 +1,10 @@
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import NavBar from "../NavBar/NavBar";
 import Button from "../Button";
 import InputContainer from "../InputContainer";
@@ -11,13 +17,15 @@ import { User } from "@supabase/supabase-js";
 import image from "../../Assets/Images/logoAvia.png";
 import { createClient } from "@supabase/supabase-js";
 import { UUID } from "crypto";
+import { useLayoutEffect } from "react";
+
 interface ChatMessage {
   message: string;
   receiverFN: string;
   receiverLN: string;
   id: UUID;
+  Name: string;
 }
-
 interface ChatRoomProps {
   children?: ReactNode;
   imageReceiver?: string;
@@ -27,6 +35,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const { sender, receiver, inboxClicked } = useContext(SideBarContext);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [User, setUser] = useState<User | null>();
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const {
@@ -34,9 +44,18 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
       } = await supabase.auth.getUser();
       console.log(user);
       setUser(user);
+    };
+
+    fetchData();
+
+    return () => {}; // No cleanup needed for this effect
+  }, []);
+
+  useEffect(() => {
+    const fetchChatMessages = async () => {
       const { data, error } = await supabase
         .from("AgentChats")
-        .select("message, OwnerFirstName, OwnerLastName,SenderUID");
+        .select("message, OwnerFirstName, OwnerLastName,SenderUID,name");
 
       if (data) {
         const formattedMessages: ChatMessage[] = data.map((msg: any) => ({
@@ -44,12 +63,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           receiverFN: msg.OwnerFirstName,
           receiverLN: msg.OwnerLastName,
           id: msg.SenderUID,
+          Name: msg.name,
         }));
         setChatMessages(formattedMessages);
+        console.log();
       }
     };
 
-    fetchData();
+    fetchChatMessages();
 
     const realtimeSubscription = supabase
       .channel("AgentChats")
@@ -65,7 +86,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
 
   return (
     <div>
-      <NavBar status="Etudiant" Image={image} />
+      <NavBar
+        status="Etudiant"
+        Image="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg "
+      />
       {inboxClicked && (
         <div
           style={{
@@ -83,7 +107,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                   ImageUrl="https://example.com/avatar.jpg"
                 />
               );
-            } else if (message.id === User?.id) {
+            } else if (
+              message.id === User?.id &&
+              message.Name === `${receiver.firstName} ${receiver.lastName}`
+            ) {
               return (
                 <RightChatBubble
                   key={index}

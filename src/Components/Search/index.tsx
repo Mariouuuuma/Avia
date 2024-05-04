@@ -51,8 +51,8 @@ const SearchBar: React.FC = () => {
   }, [receiver]);
 
   const handleInboxClick = () => {
-    setInboxClicked(!inboxClicked); // Inverser l'état du clic de l'Inbox
-    // Autres actions à exécuter lors du clic de l'Inbox
+    setInboxClicked(!inboxClicked);
+
     console.log("Inbox clicked!");
   };
   return (
@@ -63,12 +63,11 @@ const SearchBar: React.FC = () => {
           placeholder="Rechercher un nom..."
           value={searchTerm}
           onChange={handleSearchChange}
-          ref={inputRef} // Associer la référence à l'élément <input>
+          ref={inputRef}
         />
         <button type="submit">Rechercher</button>
       </form>
 
-      {/* Affiche le composant Inbox si un utilisateur est trouvé */}
       {receiver && (
         <Inbox
           username={`${receiver.firstName} ${receiver.lastName}`}

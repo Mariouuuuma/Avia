@@ -57,7 +57,6 @@ const WelcomeOperator: React.FC = () => {
     } else {
       localStorage.setItem("supabase_session", JSON.stringify(senderData));
       if (senderData && senderData.length > 0) {
-        // Expéditeur trouvé, utilisez le premier résultat
         setSender(senderData[0]);
         console.log("Sender:", senderData[0]);
       } else {

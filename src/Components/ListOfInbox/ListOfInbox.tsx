@@ -3,99 +3,87 @@ import Inbox from "../../Components/ChatBar/Inbox/index";
 import { SideBarContext } from "../../Contexts/SideBarContext";
 import { SupabaseClient, PostgrestResponse } from "@supabase/supabase-js";
 import supabase from "../../Utils/api";
+import { createClient } from "@supabase/supabase-js";
 
-interface ChatMessage {
-  message: string;
-  name: string;
+import { User } from "@supabase/supabase-js";
+import { UUID } from "crypto";
+let listofmessages: AgentChats[] | null = null;
+
+interface AgentChats {
   id: number;
+  name: string;
+  message: string;
+  ownerfirstname: string;
+  ownerlastname: string;
+  senderuid: UUID;
+  updatedat: string;
 }
 
 export default function ListOfInbox() {
-  const { inboxClicked, setInboxClicked } = useContext(SideBarContext);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const handleInboxClick = () => {
-    setInboxClicked(!inboxClicked);
-
-    console.log("Inbox clicked!");
-  };
+  const { inboxClicked, setInboxClicked, setReceiver } =
+    useContext(SideBarContext);
+  const [listofmessages, setListOfMessages] = useState<AgentChats[] | null>(
+    null
+  );
 
   useEffect(() => {
-    fetchLatestChatMessages(supabase)
-      .then((data) => setMessages(data))
-      .catch((error) => console.error(error));
-  }, []);
+    const fetchChatMessages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("AgentChats")
+          .select("*")
+          .order("name")
+          .order("UpdatedAt", { ascending: false });
 
-  async function fetchLatestChatMessages(
-    supabase: SupabaseClient
-  ): Promise<ChatMessage[]> {
-    const query: string = `
-      SELECT message, name AS name, id AS id, message AS message
-      FROM AgentChats
-      ORDER BY id DESC;
-    `;
-
-    const { data, error }: PostgrestResponse<any> = await supabase
-      .from("AgentChats")
-      .select(query);
-
-    if (error) {
-      console.error(
-        "Erreur lors de la récupération des messages de chat:",
-        error.message
-      );
-      return [];
-    }
-
-    return data.map((msg) => ({
-      message: msg.message,
-      name: msg.name,
-      id: msg.id,
-    }));
-  }
-
-  useEffect(() => {
-    const channel = supabase.channel("room1");
-
-    channel
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "AgentChats" },
-        (payload) => {
-          console.log("Change received!", payload);
-          const newMessage = payload.new as ChatMessage;
-
-          if (newMessage) {
-            setMessages((prevMessages) => [
-              {
-                message: newMessage.message,
-                name: newMessage.name,
-                id: newMessage.id,
-              },
-              ...prevMessages,
-            ]);
-          }
+        if (error) {
+          console.error("Error fetching chat messages:", error);
+          return;
         }
-      )
-      .subscribe();
 
-    return () => {
-      channel.unsubscribe();
+        // Créer un objet pour stocker les derniers messages par nom
+        const lastMessagesByNames: { [name: string]: AgentChats } = {};
+
+        // Parcourir les données et stocker les derniers messages par nom
+        data.forEach((message) => {
+          if (!lastMessagesByNames[message.name]) {
+            lastMessagesByNames[message.name] = message;
+          }
+        });
+
+        // Convertir l'objet en tableau
+        const lastMessages = Object.values(lastMessagesByNames);
+
+        // Mettre à jour l'état avec les derniers messages
+        setListOfMessages(lastMessages);
+      } catch (error) {
+        console.error("Error fetching chat messages:", error);
+      }
     };
+
+    fetchChatMessages();
   }, []);
 
   return (
     <div>
-      {messages.map((message) => (
-        <Inbox
-          key={message.id}
-          username={message.name}
-          Message={message.message}
-          avatarUrl="bhvtcicg"
-          MessageState="not read"
-          nowText="now"
-          ButtonColor="red"
-        />
-      ))}
+      {listofmessages &&
+        listofmessages.map((message) => (
+          <Inbox
+            key={message?.id}
+            username={message?.name}
+            Message={message?.message}
+            avatarUrl={`avatar_${message?.senderuid}`}
+            MessageState="not read"
+            nowText="now"
+            ButtonColor="red"
+            onClick={() => {
+              setInboxClicked(!inboxClicked);
+              // Assurez-vous que message.name est défini et non vide avant de diviser
+              const [firstName, lastName] = message.name.split(" ");
+              // Définissez Receiver avec les valeurs de firstName et lastName
+              setReceiver({ firstName: firstName, lastName: lastName });
+            }}
+          />
+        ))}
     </div>
   );
 }

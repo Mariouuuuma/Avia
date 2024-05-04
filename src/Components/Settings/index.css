@@ -1,0 +1,7 @@
+.SettingsContainer {
+  display: flex;
+}
+
+.RightSideBar {
+  margin-top: -50px;
+}

@@ -15,7 +15,6 @@ type Person = {
   lastName: string;
 };
 
-// Define an empty Person object
 const emptyPerson: Person = {
   firstName: "",
   lastName: "",
@@ -28,7 +27,7 @@ type SideContextType = {
   setReceiver: (value: any) => void;
   inboxClicked: boolean;
   setInboxClicked: (value: boolean) => void;
-  sender: Person; // sender is always of type Person
+  sender: Person;
   setSender: Dispatch<SetStateAction<Person>>;
   searchTerm: string;
   setSearchTerm: (value: string) => void;

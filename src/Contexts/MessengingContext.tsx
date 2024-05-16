@@ -1,14 +1,54 @@
-// OtherContext.js
+import { User } from "@supabase/supabase-js";
 import { createContext, useState, ReactNode } from "react";
+
 type MessengingProviderProps = {
-  children: ReactNode; // Explicitly type children as ReactNode
+  children: ReactNode;
 };
-export const MessengingContext = createContext({
-  // Placeholder function
+
+type MessengingContextType = {
+  messagesent: string;
+  setMessagesent: (name: string) => void;
+  messageInbox: boolean;
+  setmessageInbox: (name: boolean) => void;
+  guestId: number | null; // Adjusted type here
+  setguestId: (value: number | null) => void;
+  convName: string | null; // Adjusted type here
+  setConvName: (value: string | null) => void;
+  msgGuest: boolean;
+  setmessageGuest: (name: boolean) => void;
+  user: User | null;
+  setUser: (name: User | null) => void;
+  redbox: boolean;
+  setRedbox: (name: boolean) => void;
+  SetConvId: (name: string) => void;
+  ConvId: string;
+  messageReclm: string;
+  setMessageReclm: (name: string) => void;
+  clickedButtons: Boolean;
+  setClickedButtons: (name: boolean) => void;
+};
+
+export const MessengingContext = createContext<MessengingContextType>({
   messagesent: "",
   setMessagesent: (name: string) => {},
   messageInbox: false,
-  setmessageInbox: (name: boolean) => {}, // Placeholder function
+  setmessageInbox: (name: boolean) => {},
+  guestId: null,
+  setguestId: (value: number | null) => {},
+  convName: null,
+  setConvName: (value: string | null) => {},
+  msgGuest: false,
+  setmessageGuest: (name: boolean) => {},
+  user: null,
+  setUser: (name: User | null) => {},
+  redbox: false,
+  setRedbox: (name: boolean) => {},
+  SetConvId: (name: string) => {},
+  ConvId: "",
+  messageReclm: "",
+  setMessageReclm: (name: string) => {},
+  clickedButtons: false,
+  setClickedButtons: (name: boolean) => {},
 });
 
 export const MessengingProvider: React.FC<MessengingProviderProps> = ({
@@ -16,9 +56,39 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
 }) => {
   const [messagesent, setMessagesent] = useState("");
   const [messageInbox, setmessageInbox] = useState<boolean>(false);
+  const [guestId, setguestId] = useState<number | null>(null);
+  const [convName, setConvName] = useState<string | null>(null); // Adjusted type here
+  const [msgGuest, setmessageGuest] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [redbox, setRedbox] = useState<boolean>(false);
+  const [ConvId, SetConvId] = useState<string>(""); // Adjusted type here
+  const [messageReclm, setMessageReclm] = useState<string>("");
+  const [clickedButtons, setClickedButtons] = useState<boolean>(false);
+
   return (
     <MessengingContext.Provider
-      value={{ messagesent, setMessagesent, messageInbox, setmessageInbox }}
+      value={{
+        messagesent,
+        setMessagesent,
+        messageInbox,
+        setmessageInbox,
+        guestId,
+        setguestId,
+        convName,
+        setConvName,
+        msgGuest,
+        setmessageGuest,
+        user,
+        setUser,
+        redbox,
+        setRedbox,
+        SetConvId,
+        ConvId,
+        messageReclm,
+        setMessageReclm,
+        clickedButtons,
+        setClickedButtons,
+      }}
     >
       {children}
     </MessengingContext.Provider>

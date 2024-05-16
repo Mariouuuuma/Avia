@@ -1,0 +1,63 @@
+.Payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  background-image: url("https://cdn-forum.inibuilds.com/monthly_2022_05/1969414645_Capturadepantalla(3485).png.b711db33dce055ea46cc5f56359a4258.png");
+}
+
+.titlePay {
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.form-containerPay {
+  width: 70rem;
+  height: 42rem;
+  padding: 2.2rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  background-color: #f9f9f9;
+}
+
+.form-groupPay {
+  margin-bottom: 20px;
+}
+
+.labelPay {
+  display: block;
+  font-weight: bold;
+}
+
+.inputPay {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+}
+
+.buttonPay {
+  width: 35%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.4rem;
+  background-color: #e73838;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonPay:hover {
+  background-color: #0056b3;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start; /* Align items to the start (top) of the container */
+}

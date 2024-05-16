@@ -37,6 +37,10 @@ type SideContextType = {
   setLogoutC: (value: boolean) => void;
   logoInbox: boolean;
   setLogoinbox: (value: boolean) => void;
+  showForm: boolean;
+  setShowForm: (value: boolean) => void;
+  showProfile: boolean;
+  setShowProfile: (value: boolean) => void;
 };
 
 export const SideBarContext = createContext<SideContextType>({
@@ -56,6 +60,10 @@ export const SideBarContext = createContext<SideContextType>({
   setLogoutC: (value: boolean) => {},
   logoInbox: false,
   setLogoinbox: (value: boolean) => {},
+  showForm: false,
+  setShowForm: (value: boolean) => {},
+  showProfile: false,
+  setShowProfile: (value: boolean) => {},
 });
 
 export const SideBarProvider: React.FC<SideBarProviderProps> = ({
@@ -69,6 +77,9 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({
   const [clickedName, setClickedname] = useState<boolean>(false);
   const [LogoutC, setLogoutC] = useState<boolean>(false);
   const [logoInbox, setLogoinbox] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showProfile, setShowProfile] = useState<boolean>(false);
+
   const updateClicked = (value: boolean) => {
     setClicked(value);
   };
@@ -92,6 +103,10 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({
         setLogoutC,
         logoInbox,
         setLogoinbox,
+        showForm,
+        setShowForm,
+        showProfile,
+        setShowProfile,
       }}
     >
       {children}

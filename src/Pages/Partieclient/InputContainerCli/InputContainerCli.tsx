@@ -15,6 +15,9 @@ import imagev from "../../../Assets/Images/image-v.png";
 import link from "../../../Assets/Images/link.png";
 import u_grin from "../../../Assets/Images/u_grin.png";
 import send from "../../../Assets/Images/send.png";
+
+import { v4 as uuidv4 } from "uuid";
+
 import {
   MessengingContext,
   MessengingProvider,
@@ -24,75 +27,139 @@ import supabase from "../../../Utils/api";
 import { SideBarContext } from "../../../Contexts/SideBarContext";
 import { UUID } from "crypto";
 import { User } from "@supabase/supabase-js";
+declare module "uuid";
 
 interface ChatMessage {
   message: string;
   receiverFN: string;
   receiverLN: string;
-  id: UUID; // Assuming SenderType is an enum or string type for sender identification
+  id: UUID;
 }
-
-export default function InputContainer() {
-  const { setMessagesent } = useContext(MessengingContext);
-  const { receiver, sender } = useContext(SideBarContext);
-  const { messagesent, setmessageInbox, messageInbox } =
+function generateRandomId() {
+  return Math.floor(Math.random() * 100000000);
+}
+export default function InputContainerCli() {
+  useContext(MessengingContext);
+  const { setguestId, msgGuest, setmessageGuest } =
     useContext(MessengingContext);
-  const { currentuser } = useContext(AuthContext);
   const [error, setError] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [newmessage, setNewmessage] = useState<string>("");
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [newredmessage, setNewredmessage] = useState<boolean>(false);
+  const { convName, setConvName, redbox, setRedbox } =
+    useContext(MessengingContext);
+  const { clickedButtons, setClickedButtons, messageReclm, setMessageReclm } =
+    useContext(MessengingContext);
+  const generateConversationId = async () => {
+    const storedConversationId = localStorage.getItem("conversationId");
+    if (storedConversationId) {
+      return parseInt(storedConversationId);
+    } else {
+      const newConversationId = generateRandomId();
+      localStorage.setItem("conversationId", newConversationId.toString());
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMessagesent(e.target.value);
+      return newConversationId;
+    }
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setmessageInbox(!messageInbox);
+  setguestId(conversationId);
+
+  const handleMessageChangeCli = (e: ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
+    const conversationIdString = `${conversationId}`;
     e.preventDefault();
-  };
-  /* const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!messagesent.trim()) {
-      console.error("Le message est vide ou ne contient que des espaces.");
-      return; // Arrêtez l'exécution si le message est vide ou ne contient que des espaces
-    }
-    try {
-      const { data: insertData, error: insertError } = await supabase
-        .from("AgentChats")
-        .insert({
-          name: `${receiver?.firstName} ${receiver?.lastName}`,
+    setNewredmessage(true);
+    localStorage.setItem("redbox", newredmessage.toString());
+    const InsertMessage = async () => {
+      console.log(message);
+      const { error } = await supabase.from("Messages").insert({
+        ConversationName: `conversation ${conversationId}`,
+        Sender_id: conversationId,
+        body: clickedButtons ? messageReclm : message,
+      });
 
-          message: messagesent.trim(),
-          SenderUID: user?.id,
-        });
-
-      if (insertError) {
-        setError(`Erreur lors de l'ajout du message : ${insertError.message}`);
+      if (error) {
+        console.error("Erreur lors de l'insertion du message:", error.message);
+        console.log(conversationIdString);
       } else {
-        // Réinitialiser le champ de message après l'insertion réussie
-        setMessagesent(""); // Effacer le contenu de l'input
-        setError(""); // Effacer les erreurs précédentes
-        console.log("Message ajouté avec succès :");
+        console.log("Message inséré avec succès!");
       }
-    } catch (error) {
-      console.error("Erreur lors de l'ajout du message :", error);
-      // Gérer les erreurs générales liées à l'ajout du message
+    };
+    InsertMessage();
+    setMessage("");
+  };
+  useEffect(() => {
+    const fetchConversationId = async () => {
+      const conversationId = await generateConversationId();
+      setConversationId(conversationId);
+    };
+
+    fetchConversationId();
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      localStorage.removeItem("conversationId");
+    }, 90000);
+    return () => clearTimeout(timeoutId);
+  }, [conversationId]);
+
+  useEffect(() => {
+    if (conversationId) {
+      InsertConversation(); // Insérer la conversation une seule fois
     }
-  };*/
+  }, [conversationId]);
+
+  const InsertConversation = async () => {
+    const { data, error } = await supabase
+      .from("Conversations")
+      .select("id")
+      .eq("GuestIdentifier", conversationId)
+      .single();
+
+    if (data) {
+      console.log(
+        "Conversation existante ou erreur lors de la recherche:",
+        error
+      );
+      return;
+    }
+
+    const { error: insertError } = await supabase.from("Conversations").insert({
+      name: `conversation ${conversationId}`,
+      GuestIdentifier: conversationId,
+    });
+
+    if (insertError) {
+      console.error(
+        "Erreur lors de l'insertion de la conversation:",
+        insertError.message
+      );
+    } else {
+      console.log("Conversation insérée avec succès!");
+    }
+  };
+
+  setConvName(`conversation ${conversationId}`);
+
+  const value = localStorage.getItem("redbox");
 
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <div style={{ position: "relative", width: "100%", marginTop: "1rem" }}>
-        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+        <form onSubmit={handleSubmitForm} style={{ width: "100%" }}>
           <input
             type="text"
             placeholder="Send a message.."
-            value={messagesent}
-            onChange={handleInputChange}
+            value={message}
+            onChange={handleMessageChangeCli}
             required
             style={{
               width: "100%",
@@ -113,10 +180,10 @@ export default function InputContainer() {
               gap: "10px",
             }}
           >
-            <button>
+            <button className="buttonCli">
               <img src={u_grin} className="Grin" alt="Grin" />
             </button>
-            <button type="submit">
+            <button className="buttonCli" type="submit">
               <img src={send} className="Envoyer" alt="Send" />
             </button>
           </div>
@@ -130,25 +197,25 @@ export default function InputContainer() {
           width: "100%",
         }}
       >
-        <button>
+        <button className="buttonCli">
           <img src={bold} className="bold" alt="Bold" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={italic} className="italic" alt="Italic" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={underline} className="underline" alt="Underline" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={Vector} className="Vector" alt="Vector" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={clip} className="clip" alt="Clip" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={imagev} className="imagev" alt="Image" />
         </button>
-        <button>
+        <button className="buttonCli">
           <img src={link} className="link" alt="Link" />
         </button>
       </div>

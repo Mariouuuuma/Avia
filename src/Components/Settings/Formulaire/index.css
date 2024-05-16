@@ -1,0 +1,12 @@
+.form-container {
+  border: 1px solid #ccc; /* Ajoute une bordure grise */
+  background-color: #fff; /* Change la couleur de fond en blanc */
+}
+
+/* Change la couleur de l'espace vide des éléments du formulaire en gris vair */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  background-color: #f3f4f6; /* Gris vair */
+}

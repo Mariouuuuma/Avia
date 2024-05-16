@@ -1,0 +1,60 @@
+.flight-booking2-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  background-image: url("https://cdn-forum.inibuilds.com/monthly_2022_05/1969414645_Capturadepantalla(3485).png.b711db33dce055ea46cc5f56359a4258.png");
+}
+
+.title2 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.form-container2 {
+  width: 39rem;
+  height: 41rem;
+  padding: 2.2rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  background-color: #f9f9f9;
+}
+
+.form-group2 {
+  margin-bottom: 20px;
+  border-radius: 0.5rem;
+}
+
+.label2 {
+  display: block;
+  font-weight: bold;
+}
+
+.inputFlightBooking2 {
+  width: 80%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+}
+
+.buttonNext2 {
+  width: 35%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.4rem;
+  background-color: #e73838;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover,
+button:focus {
+  background-color: #0056b3;
+}

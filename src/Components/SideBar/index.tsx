@@ -15,6 +15,8 @@ import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Button from "../Button";
 import Profile from "../../Components/Profile/Profile";
+import Settings from "../Settings/Settings";
+
 interface MessangingsidebarProps {
   backgroundColor?: string; // Define the type of backgroundColor prop
 }
@@ -27,6 +29,9 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
   const { loggedOut } = useContext(AuthContext);
   const [ProfileClicked, setProfileClicked] = useState<boolean>(false);
   const [logoInbox, setLogoinbox] = useState<boolean>(false);
+  const [settings, settingsClicked] = useState<boolean>(false);
+  const [chat, chatClicked] = useState<boolean>(false);
+  const { showProfile, setShowProfile } = useContext(SideBarContext);
 
   const handleClick = () => {
     const newClickedValue = !myBooleanVariable;
@@ -35,7 +40,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
     console.log(clicked);
   };
   function hundleClickProfile() {
-    setProfileClicked(!ProfileClicked);
+    setShowProfile(true);
   }
   function handleClickInbox() {
     setLogoinbox(!logoInbox);
@@ -46,9 +51,10 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
       <div className="upperSide">
         <img src={logo} className="logo"></img>
         <div className="Inbox">
-          <button onClick={handleClickInbox}>
+          <button onClick={() => chatClicked(!chat)}>
             <img src={inbox} className="photo"></img>
           </button>
+          {chat && <Redirect to="/Messenging" />}
           <h6 className="title">Inbox</h6>
         </div>
         <div className="Analytics">
@@ -62,10 +68,15 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
           {" "}
           <button>
             {" "}
-            <img src={setting} className="photo  "></img>
+            <img
+              src={setting}
+              className="photo  "
+              onClick={() => settingsClicked(!settings)}
+            ></img>
           </button>
           <h6 className="title">Settings</h6>
         </div>
+        {settings && <Redirect to="/Settings" />}
         <div className="Notifs">
           {" "}
           <button>
@@ -98,13 +109,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <button onClick={hundleClickProfile}>Profile</button>
-              </li>
-
-              <li>
-                <Link to="./" className="logout-link">
-                  Logout
-                </Link>
+                <button onClick={hundleClickProfile}>Logout</button>
               </li>
             </ul>
           </div>
@@ -121,7 +126,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
           <img src={search} className="photo"></img>
         </button>
       </div>
-      {ProfileClicked && <Profile Avatar="bhdcgdiyz" />}
+      {showProfile && <Profile Avatar="bhdcgdiyz" />}
     </div>
   );
 };

@@ -14,6 +14,7 @@ import ListOfInbox from "../../Components/ListOfInbox/ListOfInbox";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { Session } from "@supabase/supabase-js";
 import supabase from "../../Utils/api";
+import { MessengingContext } from "../../Contexts/MessengingContext";
 interface MessagingProps {
   children: ReactNode;
 }
@@ -25,6 +26,8 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
   const [userFirstname, setUserFirstname] = useState<String>("");
   const [userLastname, setUserLastname] = useState<String>("");
   const { logoInbox, setLogoinbox } = useContext(SideBarContext);
+  const { guestId } = useContext(MessengingContext);
+  const storedConversationId = localStorage.getItem("conversationId");
 
   let mainComponent;
   if (clicked) {
@@ -37,7 +40,9 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
   useEffect(() => {
     getChat();
   }, []);
-
+  useEffect(() => {
+    console.log("Interactinng with :", storedConversationId);
+  });
   const getChat = async () => {
     try {
       const { data, error } = await supabase
@@ -152,7 +157,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
         <span
           style={{
             width: "100%",
-            maxHeight: "35rem",
+            maxHeight: "34rem",
             overflowY: "auto",
             height: "100%",
             marginBottom: "1rem",
@@ -172,6 +177,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
 
       <div
         style={{
+          marginTop: "0.09rem",
           height: "100%",
           width: !clickedName ? "800rem" : "52%",
         }}

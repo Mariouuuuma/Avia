@@ -27,6 +27,8 @@ import {
 } from "./Contexts/MessengingContext";
 import { SideBarContext, SideBarProvider } from "./Contexts/SideBarContext";
 import { useQuery, useMutation } from "react-query";
+import { ClientProvider } from "./Contexts/ClientContext";
+import { RedboxProvider } from "./Contexts/RedboxContext";
 
 interface Todo {
   userId: number;
@@ -37,13 +39,15 @@ interface Todo {
 
 function App() {
   return (
-    <SideBarProvider>
-      <AuthProvider>
-        <MessengingProvider>
-          <AppRoutes></AppRoutes>
-        </MessengingProvider>
-      </AuthProvider>
-    </SideBarProvider>
+    <ClientProvider>
+      <SideBarProvider>
+        <AuthProvider>
+          <MessengingProvider>
+            <AppRoutes></AppRoutes>
+          </MessengingProvider>
+        </AuthProvider>
+      </SideBarProvider>
+    </ClientProvider>
   );
 }
 

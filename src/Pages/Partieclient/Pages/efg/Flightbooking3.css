@@ -1,0 +1,6 @@
+.flightbooking3-container {
+  background-image: url("https://cdn-forum.inibuilds.com/monthly_2022_05/1969414645_Capturadepantalla(3485).png.b711db33dce055ea46cc5f56359a4258.png");
+  background-size: cover; /* Pour couvrir toute la surface */
+  background-position: center; /* Pour centrer l'image */
+  min-height: 100vh; /* Pour s'assurer que le conteneur prendra au moins 100% de la hauteur de la vue */
+}

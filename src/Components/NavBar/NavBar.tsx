@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import threedots from "../../Assets/Images/threedots.png";
 import { SideBarContext } from "../../Contexts/SideBarContext";
 import { AuthContext } from "../../Contexts/AuthContext";
+import { MessengingContext } from "../../Contexts/MessengingContext";
 interface NavbarProps {
   status?: string;
   Image?: string;
@@ -9,6 +10,7 @@ interface NavbarProps {
 const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
   const { sender, receiver, clickedName, setClickedname } =
     useContext(SideBarContext);
+  const { setConvName, convName, setguestId } = useContext(MessengingContext);
 
   const handleInboxClick = async () => {
     try {
@@ -38,8 +40,10 @@ const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
             {" "}
             <a
               className="btn btn-ghost text-xl text-black"
-              defaultValue="AviaHelper"
-            >{`${receiver?.firstName} ${receiver?.lastName}`}</a>
+              defaultValue="No user slected"
+            >
+              {convName ? convName : "No Selected Conversation"}
+            </a>
           </button>
 
           <h3
@@ -53,12 +57,10 @@ const NavBar: React.FC<NavbarProps> = ({ status, Image }) => {
               textTransform: "capitalize",
               color: "#E73737",
             }}
-          >
-            {status}
-          </h3>
+          ></h3>
         </div>
       </div>
-      {/* Resolved button */}
+
       <div className="flex-none ml-auto">
         <div className="dropdown dropdown-end">
           <div

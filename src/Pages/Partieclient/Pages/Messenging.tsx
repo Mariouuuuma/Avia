@@ -4,9 +4,7 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import { Session } from "inspector";
 import supabase from "../../../Utils/api";
-import SideBar from "../../../Components/SideBar";
-import Button from "../../../Components/Button";
-import ChatRoom from "../../../Components/ChatRoom/ChatRoom";
+
 import image from "../../../Assets/Images/logoAvia.png";
 import ChatRoomCli from "../ChatRoom/ChatRoomCli";
 import SideBarCli from "../SideBarCli/SideBarCli";
@@ -56,8 +54,8 @@ export default function MessengingClient() {
       <div
         style={{
           height: "100%",
-          width: "90%", // 100% - la largeur de la barre latérale
-          marginRight: "2px", // Un tout petit espace entre la chatroom et la barre latérale
+          width: "90%",
+          marginRight: "2px",
           marginTop: "1.41rem",
           marginLeft: "2rem",
         }}

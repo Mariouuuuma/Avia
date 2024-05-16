@@ -1,10 +1,8 @@
-import Logo from "../../../Assets/Images/logoAvia.png";
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "./index.css";
+import "./Reservation.css";
 import supabase from "../../../../Utils/api";
 
 interface FormValues {
@@ -36,7 +34,6 @@ const Reservation: React.FC = () => {
     console.log(values);
     setSubmitting(false);
     try {
-      // Inscrire l'utilisateur avec l'authentification Supabase
       const { data: authUser, error: authError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
@@ -44,9 +41,7 @@ const Reservation: React.FC = () => {
 
       if (authError) {
         console.error("Erreur lors de l'inscription :", authError.message);
-        // Gérer les erreurs liées à l'inscription
       } else {
-        // L'utilisateur est inscrit avec succès, vous pouvez ajouter des informations à la base de données
         const { data: insertData, error: insertError } = await supabase
           .from("Agents")
           .insert({
@@ -69,13 +64,12 @@ const Reservation: React.FC = () => {
       }
     } catch (error) {
       console.error("Une erreur inattendue s'est produite :", error);
-      // Gérer toute erreur inattendue qui pourrait survenir
     }
   };
 
   return (
-    <div className="flex items-center justify-center p-20 passenger">
-      <div className="containerNewOpRef">
+    <div className="flex items-center justify-center p-20 reservation-container">
+      <div className="form-container">
         <Formik
           initialValues={{
             firstName: "",
@@ -90,38 +84,25 @@ const Reservation: React.FC = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="login-formRef">
-              <div className="flex justify-center">
-                <img src={Logo} className="LogoRef" alt="Logo" />
-              </div>
+            <Form className="login-form">
               <h1>Flight Details</h1>
               <h3>
                 These details are required. Please enter passenger details to
                 proceed to flight details.
               </h3>
-              <div className="formRowRef">
-                <div className="formNewOp-groupRef">
-                  <label htmlFor="firstNameNewOpRef">First Name</label>
-                  <Field
-                    type="text"
-                    id="firstNameNewOpRef"
-                    name="firstName"
-                    required
-                  />
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <Field type="text" id="firstName" name="firstName" required />
                   <ErrorMessage
                     name="firstName"
                     component="div"
                     className="error"
                   />
                 </div>
-                <div className="formNewOp-groupRef">
-                  <label htmlFor="lastNameNewOpRef">Last Name</label>
-                  <Field
-                    type="text"
-                    id="lastNameNewOpRef"
-                    name="lastName"
-                    required
-                  />
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <Field type="text" id="lastName" name="lastName" required />
                   <ErrorMessage
                     name="lastName"
                     component="div"
@@ -129,51 +110,46 @@ const Reservation: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="formRowRef">
-                <div className="formNewOp-groupRef">
+              <div className="form-row">
+                <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <Field type="email" id="emailCli" name="email" required />
+                  <Field type="email" id="email" name="email" required />
                   <ErrorMessage
                     name="email"
                     component="div"
                     className="error"
                   />
                 </div>
-                <div className="formNewOp-groupRef">
+                <div className="form-group">
                   <label htmlFor="phoneNumber">Phone Number</label>
                   <Field
                     type="tel"
-                    id="phoneNumberRef"
+                    id="phoneNumber"
                     name="phoneNumber"
                     required
                   />
                   <ErrorMessage
                     name="phoneNumber"
                     component="div"
-                    className="errorRef"
+                    className="error"
                   />
                 </div>
               </div>
-              <div className="formRowRef">
-                <div className="formNewOp-groupRef">
+              <div className="form-row">
+                <div className="form-group">
                   <label htmlFor="password">Address1</label>
-                  <Field
-                    type="text"
-                    id="passwordRef"
-                    name="password"
-                    required
-                  />
+                  <Field type="text" id="password" name="password" required />
                   <ErrorMessage
                     name="password"
                     component="div"
                     className="error"
                   />
                 </div>
-                <div className="formNewOp-groupRef">
+                <div className="form-group">
                   <label htmlFor="confirmPassword">Address2</label>
                   <Field
                     type="text"
-                    id="confirmPasswordRef"
+                    id="confirmPassword"
                     name="confirmPassword"
                     required
                   />
@@ -184,11 +160,10 @@ const Reservation: React.FC = () => {
                   />
                 </div>
               </div>
-
-              <div className="ButtonDispRef">
+              <div className="button-container">
                 <div>
                   <button
-                    className="SignUp"
+                    className="submit-button"
                     type="submit"
                     disabled={isSubmitting}
                     style={{ marginTop: "2rem" }}
@@ -197,7 +172,6 @@ const Reservation: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <p></p>
             </Form>
           )}
         </Formik>

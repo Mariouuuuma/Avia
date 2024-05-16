@@ -17,6 +17,14 @@ import MessengingClient from "../Pages/Partieclient/Pages/Messenging";
 import Reservation from "../Pages/Partieclient/Pages/passenger/Passenger";
 import Passenger from "../Pages/Partieclient/Pages/passenger/Passenger";
 import Settings from "../Components/Settings/Settings";
+import { Form } from "formik";
+import Formulaire from "../Components/Settings/Formulaire/EditInfo";
+import EditInfo from "../Components/Settings/Formulaire/EditInfo";
+import InfoVol from "../Components/InformationVol/InfoVol";
+import Flightbooking from "../Pages/Partieclient/Pages/abc/FlightBooking";
+import Flightbooking2 from "../Pages/Partieclient/Pages/cde/Flightbooking2";
+import Flightbooking3 from "../Pages/Partieclient/Pages/efg/Flightbooking3";
+import Payment from "../Pages/Partieclient/Pages/Payment/Payment";
 
 interface ProtectedRouteProps extends RouteProps {
   children: React.ReactNode;
@@ -81,6 +89,27 @@ export default function AppRoutes() {
       </Route>
       <Route exact path="/Settings">
         <Settings />
+      </Route>
+      <Route exact path="/F">
+        <Form />
+      </Route>
+      <Route exact path="/EditInfo">
+        <EditInfo />
+      </Route>
+      <Route exact path="/InfoVol">
+        <InfoVol />
+      </Route>
+      <Route exact path="/Flightbooking">
+        <Flightbooking />
+      </Route>
+      <Route exact path="/Flightbooking2">
+        <Flightbooking2 />
+      </Route>
+      <Route exact path="/Flightbooking3">
+        <Flightbooking3 />
+      </Route>
+      <Route exact path="/Payment">
+        <Payment />
       </Route>
     </BrowserRouter>
   );

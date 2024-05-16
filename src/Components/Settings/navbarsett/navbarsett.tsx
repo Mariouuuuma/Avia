@@ -7,7 +7,7 @@ interface NavbarProps {
 }
 const NavBarSett: React.FC<NavbarProps> = ({ status, Image }) => {
   return (
-    <div className="navbar bg-white" style={{ width: "69rem" }}>
+    <div className="navbar bg-white" style={{ width: "71rem", height: "3rem" }}>
       <div className="flex items-center">
         <div className="dropdown dropdown-end">
           <div

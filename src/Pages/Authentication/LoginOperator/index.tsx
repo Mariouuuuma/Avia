@@ -8,8 +8,8 @@ import Logo from "../../../Assets/Images/logoAvia.png";
 import supabase from "../../../Utils/api";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import { SideBarContext } from "../../../Contexts/SideBarContext";
+import "./index.css";
 
-// Interface pour les valeurs du formulaire
 interface FormValues {
   emailPhoneWelc: string;
   passwordWelc: string;
@@ -22,9 +22,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const WelcomeOperator: React.FC = () => {
-  const { currentuser, setCurrentuser, loggedOut, setLoggedout } =
-    useContext(AuthContext);
-  const { setReceiver, setSender, sender } = useContext(SideBarContext);
+  const { currentuser, setCurrentuser } = useContext(AuthContext);
+  const { setSender, sender } = useContext(SideBarContext);
   const [err, setErr] = useState<boolean>(false);
   const history = useHistory();
   const handleSubmit = async (
@@ -48,7 +47,6 @@ const WelcomeOperator: React.FC = () => {
       .eq("Email", values.emailPhoneWelc);
 
     if (senderError) {
-      // Gérer spécifiquement les erreurs de type PostgrestError
       console.error(
         "Erreur lors de la recherche de l'expéditeur :",
         senderError
@@ -60,8 +58,6 @@ const WelcomeOperator: React.FC = () => {
         setSender(senderData[0]);
         console.log("Sender:", senderData[0]);
       } else {
-        // Aucun expéditeur trouvé
-
         console.log("Aucun expéditeur trouvé.");
       }
     }

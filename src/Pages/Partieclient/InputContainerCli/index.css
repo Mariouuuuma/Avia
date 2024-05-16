@@ -1,8 +1,8 @@
-button {
+.buttonCli {
   cursor: pointer;
   transition: transform 0.2s;
 }
 
-button:hover {
+.buttonCli:hover {
   transform: scale(1.1);
 }

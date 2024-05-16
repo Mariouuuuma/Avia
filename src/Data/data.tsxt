@@ -1,0 +1,203 @@
+import React, { useState, useEffect } from "react";
+import "./Flightbooking2.css";
+import { Redirect } from "react-router-dom";
+
+export default function FlightBooking2() {
+  const [counterAdult, setCounterAdult] = useState<number>(0);
+  const [counterJeune, setCounterJeune] = useState<number>(0);
+  const [counterEnfant, setCounterEnfant] = useState<number>(0);
+  const [counterBébé, setCounterBébé] = useState<number>(0);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [redirect, setRedirect] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (counterAdult + counterJeune + counterEnfant + counterBébé === 0) {
+      setShowAlert(true);
+    } else {
+      setShowAlert(false);
+    }
+  }, [counterAdult, counterJeune, counterEnfant, counterBébé]);
+
+  const handleClickBack = () => {
+    setRedirect(true);
+  };
+
+  if (redirect) {
+    return <Redirect to="/FlightBooking" />;
+  }
+
+  const handleIncrementAdult = () => {
+    setCounterAdult((prevCounter) => prevCounter + 1);
+  };
+
+  const handleDecrementAdult = () => {
+    if (counterAdult > 0) setCounterAdult(counterAdult - 1);
+  };
+
+  const handleIncrementJeune = () => {
+    setCounterJeune((prevCounter) => prevCounter + 1);
+  };
+
+  const handleDecrementJeune = () => {
+    if (counterJeune > 0) setCounterJeune(counterJeune - 1);
+  };
+
+  const handleIncrementEnfant = () => {
+    setCounterEnfant((prevCounter) => prevCounter + 1);
+  };
+
+  const handleDecrementEnfant = () => {
+    if (counterEnfant > 0) setCounterEnfant(counterEnfant - 1);
+  };
+
+  const handleIncrementBébé = () => {
+    setCounterBébé((prevCounter) => prevCounter + 1);
+  };
+
+  const handleDecrementBébé = () => {
+    if (counterBébé > 0) setCounterBébé(counterBébé - 1);
+  };
+
+  return (
+    <div className="flight-booking2-container">
+      <div className="form-container2">
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <h1 className="title2">Flight Booking Form</h1>
+        </div>
+        {showAlert && (
+          <div className="alert">
+            <p>Please select at least one passenger.</p>
+          </div>
+
+ <form>
+          <div className="form-group2">
+            <label className="label2" htmlFor="firstName">
+              Class:
+            </label>
+            <select
+              style={{
+                width: "80%",
+                height: "2.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "0.4rem",
+                cursor: "pointer",
+              }}
+              className="Class"
+            >
+              <option disabled selected>
+                Economy Class
+              </option>
+              <option>Business Class</option>
+              <option>Economy Class</option>
+            </select>
+          </div>
+          <div className="form-group2">
+            <label className="label2" htmlFor="firstName">
+              Devise:
+            </label>
+            <select
+              style={{
+                width: "80%",
+                height: "2.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "0.4rem",
+                cursor: "pointer",
+              }}
+              className="Class"
+            >
+              <option disabled selected>
+                TND
+              </option>
+              <option>CAD</option>
+              <option>CHF</option>
+              <option>EUR</option>
+              <option>GPD</option>
+              <option>TND</option>
+              <option>USD</option>
+            </select>
+          </div>
+
+        )}
+        <div style={{ display: "flex", justifyContent: "center", gap: "3rem" }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="form-group2"      style={{
+                  width: "11rem",
+                  height: "10rem",
+                  border: "1px solid #ccc",
+                  padding: "1rem",
+                  backgroundColor: "white",
+                }}>
+                 <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                     <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginBottom: "0.5rem",
+
+                      fontSize: "1.2rem",
+                    }}
+                  >
+              <h1>Adult</h1>
+              </div>
+               <div style={{ display: "flex", justifyContent: "center" }}>
+                    {" "}
+                    <h3
+                      style={{
+                        display: "block",
+
+                        fontSize: "1.3rem",
+                        marginTop: "-0.09rem",
+                      }}
+                    >
+              <h3>{counterAdult}</h3>
+              </div>
+              <div className="counter-buttons">
+                <button onClick={handleIncrementAdult}>+</button>
+                <button onClick={handleDecrementAdult}>-</button>
+              </div>
+            </div>
+            <div className="form-group2">
+              <h1>Jeune</h1>
+              <h3>{counterJeune}</h3>
+              <div className="counter-buttons">
+                <button onClick={handleIncrementJeune}>+</button>
+                <button onClick={handleDecrementJeune}>-</button>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="form-group2">
+              <h1>Enfant</h1>
+              <h3>{counterEnfant}</h3>
+              <div className="counter-buttons">
+                <button onClick={handleIncrementEnfant}>+</button>
+                <button onClick={handleDecrementEnfant}>-</button>
+              </div>
+            </div>
+            <div className="form-group2">
+              <h1>Bébé</h1>
+              <h3>{counterBébé}</h3>
+              <div className="counter-buttons">
+                <button onClick={handleIncrementBébé}>+</button>
+                <button onClick={handleDecrementBébé}>-</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
+          <button onClick={handleClickBack} className="buttonNext2" type="button">
+            Back
+          </button>
+          <button className="buttonNext2" type="submit">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

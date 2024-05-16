@@ -1,0 +1,150 @@
+.Vol {
+  background-image: url("https://cdn-forum.inibuilds.com/monthly_2022_05/1969414645_Capturadepantalla(3485).png.b711db33dce055ea46cc5f56359a4258.png");
+}
+.containerInfoVol {
+  max-width: 30rem;
+  height: 41rem;
+  margin-top: -3rem;
+  background-color: #fff;
+
+  padding: 2.35rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e73838;
+}
+
+.login-formInfoVol h1 {
+  margin-bottom: 1.5rem;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.login-formInfoVol h3 {
+  font-weight: normal;
+  text-align: center;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 1.75rem;
+  font-size: 1rem;
+}
+
+.formRowInfoVol {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formNewOp-groupInfoVol {
+  flex-basis: calc(50% - 10px);
+}
+
+.formNewOp-groupInfoVol input[type="text"],
+.formNewOp-groupInfoVol input[type="password"],
+.formNewOp-groupInfoVol input[type="email"],
+.formNewOp-groupInfoVol input[type="tel"],
+.formNewOp-groupInfoVol input[type="checkbox"] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.formRowInfoVol button {
+  display: flex;
+  width: 80%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  margin-top: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.formNewOp-groupInfoVol {
+  text-align: center;
+}
+
+.formNewOp-groupInfoVol button {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  margin: 5px auto;
+  padding: 1rem;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.formNewOp-groupInfoVol button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 1.25rem;
+}
+
+p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+.checkboxiInfoVol {
+  display: flex;
+  align-items: center;
+}
+
+#rememberMeInfoVol {
+  margin-right: 5px;
+}
+
+.input-style {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+}
+
+#confirmPasswordInfoVol,
+#passwordInfoVol,
+#phoneNumberInfoVol,
+#emailInfoVol,
+#lastNameNewOpInfoVol,
+#firstNameNewOpInfoVol {
+  width: 12rem;
+  height: 2.5rem;
+}
+
+.SignUpInfoVol {
+  display: flex;
+  padding: 1rem;
+  width: 10rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.ButtonDispInfoVol {
+  display: flex;
+  justify-content: center;
+}
+
+.SignUpInfoVol :hover {
+  background-color: #0056b3;
+}

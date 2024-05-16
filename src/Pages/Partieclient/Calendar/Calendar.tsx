@@ -78,11 +78,13 @@ const DayComponent: React.FC<DayProps> = ({ day, selected, select }) => {
 
 interface CalendarProps {
   onDateSelect: (date: Moment) => void;
+  calendarName: string; // Nouvelle prop pour le nom du calendrier
 }
 
 interface CalendarState {
   month: Moment;
   selected: Moment;
+  errorMessage: string | null;
 }
 
 class Calendar extends Component<CalendarProps, CalendarState> {
@@ -92,6 +94,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     this.state = {
       month: moment(),
       selected: moment().startOf("day"),
+      errorMessage: null,
     };
   }
 
@@ -108,17 +111,47 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   };
 
   select = (day: Moment) => {
+    const today = moment().startOf("day");
+    const minDepartureDate = today.clone().add(2, "days");
+    const maxArrivalDate = minDepartureDate.clone().add(30, "days");
+
+    let errorMessage = null;
+
+    if (
+      this.props.calendarName === "Departure" &&
+      day.isBefore(minDepartureDate)
+    ) {
+      errorMessage =
+        "La date de départ doit être au moins deux jours à l'avance.";
+    }
+
+    if (this.props.calendarName === "Arrival" && day.isAfter(maxArrivalDate)) {
+      errorMessage =
+        "La date d'arrivée ne peut pas être plus de 30 jours après la date de départ.";
+    }
+
+    if (!errorMessage) {
+      errorMessage = null;
+    }
+
+    if (!errorMessage) {
+      this.props.onDateSelect(day);
+    }
     this.setState({
       selected: day,
       month: day.clone(),
+      errorMessage: errorMessage,
     });
 
-    // Appel de la fonction de rappel avec la date sélectionnée
-    this.props.onDateSelect(day);
+    if (!errorMessage) {
+      this.props.onDateSelect(day);
+    }
   };
 
   renderMonthLabel = (): string => {
-    return this.state.month.format("MMMM YYYY");
+    return `${this.props.calendarName} - ${this.state.month.format(
+      "MMMM YYYY"
+    )}`;
   };
 
   render() {
@@ -132,6 +165,24 @@ class Calendar extends Component<CalendarProps, CalendarState> {
           </div>
           <DayNames />
         </header>
+        {this.state.errorMessage && (
+          <div role="alert" className="alert alert-error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{this.state.errorMessage}</span>
+          </div>
+        )}
         <div className="weeks">
           {this.renderWeeks(this.state.month, this.state.selected)}
         </div>

@@ -85,7 +85,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
         <button>
           {" "}
           <img
-            src={flag}
+            src="https://vedi-express.twic.pics/119747-large_default/france-flag.jpg?twic=v1/resize=760"
             className="photoCli 
  "
           ></img>

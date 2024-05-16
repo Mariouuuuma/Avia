@@ -16,7 +16,12 @@ import { Session } from "@supabase/supabase-js";
 import supabase from "../../Utils/api";
 import NavBar from "../NavBar/NavBar";
 import NavBarSett from "./navbarsett/navbarsett";
-
+import Setting from "./Setting/Setting";
+import Account from "../../Assets/Images/account.png";
+import bell from "../../Assets/Images/bell.png";
+import users from "../../Assets/Images/users.png";
+import message from "../../Assets/Images/message.png";
+import Formulaire from "./Formulaire/EditInfo";
 interface MessagingProps {
   children: ReactNode;
 }
@@ -28,42 +33,11 @@ export default function Settings() {
   const [userFirstname, setUserFirstname] = useState<String>("");
   const [userLastname, setUserLastname] = useState<String>("");
   const { logoInbox, setLogoinbox } = useContext(SideBarContext);
+  const { showForm, setShowForm } = useContext(SideBarContext);
 
-  let mainComponent;
-  if (clicked) {
-    mainComponent = <SearchBar />;
-  } else if (loggedOut) {
-    mainComponent = <Logout />;
-  } else {
-    mainComponent = <ListOfInbox />;
-  }
-  useEffect(() => {
-    getChat();
-  }, []);
-
-  const getChat = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("Agents")
-        .select("firstName , lastName")
-        .eq("Email", currentuser?.email);
-
-      if (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      } else {
-        if (data && data.length > 0) {
-          const agentData = data[0];
-          setUserFirstname(agentData.firstName);
-          setUserLastname(agentData.lastName);
-        } else {
-          console.log("Aucun utilisateur trouvé avec cet e-mail.");
-        }
-      }
-    } catch (error) {
-      alert(error);
-    }
+  const handleClick = () => {
+    setShowForm(!showForm);
   };
-  console.log(logoInbox);
   return (
     <div className="MessengingContainer" style={{ display: "flex" }}>
       <div
@@ -88,23 +62,62 @@ export default function Settings() {
           padding: "10px 15px",
         }}
       >
-        <p
+        <div
           style={{
             position: "relative",
-            top: "-47.3%",
-            left: "4%",
             display: "flex",
-            marginRight: "10rem",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            marginTop: "-9.8rem",
           }}
-          className="btn btn-ghost text-xl text-black"
         >
-          Settings
-        </p>
+          <p
+            style={{
+              position: "relative",
+              top: "-50.3%",
+              left: "4%",
+              display: "flex",
+              marginRight: "10rem",
+            }}
+            className="btn btn-ghost text-xl text-black"
+          >
+            Settings
+          </p>
+        </div>
+        <div>
+          <Setting
+            namesetting="Account"
+            icon={Account}
+            description="Profile,Name,Email,
+            Password"
+            bgcolor="#ED3863"
+            onClick={handleClick}
+          />
+          <Setting
+            namesetting="Notifications"
+            icon={bell}
+            description="Manage Your Notifications"
+            bgcolor="#FCC102"
+          />
+          <Setting
+            namesetting="Users"
+            icon={users}
+            description="Manage Your Team"
+            bgcolor="#7B00C6"
+          />
+          <Setting
+            namesetting="Shorcut Message"
+            icon={message}
+            description="Manage Your Saved Shorcut"
+            bgcolor="#7BC600"
+          />
+        </div>
       </div>
 
       <div>
         <NavBarSett />
       </div>
+      {showForm && <Formulaire />}
     </div>
   );
 }

@@ -20,50 +20,54 @@ import { UUID } from "crypto";
 import { useLayoutEffect } from "react";
 
 interface ChatMessage {
-  message: string;
-  receiverFN: string;
-  receiverLN: string;
-  id: UUID;
-  Name: string;
+  body: string;
+  id: number;
+  ConversationName: string;
+  sender_id: number;
 }
 interface ChatRoomProps {
   children?: ReactNode;
   imageReceiver?: string;
 }
 const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
-  const { messagesent } = useContext(MessengingContext);
+  const { messagesent, convName, guestId } = useContext(MessengingContext);
   const { sender, receiver, inboxClicked } = useContext(SideBarContext);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [User, setUser] = useState<User | null>();
+  const { user, setUser } = useContext(MessengingContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const [result, setResult] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log(user);
       setUser(user);
+      const uuid = user?.id;
+
+      if (uuid) {
+        const lastEightDigits = uuid.substring(uuid.length - 8);
+        const lastEightDigitsAsNumber = parseInt(lastEightDigits, 10);
+        setResult(lastEightDigitsAsNumber);
+        // Faites quelque chose avec lastEightDigitsAsNumber
+      }
     };
 
     fetchData();
 
-    return () => {}; // No cleanup needed for this effect
-  }, []);
+    return () => {};
+  }, [setUser]);
 
   useEffect(() => {
     const fetchChatMessages = async () => {
-      const { data, error } = await supabase
-        .from("AgentChats")
-        .select("message, OwnerFirstName, OwnerLastName,SenderUID,name");
+      const { data, error } = await supabase.from("Messages").select("*");
 
       if (data) {
         const formattedMessages: ChatMessage[] = data.map((msg: any) => ({
-          message: msg.message,
-          receiverFN: msg.OwnerFirstName,
-          receiverLN: msg.OwnerLastName,
-          id: msg.SenderUID,
-          Name: msg.name,
+          body: msg.body,
+          id: msg.id,
+          ConversationName: msg.ConversationName,
+          sender_id: msg.Sender_id,
         }));
         setChatMessages(formattedMessages);
         console.log();
@@ -73,7 +77,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
     fetchChatMessages();
 
     const realtimeSubscription = supabase
-      .channel("AgentChats")
+      .channel("Messages")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload) => {
         console.log("Change received!", payload);
       })
@@ -88,40 +92,48 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
     <div>
       <NavBar
         status="Etudiant"
-        Image="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg "
+        Image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s "
       />
-      {inboxClicked && (
-        <div
-          style={{
-            backgroundColor: "#F6F7FB",
-            overflowY: "auto",
-            height: "29rem",
-          }}
-        >
-          {chatMessages.map((message, index) => {
-            if (message.receiverFN === receiver?.firstName) {
-              return (
-                <LeftMessage
-                  key={index}
-                  message={message.message}
-                  ImageUrl="https://example.com/avatar.jpg"
-                />
-              );
-            } else if (
-              message.id === User?.id &&
-              message.Name === `${receiver.firstName} ${receiver.lastName}`
-            ) {
-              return (
-                <RightChatBubble
-                  key={index}
-                  message={message.message}
-                  ImageUrl="https://example.com/avatar.jpg"
-                />
-              );
-            }
-          })}
-        </div>
-      )}
+      <div
+        style={{
+          marginTop: "0.1rem",
+          backgroundColor: "#F6F7FB",
+          overflowY: "auto",
+          height: "75vh",
+          marginBottom: "-0.9rem",
+        }}
+      >
+        {" "}
+        {convName && (
+          <div>
+            {chatMessages.map((message, index) => {
+              if (
+                message?.ConversationName === convName &&
+                message?.sender_id === guestId
+              ) {
+                return (
+                  <LeftMessage
+                    key={index}
+                    message={message.body}
+                    ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s"
+                  />
+                );
+              } else if (
+                message?.ConversationName === convName &&
+                message?.sender_id === result
+              ) {
+                return (
+                  <RightChatBubble
+                    key={index}
+                    message={message.body}
+                    ImageUrl={image}
+                  />
+                );
+              }
+            })}
+          </div>
+        )}
+      </div>
       <div
         style={{
           display: "flex",
@@ -131,28 +143,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           backgroundColor: "white",
           width: "100%",
         }}
-      >
-        <Button size="small" content="Reply" bgcolor="#E73838" colour="white" />
-        <Button size="small" content="Note" bgcolor="white" colour="black" />
-        <Button
-          size="small"
-          content="Reminder"
-          bgcolor="white"
-          colour="black"
-        />
-        <Button
-          size="small"
-          content="Shortcuts"
-          bgcolor="white"
-          colour="black"
-        />
-        <Button
-          size="small"
-          content="Helpdesk"
-          bgcolor="white"
-          colour="black"
-        />
-      </div>
+      ></div>
       <div style={{ width: "100%", backgroundColor: "white" }}>
         {" "}
         <InputContainer />

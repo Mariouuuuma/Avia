@@ -29,6 +29,7 @@ import { SideBarContext, SideBarProvider } from "./Contexts/SideBarContext";
 import { useQuery, useMutation } from "react-query";
 import { ClientProvider } from "./Contexts/ClientContext";
 import { RedboxProvider } from "./Contexts/RedboxContext";
+import { ReservationProvider } from "./Contexts/ReservationContext";
 
 interface Todo {
   userId: number;
@@ -39,15 +40,18 @@ interface Todo {
 
 function App() {
   return (
-    <ClientProvider>
-      <SideBarProvider>
-        <AuthProvider>
-          <MessengingProvider>
-            <AppRoutes></AppRoutes>
-          </MessengingProvider>
-        </AuthProvider>
-      </SideBarProvider>
-    </ClientProvider>
+    <ReservationProvider>
+      {" "}
+      <ClientProvider>
+        <SideBarProvider>
+          <AuthProvider>
+            <MessengingProvider>
+              <AppRoutes></AppRoutes>
+            </MessengingProvider>
+          </AuthProvider>
+        </SideBarProvider>
+      </ClientProvider>
+    </ReservationProvider>
   );
 }
 

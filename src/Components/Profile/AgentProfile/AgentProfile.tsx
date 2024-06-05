@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./index.css";
-import supabase from "../../Utils/api";
+import supabase from "../../../Utils/api";
 import { Link } from "react-router-dom";
-import { SideBarContext } from "../../Contexts/SideBarContext";
-import { useHistory } from "react-router-dom";
+import { SideBarContext } from "../../../Contexts/SideBarContext";
+
 interface Profile {
   Avatar: string;
 }
 
-const Profile: React.FC<Profile> = ({ Avatar }) => {
+const AgentProfile: React.FC<Profile> = ({ Avatar }) => {
   const [userData, setUserData] = useState<any>();
-  const { showProfile, setShowProfile } = useContext(SideBarContext);
 
   const retrieveUserData = async () => {
     try {
@@ -31,19 +30,7 @@ const Profile: React.FC<Profile> = ({ Avatar }) => {
       );
     }
   };
-  const handleClickCancel = async () => {
-    setShowProfile(false);
-  };
 
-  useEffect(() => {
-    retrieveUserData();
-  }, [showProfile]);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    history.push("/");
-  };
-  const history = useHistory();
   return (
     <div
       className="profile-window"
@@ -136,20 +123,21 @@ const Profile: React.FC<Profile> = ({ Avatar }) => {
 
         <div style={{ display: "flex", gap: "2rem" }}>
           {" "}
+          <Link to="/">
+            {" "}
+            <button
+              style={{
+                marginTop: "3rem",
+                background: "#999999",
+                width: "5rem",
+                height: "1.5rem",
+              }}
+              className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+            >
+              Logout
+            </button>
+          </Link>
           <button
-            style={{
-              marginTop: "3rem",
-              background: "#999999",
-              width: "5rem",
-              height: "1.5rem",
-            }}
-            className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <button
-            onClick={handleClickCancel}
             style={{
               marginTop: "3rem",
               background: "#999999",

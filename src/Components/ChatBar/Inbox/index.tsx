@@ -83,12 +83,7 @@ const Inbox: React.FC<InboxProps> = ({
         <span className="text-sm text-gray-700">{nowText}</span>
         <div className="mt-2">
           <div className="relative">
-            <span
-              className="absolute top-0 right-0 -mt-2 -mr-1 inline-flex items-center justify-center h-4 w-4 rounded-full text-white text-xs"
-              style={{ backgroundColor: ButtonColor }}
-            >
-              {MessageState}
-            </span>
+            <span className="absolute top-0 right-0 -mt-2 -mr-1 inline-flex items-center bg-green-500 justify-center h-4 w-4 rounded-full animate-pulse"></span>
           </div>
         </div>
       </div>

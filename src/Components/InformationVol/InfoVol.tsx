@@ -6,6 +6,7 @@ import supabase from "../../Utils/api";
 import { useContext } from "react";
 import { ClientContext } from "../../Contexts/ClientContext";
 import { TimeLike } from "fs";
+import { ReservationContext } from "../../Contexts/ReservationContext";
 
 interface FormValues {
   firstName: string;
@@ -42,7 +43,8 @@ const InfoVol: React.FC = () => {
   const [DatedeArrival, setDatedeArrival] = useState<string | undefined>(
     undefined
   );
-
+  const { setBookBusinessClass, setBookEconomyClass } =
+    useContext(ReservationContext);
   useEffect(() => {
     const storedFlight = localStorage.getItem("selectedFlight");
     if (storedFlight) {
@@ -310,6 +312,9 @@ const InfoVol: React.FC = () => {
         >
           <Link to="/FlightBooking">
             <button
+              onClick={() => {
+                setBookBusinessClass(true);
+              }}
               className="btn btn-wide"
               style={{ backgroundColor: "#E73838", color: "white" }}
             >
@@ -568,6 +573,9 @@ const InfoVol: React.FC = () => {
         >
           <Link to="/FlightBooking">
             <button
+              onClick={() => {
+                setBookEconomyClass(true);
+              }}
               className="btn btn-wide"
               style={{ backgroundColor: "#E73838", color: "white" }}
             >

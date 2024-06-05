@@ -112,3 +112,8 @@ button:hover {
   cursor: pointer;
   transition: transform 0.2s;
 }
+@media (max-width: 480px) {
+  .SideBar {
+    display: none;
+  }
+}

@@ -20,4 +20,9 @@ export const monDictionnaire: { [key: string]: string } = {
     "Bonjour! Pour mieux vous assister, pourriez-vous s'il vous plaît fournir le numéro de vol de 4 chiffres associé à votre réclamation? Merci!",
   "Réclamation-bord-numBillet":
     "Entendu,pourriez-vous s'il vous plaît fournir le numéro de votre billet s'il vous plait?",
+  "Récalamation-Question1": "pouvons-nous considérer cela comme conclu?",
+  "Annulation-Réclamation-Question1":
+    "Donc je vois que vous souhaitez annuler votre réclamation?",
+  "Consultation-Réclamation-Question1":
+    "Donc je vois que vous souhaitez consulter votre réclamation?",
 };

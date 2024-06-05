@@ -31,7 +31,7 @@ const SearchBar: React.FC = () => {
 
     try {
       const { data, error } = await supabase
-        .from("Agents")
+        .from("Conversations")
         .select()
         .ilike("firstName", firstName)
         .ilike("lastName", lastName);

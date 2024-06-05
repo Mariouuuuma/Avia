@@ -1,28 +1,28 @@
 .MessengingContainer {
-    display: flex;
-   
+  display: flex;
+}
 
-  }
-  
-  .RightSideBar{
-    margin-top:-50px;
-  }
-  @media(max-width:400px){
-    .SideBar{
-      display:none;
-    }
-
-    .RightSideBar{
-      display:none;
-    }
-
-    .chatRoom{
-      display:none;
-    }
-    
-   
-   
-
+.RightSideBar {
+  margin-top: -50px;
+}
+@media (max-width: 400px) {
+  .SideBar {
+    display: none;
   }
 
-  
+  .RightSideBar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .BoxContainer {
+    display: none;
+  }
+  .YellowBand {
+    display: none;
+  }
+  .wawa {
+    display: none;
+  }
+}

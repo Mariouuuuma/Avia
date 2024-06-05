@@ -1,0 +1,29 @@
+.divInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 13.5rem; /* Pour aligner verticalement les éléments */
+  gap: 1rem; /* Pour ajouter un espace entre les éléments */
+  margin-top: 3rem; /* Assurez-vous que cela reste sans guillemets */
+}
+
+.inputSearchTeam {
+  width: 60%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+}
+.inbox-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  height: 75vh;
+  display: flex;
+}
+
+.agent-card {
+  flex: 1 1 60%; /* Réglage pour afficher trois cartes par ligne */
+  max-width: 33%;
+  margin-left: 0.5rem; /* Réglage pour afficher trois cartes par ligne */
+}

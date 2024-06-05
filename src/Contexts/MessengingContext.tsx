@@ -26,6 +26,12 @@ type MessengingContextType = {
   setMessageReclm: (name: string) => void;
   clickedButtons: Boolean;
   setClickedButtons: (name: boolean) => void;
+  Me: string | undefined;
+  setMe: (name: string | undefined) => void;
+  messageBot: boolean;
+  setMessageBot: (name: boolean) => void;
+  increment: number;
+  setIncrement: (name: number) => void;
 };
 
 export const MessengingContext = createContext<MessengingContextType>({
@@ -49,6 +55,12 @@ export const MessengingContext = createContext<MessengingContextType>({
   setMessageReclm: (name: string) => {},
   clickedButtons: false,
   setClickedButtons: (name: boolean) => {},
+  Me: "",
+  setMe: (name: string | undefined) => {},
+  messageBot: false,
+  setMessageBot: (name: boolean) => {},
+  increment: 0,
+  setIncrement: (name: number) => {},
 });
 
 export const MessengingProvider: React.FC<MessengingProviderProps> = ({
@@ -64,6 +76,9 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
   const [ConvId, SetConvId] = useState<string>(""); // Adjusted type here
   const [messageReclm, setMessageReclm] = useState<string>("");
   const [clickedButtons, setClickedButtons] = useState<boolean>(false);
+  const [Me, setMe] = useState<string | undefined>();
+  const [messageBot, setMessageBot] = useState<boolean>(false);
+  const [increment, setIncrement] = useState<number>(0);
 
   return (
     <MessengingContext.Provider
@@ -88,6 +103,12 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
         setMessageReclm,
         clickedButtons,
         setClickedButtons,
+        Me,
+        setMe,
+        messageBot,
+        setMessageBot,
+        increment,
+        setIncrement,
       }}
     >
       {children}

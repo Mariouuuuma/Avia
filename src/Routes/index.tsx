@@ -25,6 +25,10 @@ import Flightbooking from "../Pages/Partieclient/Pages/abc/FlightBooking";
 import Flightbooking2 from "../Pages/Partieclient/Pages/cde/Flightbooking2";
 import Flightbooking3 from "../Pages/Partieclient/Pages/efg/Flightbooking3";
 import Payment from "../Pages/Partieclient/Pages/Payment/Payment";
+import ServiceLounge from "../Pages/Partieclient/Pages/efg/ServiceLounge/ServiceLounge";
+import TeamManage from "../Pages/Partieclient/TeamManage/TeamManage";
+import test from "../Components/test";
+import ContactUs from "../Components/test";
 
 interface ProtectedRouteProps extends RouteProps {
   children: React.ReactNode;
@@ -110,6 +114,15 @@ export default function AppRoutes() {
       </Route>
       <Route exact path="/Payment">
         <Payment />
+      </Route>
+      <Route exact path="/ServiceLounge">
+        <ServiceLounge />
+      </Route>
+      <Route exact path="/TeamManage">
+        <TeamManage />
+      </Route>
+      <Route exact path="/test">
+        <ContactUs />
       </Route>
     </BrowserRouter>
   );

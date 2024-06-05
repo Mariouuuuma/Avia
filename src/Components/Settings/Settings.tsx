@@ -22,6 +22,8 @@ import bell from "../../Assets/Images/bell.png";
 import users from "../../Assets/Images/users.png";
 import message from "../../Assets/Images/message.png";
 import Formulaire from "./Formulaire/EditInfo";
+import TeamManage from "../../Pages/Partieclient/TeamManage/TeamManage";
+
 interface MessagingProps {
   children: ReactNode;
 }
@@ -30,14 +32,67 @@ export default function Settings() {
   const { clickedName } = useContext(SideBarContext);
   const { clicked, sender } = useContext(SideBarContext);
   const { currentuser, setCurrentuser, loggedOut } = useContext(AuthContext);
-  const [userFirstname, setUserFirstname] = useState<String>("");
-  const [userLastname, setUserLastname] = useState<String>("");
+  const [userFirstname, setUserFirstname] = useState<string>("");
+  const [userLastname, setUserLastname] = useState<string>("");
   const { logoInbox, setLogoinbox } = useContext(SideBarContext);
-  const { showForm, setShowForm } = useContext(SideBarContext);
+  const [connectedUser, getConnectedUser] = useState<any>();
+  const [Admin, setIsAdmin] = useState<boolean>(false);
+  const { showForm, setShowForm, showTeam, clickShowTeam } =
+    useContext(SideBarContext);
 
   const handleClick = () => {
     setShowForm(!showForm);
+    clickShowTeam(false);
   };
+
+  const handleClickTeam = () => {
+    clickShowTeam(!showTeam);
+    setShowForm(false);
+  };
+
+  const getActualUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    getConnectedUser(user);
+  };
+
+  useEffect(() => {
+    getActualUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if (connectedUser && connectedUser.email) {
+          const { data, error } = await supabase
+            .from("Agents")
+            .select("Role")
+            .eq("Email", connectedUser.email);
+
+          if (error) {
+            console.log("Erreur lors de la récupération du rôle:", error);
+            return;
+          }
+
+          if (data && data.length > 0) {
+            const role = data[0].Role;
+            if (role === "Admin") {
+              setIsAdmin(true);
+            }
+          }
+        }
+      } catch (error) {
+        console.log(
+          "Une erreur s'est produite lors de la récupération du rôle:",
+          error
+        );
+      }
+    };
+
+    fetchUser();
+  }, [connectedUser]);
+
   return (
     <div className="MessengingContainer" style={{ display: "flex" }}>
       <div
@@ -88,8 +143,7 @@ export default function Settings() {
           <Setting
             namesetting="Account"
             icon={Account}
-            description="Profile,Name,Email,
-            Password"
+            description="Profile, Name, Email, Password"
             bgcolor="#ED3863"
             onClick={handleClick}
           />
@@ -99,25 +153,36 @@ export default function Settings() {
             description="Manage Your Notifications"
             bgcolor="#FCC102"
           />
+          {Admin && (
+            <Setting
+              namesetting="Users"
+              icon={users}
+              onClick={handleClickTeam}
+              description="Manage Your Team"
+              bgcolor="#7B00C6"
+            />
+          )}
           <Setting
-            namesetting="Users"
-            icon={users}
-            description="Manage Your Team"
-            bgcolor="#7B00C6"
-          />
-          <Setting
-            namesetting="Shorcut Message"
+            namesetting="Shortcut Message"
             icon={message}
-            description="Manage Your Saved Shorcut"
+            description="Manage Your Saved Shortcut"
             bgcolor="#7BC600"
           />
         </div>
       </div>
-
-      <div>
+      <div style={{ position: "relative" }}>
         <NavBarSett />
+        {showForm && (
+          <div style={{ position: "absolute", top: "2%", right: "-10%" }}>
+            <Formulaire />
+          </div>
+        )}
+        {showTeam && (
+          <div style={{ position: "absolute", top: "4%", right: "-40%" }}>
+            <TeamManage />
+          </div>
+        )}
       </div>
-      {showForm && <Formulaire />}
     </div>
   );
 }

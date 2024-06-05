@@ -184,14 +184,10 @@ const LoginNewOperator: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="formRow">
-                <div className="form">
-                  <label htmlFor="rememberMe">Remember me</label>
-                  <Field type="checkbox" id="rememberMe" name="rememberMe" />
-                </div>
-              </div>
+              <div className="formRow"></div>
               <div className="ButtonDisp">
                 <div>
+                  {" "}
                   <button
                     className="SignUp"
                     type="submit"

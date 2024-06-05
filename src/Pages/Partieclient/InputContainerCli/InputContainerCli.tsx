@@ -18,10 +18,7 @@ import send from "../../../Assets/Images/send.png";
 
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  MessengingContext,
-  MessengingProvider,
-} from "../../../Contexts/MessengingContext";
+import { MessengingContext } from "../../../Contexts/MessengingContext";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import supabase from "../../../Utils/api";
 import { SideBarContext } from "../../../Contexts/SideBarContext";
@@ -38,22 +35,23 @@ interface ChatMessage {
 function generateRandomId() {
   return Math.floor(Math.random() * 100000000);
 }
+
+let globalResponseId = 0;
+
 export default function InputContainerCli() {
   useContext(MessengingContext);
-  const { setguestId, msgGuest, setmessageGuest } =
-    useContext(MessengingContext);
-  const [error, setError] = useState<string>("");
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const { setguestId, msgGuest } = useContext(MessengingContext);
+  const [chatMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [newmessage, setNewmessage] = useState<string>("");
   const [conversationId, setConversationId] = useState<number | null>(null);
-  const [newredmessage, setNewredmessage] = useState<boolean>(false);
-  const { convName, setConvName, redbox, setRedbox } =
+  const [newredmessage] = useState<boolean>(false);
+  const { convName, setConvName, increment } = useContext(MessengingContext);
+  const { clickedButtons, messageReclm, setMessageBot } =
     useContext(MessengingContext);
-  const { clickedButtons, setClickedButtons, messageReclm, setMessageReclm } =
-    useContext(MessengingContext);
+  const { Me } = useContext(MessengingContext);
   const generateConversationId = async () => {
     const storedConversationId = localStorage.getItem("conversationId");
+
     if (storedConversationId) {
       return parseInt(storedConversationId);
     } else {
@@ -63,7 +61,6 @@ export default function InputContainerCli() {
       return newConversationId;
     }
   };
-
   setguestId(conversationId);
 
   const handleMessageChangeCli = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,16 +68,29 @@ export default function InputContainerCli() {
   };
 
   const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
-    const conversationIdString = `${conversationId}`;
+    // Capture the current incremented value
+
     e.preventDefault();
-    setNewredmessage(true);
+    setMessageBot(true);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const uuid = user?.id;
+    const lastEightDigits = uuid?.substring(uuid.length - 8);
+
+    const conversationIdString = `${conversationId}`;
+
     localStorage.setItem("redbox", newredmessage.toString());
     const InsertMessage = async () => {
+      globalResponseId += 1;
+      const responseId = globalResponseId;
+
       console.log(message);
       const { error } = await supabase.from("Messages").insert({
         ConversationName: `conversation ${conversationId}`,
-        Sender_id: conversationId,
+        Sender_id: clickedButtons ? lastEightDigits : conversationId,
         body: clickedButtons ? messageReclm : message,
+        ResponseId: responseId,
       });
 
       if (error) {
@@ -90,9 +100,20 @@ export default function InputContainerCli() {
         console.log("Message inséré avec succès!");
       }
     };
+    console.log("last eight digits are", lastEightDigits);
     InsertMessage();
     setMessage("");
   };
+  if (message === "" && increment !== 0) {
+    setMessageBot(true);
+  }
+  useEffect(() => {
+    if (message === "") {
+      setMessageBot(true);
+    } else {
+      setMessageBot(false);
+    }
+  }, [message, setMessageBot]);
   useEffect(() => {
     const fetchConversationId = async () => {
       const conversationId = await generateConversationId();
@@ -105,13 +126,13 @@ export default function InputContainerCli() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       localStorage.removeItem("conversationId");
-    }, 90000);
+    }, 30000);
     return () => clearTimeout(timeoutId);
   }, [conversationId]);
 
   useEffect(() => {
     if (conversationId) {
-      InsertConversation(); // Insérer la conversation une seule fois
+      InsertConversation();
     }
   }, [conversationId]);
 

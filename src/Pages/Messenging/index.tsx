@@ -28,6 +28,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
   const { logoInbox, setLogoinbox } = useContext(SideBarContext);
   const { guestId } = useContext(MessengingContext);
   const storedConversationId = localStorage.getItem("conversationId");
+  let disp = "none";
 
   let mainComponent;
   if (clicked) {
@@ -72,7 +73,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
         <SideBar />
       </div>
       <div
-        className="BoxContainer"
+        className="BoxContainer Box"
         style={{
           maxHeight: "100%",
           width: "21%",
@@ -85,7 +86,7 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
           alignSelf: "stretch",
         }}
       >
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%" }} className="wawa">
           <div
             style={{
               display: "flex",

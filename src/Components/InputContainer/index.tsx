@@ -28,6 +28,7 @@ import { SideBarContext } from "../../Contexts/SideBarContext";
 import { UUID } from "crypto";
 import { User } from "@supabase/supabase-js";
 import { RedboxContext } from "../../Contexts/RedboxContext";
+import sendEmail from "../../Functions/SendEmail";
 declare module "uuid";
 
 interface ChatMessage {
@@ -53,10 +54,14 @@ export default function InputContainer() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [newmessage, setNewmessage] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [response, setResponse] = useState("");
   const { redbox, setRedbox } = useContext(RedboxContext);
   const { guestId, messageReclm, setMessageReclm } =
     useContext(MessengingContext);
   const { clickedButtons, setClickedButtons } = useContext(MessengingContext);
+  const { Me, setMe } = useContext(MessengingContext);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setMessagesent(e.target.value);
@@ -71,7 +76,7 @@ export default function InputContainer() {
     } = await supabase.auth.getUser();
     const uuid = user?.id;
     const lastEightDigits = uuid?.substring(uuid.length - 8);
-
+    setMe(lastEightDigits);
     if (!messagesent.trim()) {
       console.error("Le message est vide ou ne contient que des espaces.");
       return;

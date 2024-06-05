@@ -1,162 +1,153 @@
+.containerNewOp {
+  max-width: 35rem;
+  height: 41rem;
+  margin-top: -3rem;
 
-    .containerNewOp {
-      max-width: 35rem;
-      height: 41rem;
-      margin-top:-3rem;
-      
-      background-color: #fff;
-      padding: 2.35rem;
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border: 2px solid #E73838;
-    
-    }
-    
-    .login-form h2 {
-      margin-bottom: 1.5rem;
-      margin-top: 1.75rem;
-      text-align: center;
-      font-size: 1.25rem;
-    }
-    
-    .login-form h3 {
-      font-weight: normal;
-      text-align: center;
-      padding: 5px;
-      margin-top: 5px;
-      margin-bottom: 1.75rem;
-      font-size: 1rem;
-    }
-    
-    .formRow {
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .formNewOp-group {
-      flex-basis: calc(50% - 10px);
-    }
-    
-    css
-    Copy code
-    .formNewOp-group input[className="text"],
-    .formNewOp-group input[type="password"],
-    .formNewOp-group input[type="email"],
-    .formNewOp-group input[type="tel"],
-    .formNewOp-group input[type="checkbox"] {
-      width: 100%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 10px; /* Définir le border-radius à 10px pour tous les champs */
-      box-sizing: border-box;
-    }
+  background-color: #fff;
+  padding: 2.35rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e73838;
+}
 
+.login-form h2 {
+  margin-bottom: 1.5rem;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
 
-    
-    #firstNameNewOp,#lastNameNewOp{
-      width: 100%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 10px; /* Définir le border-radius à 10px pour tous les champs */
-      box-sizing: border-box;
+.login-form h3 {
+  font-weight: normal;
+  text-align: center;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 1.75rem;
+  font-size: 1rem;
+}
 
+.formRow {
+  display: flex;
+  justify-content: space-between;
+}
 
-    }
-    .formRow button {
-      display:flex;
-      width: 80%;
-      padding: 1rem;
-    justify-content: center;
-    align-items: center;
-      background-color: #E73838;
-      margin-top: 10px;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .formNewOp-group {
-      text-align: center; /* Centrer le contenu horizontalement */
-    }
-    
-    .formNewOp-group button {
-      display:flex;
-      width: 100%;
-      padding: 1rem;
-    justify-content: center;
-    align-items: center;
-      width: 95%;
-      margin: 5px auto;
-      padding: 1rem;
-      background-color: #E73838;
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      cursor: pointer;
-    }
-    
-      
-    
-    .formNewOp-group button:hover {
-      background-color: #0056b3;
-    }
-    
-    p {
-      text-align: center;
-      margin-top: 1.25rem;
-    }
-    
-    p a {
-      color: #007bff;
-      text-decoration: none;
-    }
-    
-    p a:hover {
-      text-decoration: underline;
-    }
-    
-    .checkboxi {
-      display: flex;
-      align-items: center;
-    }
-    
-    #rememberMe {
-      margin-right: 5px;
-      
-    }
+.formNewOp-group {
+  flex-basis: calc(50% - 10px);
+}
 
-   
-    
+css Copy code .formNewOp-group input[className="text"],
+.formNewOp-group input[type="password"],
+.formNewOp-group input[type="email"],
+.formNewOp-group input[type="tel"],
+.formNewOp-group input[type="checkbox"] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Définir le border-radius à 10px pour tous les champs */
+  box-sizing: border-box;
+}
 
-      .input-style {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ccc;
-     
-        
-      }
-      
-      
-      #confirmPassword,#password,#phoneNumber,#email,#lastNameNewOp,#firstNameNewOp{
-        width:12rem;
-        height:2.5rem
-      }
+#firstNameNewOp,
+#lastNameNewOp {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Définir le border-radius à 10px pour tous les champs */
+  box-sizing: border-box;
+}
+.formRow button {
+  display: flex;
+  width: 80%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  margin-top: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.formNewOp-group {
+  text-align: center; /* Centrer le contenu horizontalement */
+}
 
-      .SignUp{
-        display:flex;   
-        padding: 1rem;
-        width:10rem;
-      justify-content: center;
-      align-items: center;
-      background-color: #E73838;
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      cursor: pointer;
-      }
-      .ButtonDisp{
-        display:flex;
-        justify-content:center
-      }
-      .SignUp:hover{   background-color: #0056b3;}
-   
+.formNewOp-group button {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  margin: 5px auto;
+  padding: 1rem;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.formNewOp-group button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 1.25rem;
+}
+
+p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+.checkboxi {
+  display: flex;
+  align-items: center;
+}
+
+#rememberMe {
+  margin-right: 5px;
+}
+
+.input-style {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+}
+
+#confirmPassword,
+#password,
+#phoneNumber,
+#email,
+#lastNameNewOp,
+#firstNameNewOp {
+  width: 12rem;
+  height: 2.5rem;
+}
+
+.SignUp {
+  display: flex;
+  padding: 1rem;
+  margin-top: 1rem;
+  width: 10rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e73838;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+.ButtonDisp {
+  display: flex;
+  justify-content: center;
+}
+.SignUp:hover {
+  background-color: #0056b3;
+}

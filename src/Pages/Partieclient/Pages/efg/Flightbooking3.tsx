@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Flightbooking3.css";
 import { useHistory } from "react-router-dom";
 
 export default function Flightbooking3() {
+  const [clickLoungeService, setClickLounge] = useState<boolean>(false);
   const history = useHistory();
   const handleBack = () => {
     history.push("/Flightbooking2");
@@ -10,6 +11,12 @@ export default function Flightbooking3() {
 
   const handlePayment = () => {
     history.push("/Payment");
+  };
+  const handleClickCancelLounge = () => {
+    setClickLounge(false);
+  };
+  const handleClickConfirmLounge = () => {
+    setClickLounge(false);
   };
   return (
     <div className="flightbooking3-container">
@@ -146,12 +153,156 @@ export default function Flightbooking3() {
               >
                 Réserver dans notre Lounge
               </h1>
-              <button style={{ width: "60%" }} className="btn btn-primary">
+              <button
+                style={{ width: "60%" }}
+                className="btn btn-primary"
+                onClick={() => {
+                  setClickLounge(true);
+                }}
+              >
                 Réservez votre accés lounge
               </button>
+              {clickLoungeService && (
+                <div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "42rem",
+                      zIndex: "444",
+                      marginTop: "-28rem",
+                      marginBottom: "1.5rem",
+                      height: "28rem",
+                    }}
+                    className="card lg:card-side bg-base-100 shadow-xl"
+                  >
+                    <div className="card-body">
+                      <h2 className="card-title">Lounge Access</h2>
+                      <p style={{ marginTop: "-0.4rem" }}>
+                        Relax and recharge in our luxurious lounge, where
+                        comfort meets elegance and exceptional service awaits.
+                      </p>
+                      <div style={{ display: "flex", gap: "1rem" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "2rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "-1rem",
+
+                              width: "22rem",
+                              height: "15rem",
+                              border: "1px solid #ccc",
+                              borderRadius: "5%",
+                              padding: "0.5rem",
+                            }}
+                          >
+                            {" "}
+                            <p
+                              style={{
+                                marginBottom: "0.5rem",
+                                marginTop: "-0.1rem",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Important Information
+                            </p>
+                            <p style={{ marginTop: "-0.5rem" }}>
+                              Children under 2 years are admitted free with an
+                              adult
+                            </p>
+                            <p style={{ marginTop: "-0.5rem" }}>
+                              Day beds are available
+                            </p>
+                            <p style={{ marginTop: "-0.5rem" }}>
+                              This location is only accessible for passengers
+                              departing on international flights{" "}
+                            </p>
+                            <p style={{ marginTop: "-0.5rem" }}>
+                              Maximum 4 hours per day
+                            </p>
+                          </div>
+                          <div style={{ marginTop: "-1.8rem" }}>
+                            {" "}
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "1rem",
+                              }}
+                            >
+                              <label htmlFor="exampleCheckbox">I agree</label>
+                              <input
+                                type="checkbox"
+                                id="exampleCheckbox"
+                              ></input>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          style={{
+                            width: "15rem",
+                            height: "12rem",
+                            border: "1px solid #ccc",
+                            borderRadius: "5%",
+                          }}
+                        >
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <p
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {" "}
+                              Your Services
+                            </p>
+                            <div style={{ display: "flex", gap: "3rem" }}>
+                              <p>Total Services</p>
+                              <p>0.000 TND</p>
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              marginTop: "0.2rem",
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div
+                        className="card-actions justify-end"
+                        style={{ display: "flex", gap: "2rem" }}
+                      >
+                        <button
+                          onClick={handleClickConfirmLounge}
+                          className="btn btn-primary"
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          onClick={handleClickCancelLounge}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-
           {/* Deuxième groupe de composants */}
           <div
             style={{

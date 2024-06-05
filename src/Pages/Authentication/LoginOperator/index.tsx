@@ -139,7 +139,7 @@ const WelcomeOperator: React.FC = () => {
                 </div>
               </div>
               <p>
-                <Link to="/MessengingClient">Forgot your password?</Link>
+                <Link to="/ForgotPassword">Forgot your password?</Link>
               </p>
             </Form>
           )}

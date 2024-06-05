@@ -1,5 +1,6 @@
 import React, {
   ChangeEvent,
+  Fragment,
   ReactNode,
   useContext,
   useEffect,
@@ -20,12 +21,22 @@ import { TimeLike } from "fs";
 import { Link } from "react-router-dom";
 import { monDictionnaire } from "../../../Data/Dictionnaire";
 import { ClientContext } from "../../../Contexts/ClientContext";
+import sendEmail from "../../../Functions/SendEmail";
 
 interface ChatMessage {
   body: string;
   id: number;
   ConversationName: string;
   sender_id: number;
+  ResponseId: number;
+}
+
+interface predefMessage {
+  id: number;
+  Context: string;
+  OptionContext: string;
+  message: string;
+  QuestionId: number;
 }
 
 interface ChatRoomProps {
@@ -46,7 +57,10 @@ interface FlightData {
   TimeArrEnd: TimeLike;
   Type: string;
 }
+
 const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
+  const [baggage, ClickBaggage] = useState<boolean>(false);
+  const [sol, ClickSol] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
   const [listofflights, setListofflights] = useState(false);
@@ -64,19 +78,127 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const [réclam, setRéclam] = useState<boolean>(false);
   const [bord, clickBord] = useState<boolean>(false);
   const [hospitalié, clickHospitalié] = useState<boolean>(false);
-  const { clickedButtons, setClickedButtons } = useContext(MessengingContext);
-  const {
-    convName,
-    guestId,
-    msgGuest,
-    setmessageGuest,
-    messageReclm,
-    setMessageReclm,
-  } = useContext(MessengingContext);
-  let TabReclamButtons: string[] = [];
+  const [bien, clickBien] = useState<boolean>(false);
+  const [Restau, clickRestau] = useState<boolean>(false);
+  const [Distraction, clickDistraction] = useState<boolean>(false);
+  const [Achat, clickAchat] = useState<boolean>(false);
+  const [predefined] = useState<any>({});
+  const [reclamButtons, setReclamButtons] = useState<any>({});
+  const [predef, setPredef] = useState<any>();
+  const [Enregist, setEnregist] = useState<boolean>(false);
+  const [Fidelys, ClickFidelys] = useState<boolean>(false);
+  const [Embarq, ClickEmbarq] = useState<boolean>(false);
+  const [Salon, ClickSalon] = useState<boolean>(false);
+  const { clickedButtons, setClickedButtons, messageBot } =
+    useContext(MessengingContext);
+  const { convName, guestId, setMessageReclm, increment, setIncrement } =
+    useContext(MessengingContext);
+  const [numBillet, setNumBillet] = useState<string>("");
+  const [predefs, setPredefs] = useState<predefMessage[]>([]);
+  const [Retardé, clickRetardé] = useState<boolean>(false);
+  const [Endommagé, clickEndommagé] = useState<boolean>(false);
+  const [Perdu, clickPerdu] = useState<boolean>(false);
+  const [Manquant, clickManquant] = useState<boolean>(false);
+  const [Excés, clickExcés] = useState<boolean>(false);
+  const [billet, ClickBillet] = useState<boolean>(false);
+  const [Achatbillet, ClickAchatBillet] = useState<boolean>(false);
+  const [Paiement, clickPaiement] = useState<boolean>(false);
+  const [Autre, ClickAutre] = useState<boolean>(false);
+  const [question, setQuestion] = useState<boolean>(false);
+  const [numVol, setNumVol] = useState<string>("");
+  const [commentaire, setComment] = useState<string>("");
+  const [reserv, findReserv] = useState<any>();
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [code, sendCode] = useState<boolean>(false);
+  const [IdReclam, setIdReclam] = useState("");
+  const [réclamation, setRéclamation] = useState<boolean>(false);
+  const [faireRéclam, setFaireRéclam] = useState<boolean>(false);
+  const [annulerRéclam, setAnnulerRéclam] = useState<boolean>(false);
+  const [consulterRéclam, setConsulterRéclam] = useState<boolean>(false);
+  const [reclamData, setReclamData] = useState<any>();
+  const [reclamInfo, setReclamInfo] = useState<boolean>(false);
+  const [insertIdConsult, setInsertIdConsult] = useState<string>();
+  const [insertId, setInsertId] = useState<string>();
+  let predefElement = predefined[increment];
+  useEffect(() => {
+    const RetrieveReclam = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("Reclamations")
+          .select("state")
+          .eq("IdReclam", insertIdConsult);
+
+        if (data && data.length > 0) {
+          setReclamData(data[0].state);
+          setReclamInfo(true);
+          console.log("Réclamation récupérée avec succès", data[0]);
+        } else {
+          console.log("Aucune réclamation trouvée pour l'ID spécifié");
+        }
+
+        if (error) {
+          throw error;
+        }
+
+        console.log("Réclamation récupérée avec succès");
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération de la réclamation:",
+          error
+        );
+      }
+    };
+
+    if (consulterRéclam) {
+      RetrieveReclam();
+    }
+  }, [consulterRéclam, reclamInfo, insertIdConsult]);
 
   useEffect(() => {
+    if (annulerRéclam === true) {
+      const DeleteReclam = async () => {
+        try {
+          // Tentative de suppression d'une réclamation de la table "Reclamations"
+          const { error } = await supabase
+            .from("Reclamations")
+            .delete()
+            .eq("IdReclam", insertId);
+
+          // Vérification s'il y a eu une erreur lors de la suppression
+          if (error) {
+            throw error; // Lancer une erreur si une erreur s'est produite
+          }
+
+          console.log("Réclamation supprimée avec succès"); // Message de succès
+        } catch (error) {
+          console.error(
+            "Erreur lors de la suppression de la réclamation:",
+            error
+          );
+        }
+      };
+
+      // Appel de la fonction pour supprimer la réclamation
+      DeleteReclam();
+    }
+  }, [IdReclam, insertId]);
+
+  useEffect(() => {
+    if (convName) {
+      const parts = convName.split(" ");
+      if (parts.length > 1) {
+        setIdReclam(parts[1]);
+      }
+    }
+  }, [convName]);
+  useEffect(() => {
     const fetchChatMessages = async () => {
+      setIncrement(0);
+      if (predefElement) {
+        setPredef(predefElement);
+      }
+
       const { data, error } = await supabase.from("Messages").select("*");
 
       if (data) {
@@ -85,13 +207,78 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           id: msg.id,
           ConversationName: msg.ConversationName,
           sender_id: msg.Sender_id,
+          ResponseId: msg.ResponseId,
         }));
+        if (convName !== null) {
+          const mots: string[] = convName.split(" ");
+          const deuxiemePartie: string = mots.slice(1).join(" ");
+          setMessage(deuxiemePartie);
+        }
+        formattedMessages.forEach((msg) => {
+          if (réclam === true && msg.ResponseId === 4) {
+            setNumBillet(msg.body);
+          }
+          if (réclam === true && msg.ResponseId === 3) {
+            setNumVol(msg.body);
+          }
+          if (réclam === true && msg.ResponseId === 5) {
+            setComment(msg.body);
+            sendCode(true);
+          }
+          if (annulerRéclam === true && msg.ResponseId === 2) {
+            setInsertId(msg.body);
+          }
+          if (consulterRéclam === true && msg.ResponseId === 2) {
+            setInsertIdConsult(msg.body);
+          }
+        });
+
         setChatMessages(formattedMessages);
-        console.log();
       }
     };
 
+    const fetchPredefMessages = async () => {
+      let Context = "";
+      if (faireRéclam === true) {
+        Context = "faire réclamation";
+      } else if (
+        annulerRéclam === true &&
+        faireRéclam === false &&
+        consulterRéclam === false
+      ) {
+        Context = "annuler réclamation";
+      } else if (
+        consulterRéclam === true &&
+        faireRéclam === false &&
+        annulerRéclam === false
+      ) {
+        Context = "consulter réclamation";
+      }
+
+      const { data: messages, error } = await supabase
+        .from("MessageBot")
+        .select("*")
+        .eq("OptionContext", Context);
+      if (messages) {
+        const predefMessages: predefMessage[] = messages.map((msg: any) => ({
+          Context: msg.Context,
+          id: msg.id,
+          OptionContext: msg.OptionContext,
+          QuestionId: msg.QuestionId,
+          message:
+            reclamData !== undefined &&
+            msg.QuestionId === 1 &&
+            !annulerRéclam &&
+            !faireRéclam
+              ? `${msg.message} ${reclamData}`
+              : msg.message,
+        }));
+
+        setPredefs(predefMessages);
+      }
+    };
     fetchChatMessages();
+    fetchPredefMessages();
 
     const realtimeSubscription = supabase
       .channel("Messages")
@@ -103,7 +290,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
     return () => {
       realtimeSubscription.unsubscribe();
     };
-  }, [chatMessages]);
+  }, [increment, réclam, chatMessages]); //chatMessages
 
   const { vol, setVol } = useContext(ClientContext);
 
@@ -114,6 +301,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
     );
     setDateDep(selectedDate.format("YYYY-MM-DD"));
   };
+
   useEffect(() => {
     console.log("date dep est:", dateDep);
   }, [dateDep]);
@@ -137,6 +325,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const handleArrivalCityChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setArrivalCity(event.target.value);
   };
+
   const handleSaveCitiesToDatabase = async () => {
     try {
       const { data, error } = await supabase.from("Information").insert([
@@ -153,17 +342,17 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
         setInsertedData(true);
       }
     } catch (error) {
-      console.error("Erreur lors de l'insertion des villes :");
+      console.error("Erreur lors de l'insertion des villes :", error);
     }
   };
+
   useEffect(() => {
     if (departureCity && arrivalCity && !insertedData) {
       handleSaveCitiesToDatabase();
     }
   }, [departureCity, arrivalCity, insertedData]);
-  let flightData: FlightData[] = [];
 
-  const fetchData = async () => {
+  const ConsultFlights = async () => {
     try {
       const { data, error } = await supabase
         .from("ScheduleFlights")
@@ -181,17 +370,17 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
         );
       } else {
         console.log("Données récupérées avec succès:", data);
-        flightData = data;
-        setFlights(flightData);
-        console.log(flights);
+        setFlights(data);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des vols:", error);
     }
   };
-
+  {
+    /**Réccupérer les données du vol recherché dans consultation-vol*/
+  }
   useEffect(() => {
-    fetchData();
+    ConsultFlights();
   }, [departureCity, arrivalCity, type, dateArr, dateDep]);
 
   useEffect(() => {
@@ -203,24 +392,100 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const handleConsultClick = (flight: any) => {
     setVol(flight);
     localStorage.setItem("selectedFlight", JSON.stringify(flight));
-
     window.location.href = "/InfoVol";
   };
-  useEffect(() => {
-    if (TabReclamButtons.length >= 3) {
-      setClickedButtons(true);
-      setMessageReclm(
-        `Donc je vois que vous souhaitez faire une ${TabReclamButtons[0]} - ${TabReclamButtons[1]} de type ${TabReclamButtons[2]}.`
-      );
-    }
-  }, [TabReclamButtons]);
 
-  const handleButtonClick = (index: number, value: string) => {
-    TabReclamButtons[index] = value;
-    setMessageReclm(
-      `Donc je vois que vous souhaitez faire une ${TabReclamButtons[0]} - ${TabReclamButtons[1]} de type ${TabReclamButtons[2]}.`
-    );
+  const handleButtonClick = async (index: number, value: string) => {
+    setReclamButtons((prevButtons: any) => ({
+      ...prevButtons,
+      [index]: value,
+    }));
+
+    if (messageBot === false && increment !== 0) {
+      setIncrement(increment + 1);
+    }
   };
+  /**Réccupérer les données du vol recherché dans consultation-vol*/
+  {
+    /**Construction du message contenant le nom des boutons cliqués*/
+  }
+  useEffect(() => {
+    const reclamString = `Donc je vois que vous souhaitez faire une ${
+      reclamButtons[0] ?? ""
+    } - ${reclamButtons[1] ?? ""} de type ${reclamButtons[2] ?? ""} ?`;
+
+    setClickedButtons(true);
+
+    const timeout = setTimeout(() => {
+      setClickedButtons(false);
+    }, 5000);
+    if (réclam === true) {
+      setMessageReclm(reclamString);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [reclamButtons]);
+  {
+    /**Construction du message contenant le nom des boutons cliqués*/
+  }
+  {
+    /**réccupération de la réservaation */
+  }
+  useEffect(() => {
+    const searchReservation = async () => {
+      if (!numBillet) return;
+
+      try {
+        const { data: reservation, error } = await supabase
+          .from("Reservations")
+          .select("*")
+          .eq("NumBillet", numBillet);
+
+        if (error) {
+          console.error(
+            "Erreur lors de la récupération de réservation:",
+            error.message
+          );
+        } else {
+          console.log("Données récupérées avec succès:", reservation);
+          findReserv(reservation);
+          setEmail(reservation[0].Email);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des vols:", error);
+      }
+    };
+
+    searchReservation();
+  }, [numBillet]);
+
+  useEffect(() => {
+    if (reserv && numBillet && numVol && commentaire) {
+      const insertReclamation = async () => {
+        try {
+          const { error } = await supabase.from("Reclamations").insert({
+            NumeroVol: numVol,
+            NumBillet: reserv[0]?.NumBillet,
+            Email: reserv[0]?.Email,
+            Comment: commentaire,
+            ConvName: convName,
+            IdReclam: IdReclam,
+            state: "En cours de traitement",
+            Type: `${reclamButtons[0] ?? "-"} ${reclamButtons[1] ?? "-"} ${
+              reclamButtons[2] ?? ""
+            }`,
+          });
+          console.log("Votre réclamation est bien enregistrée.");
+        } catch (error) {
+          console.log("Impossible d'enregistrer votre réclamation:", error);
+        }
+      };
+
+      insertReclamation();
+    }
+  }, [commentaire]);
 
   return (
     <div
@@ -255,7 +520,6 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               ImageUrl={image}
             />
           </div>
-
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div
               style={{
@@ -265,17 +529,87 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                 justifyContent: "center",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {" "}
+              <button
+                onClick={() => {
+                  setQuestion(!question);
+                }}
+                className="btn btn-outline btn-error"
+              >
+                Posez une Question !
+              </button>{" "}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 <button
                   onClick={() => {
-                    setRéclam(!réclam);
+                    setRéclamation(!réclamation);
+
                     handleButtonClick(0, "Réclamation");
                   }}
                   className="btn btn-outline btn-error"
                 >
                   Réclamation
                 </button>
+                {réclamation && (
+                  <div
+                    className="showAdditionalButtons"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: "1.5rem",
+                        marginTop: "1rem",
+                      }}
+                    >
+                      {" "}
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <div style={{ display: "flex", gap: "2rem" }}>
+                          {" "}
+                          <button
+                            onClick={() => {
+                              setConsulterRéclam(!consulterRéclam);
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Consulter ma réclamation
+                          </button>
+                          <button
+                            onClick={() => {
+                              setAnnulerRéclam(!annulerRéclam);
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Annuler ma réclamation
+                          </button>
+                          <button
+                            onClick={() => {
+                              setRéclam(!réclam);
+                              setFaireRéclam(!faireRéclam);
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Faire une réclamation
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {réclam && (
                   <div
                     className="showAdditionalButtons"
@@ -330,63 +664,259 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                               >
                                 Hospitalité
                               </button>
-                              {hospitalié && (
-                                <div
-                                  style={{
-                                    marginTop: "2rem",
-                                    marginBottom: "0.5rem",
-                                  }}
-                                >
-                                  <LeftMessage
-                                    message={
-                                      monDictionnaire["Réclamation-bord"]
-                                    }
-                                    ImageUrl={image}
-                                  />
-                                </div>
-                              )}
                             </div>
-                            {/*{msgGuest && (
-                              <LeftMessage
-                                message={monDictionnaire["Réclamation-bord"]}
-                                ImageUrl={image}
-                                onShow={() => {
-                                  setmessageGuest(false);
-                                }}
-                              />
-                            )}*/}
                             <button
                               onClick={() => {
-                                TabReclamButtons[2] = "Bien-être";
+                                clickBien(!bien);
+                                handleButtonClick(2, " Bien-être");
                               }}
                               className="btn btn-outline btn-error"
                             >
                               Bien-être
                             </button>
-                            <button className="btn btn-outline btn-error">
+                            <button
+                              onClick={() => {
+                                clickRestau(!Restau);
+                                handleButtonClick(2, " Restauration");
+                              }}
+                              className="btn btn-outline btn-error"
+                            >
                               Restauration
                             </button>
-                            <button className="btn btn-outline btn-error">
+                            <button
+                              onClick={() => {
+                                clickDistraction(!Distraction);
+                                handleButtonClick(2, "Distraction");
+                              }}
+                              className="btn btn-outline btn-error"
+                            >
                               Distraction
                             </button>
-                            <button className="btn btn-outline btn-error">
+                            <button
+                              onClick={() => {
+                                clickAchat(!Achat);
+                                handleButtonClick(2, "Achat");
+                              }}
+                              className="btn btn-outline btn-error"
+                            >
                               Achat
                             </button>
                           </div>
                         )}
                       </div>
-                      <button className="btn btn-outline btn-error">Sol</button>
-                      <button className="btn btn-outline btn-error">
+                      <button
+                        className="btn btn-outline btn-error"
+                        onClick={() => {
+                          ClickSol(!sol);
+                          handleButtonClick(1, "Sol");
+                        }}
+                      >
+                        Sol
+                      </button>
+                      {sol && (
+                        <div
+                          style={{
+                            marginTop: "2rem",
+                            marginBottom: "0.5rem",
+                            gap: "1rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "1rem",
+                            }}
+                          >
+                            {" "}
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "2rem",
+                                marginTop: "2rem",
+                              }}
+                            >
+                              {" "}
+                              <button
+                                onClick={() => {
+                                  setEnregist(!Enregist);
+                                  handleButtonClick(2, "Enregistrement");
+                                }}
+                                className="btn btn-outline btn-error"
+                              >
+                                Enregistrement
+                              </button>
+                              <button
+                                onClick={() => {
+                                  ClickFidelys(!Fidelys);
+                                  handleButtonClick(2, "Fidelys");
+                                }}
+                                className="btn btn-outline btn-error"
+                              >
+                                Fidelys
+                              </button>
+                            </div>
+                            <div style={{ display: "flex", gap: "2rem" }}>
+                              {" "}
+                              <button
+                                onClick={() => {
+                                  ClickEmbarq(!Embarq);
+                                  handleButtonClick(2, "Embarquement");
+                                }}
+                                className="btn btn-outline btn-error"
+                              >
+                                Embarquement
+                              </button>
+                              <button
+                                onClick={() => {
+                                  ClickSalon(!Salon);
+                                  handleButtonClick(2, "Salon privilège");
+                                }}
+                                className="btn btn-outline btn-error"
+                              >
+                                Salon privilège
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => {
+                          ClickBaggage(!baggage);
+                          handleButtonClick(1, "Baggage");
+                        }}
+                        className="btn btn-outline btn-error"
+                      >
                         Baggage
                       </button>
-                      <button className="btn btn-outline btn-error">
-                        Autre
+                      {baggage && (
+                        <div
+                          style={{
+                            marginTop: "4rem",
+                            marginBottom: "0.5rem",
+                            display: "flex",
+                            gap: "1rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            {" "}
+                            <div></div>
+                            <button
+                              onClick={() => {
+                                clickRetardé(!Retardé);
+                                handleButtonClick(2, "Retardé");
+                              }}
+                              className="btn btn-outline btn-error"
+                            >
+                              Retardé
+                            </button>
+                          </div>
+                          <button
+                            onClick={() => {
+                              clickEndommagé(!Endommagé);
+                              handleButtonClick(2, "Endommagé");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Endommagé
+                          </button>
+                          <button
+                            onClick={() => {
+                              clickPerdu(!Perdu);
+                              handleButtonClick(2, "Perdu");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Perdu
+                          </button>
+                          <button
+                            onClick={() => {
+                              clickManquant(!Manquant);
+                              handleButtonClick(2, "Objet Manquant");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Objet Manquant
+                          </button>
+                          <button
+                            onClick={() => {
+                              clickExcés(!Excés);
+                              handleButtonClick(2, "Excédent de baggage");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Excédent de Baggage
+                          </button>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => {
+                          ClickBillet(!billet);
+                          handleButtonClick(1, "Litige Billet");
+                        }}
+                        className="btn btn-outline btn-error"
+                      >
+                        Billet
                       </button>
+                      {billet && (
+                        <div
+                          style={{
+                            marginTop: "4rem",
+                            marginBottom: "0.5rem",
+                            display: "flex",
+                            gap: "1rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            {" "}
+                            <div></div>
+                            <button
+                              onClick={() => {
+                                ClickAchatBillet(!Achatbillet);
+                                handleButtonClick(
+                                  2,
+                                  "Réservation et Achat de Billet"
+                                );
+                              }}
+                              className="btn btn-outline btn-error"
+                            >
+                              Achat Billet
+                            </button>
+                          </div>
+                          <button
+                            onClick={() => {
+                              clickPaiement(!Paiement);
+                              handleButtonClick(2, "Paiement");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Paiement
+                          </button>
+                          <button
+                            onClick={() => {
+                              ClickAutre(!Autre);
+                              handleButtonClick(2, "Autres");
+                            }}
+                            className="btn btn-outline btn-error"
+                          >
+                            Autre
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
               </div>
-
               <button
                 onClick={() => setShowAdditionalButtons(!showAdditionalButtons)}
                 className="btn btn-outline btn-error"
@@ -441,7 +971,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                   <button
                     onClick={() => {
                       setListofflights(!listofflights);
-                      setClickedOption(" Consultation vols");
+                      setClickedOption("Consultation vols");
                       console.log(clickedOption);
                     }}
                     className="btn btn-outline btn-error"
@@ -501,7 +1031,6 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               </div>
             )}
           </div>
-
           {insertedData && (
             <div
               style={{
@@ -584,7 +1113,6 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               </div>
             </div>
           )}
-
           {flights.length > 0 ? (
             <div
               style={{
@@ -680,20 +1208,91 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               </div>{" "}
             </div>
           )}
+          {(hospitalié ||
+            Enregist ||
+            bien ||
+            Restau ||
+            Distraction ||
+            Achat ||
+            Retardé ||
+            Endommagé ||
+            Perdu ||
+            Manquant ||
+            Excés ||
+            Autre ||
+            Paiement ||
+            Achatbillet) && (
+            <div
+              style={{
+                marginTop: "2rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <LeftMessage
+                message={monDictionnaire["Récalamation-Question1"]}
+                ImageUrl={image}
+              />
+            </div>
+          )}
+          {annulerRéclam && (
+            <div
+              style={{
+                marginTop: "2rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <LeftMessage
+                message={monDictionnaire["Annulation-Réclamation-Question1"]}
+                ImageUrl={image}
+              />
+            </div>
+          )}
+          {consulterRéclam && (
+            <div
+              style={{
+                marginTop: "2rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <LeftMessage
+                message={monDictionnaire["Consultation-Réclamation-Question1"]}
+                ImageUrl={image}
+              />
+            </div>
+          )}
           <div>
             {chatMessages.map((message, index) => {
+              const matchingPredef = predefs.find(
+                (predef) => predef.QuestionId === message.ResponseId - 1
+              );
+
+              let leftMessageContent = matchingPredef
+                ? matchingPredef.message
+                : "";
+
+              if (matchingPredef && matchingPredef.QuestionId === 4) {
+                leftMessageContent = `Bien reçu , pour suivre votre réclamation veuillez saisir cet ID à la demande : ${IdReclam}`;
+              }
+
               if (
-                message?.ConversationName === convName &&
-                message?.sender_id === guestId
+                matchingPredef &&
+                (réclam || annulerRéclam || consulterRéclam) &&
+                message?.ConversationName === convName
               ) {
                 return (
-                  <RightChatBubble
-                    key={index}
-                    message={message.body}
-                    ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s"
-                  />
+                  <Fragment key={index}>
+                    <RightChatBubble
+                      message={message.body}
+                      ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s"
+                    />
+                    <LeftMessage
+                      message={leftMessageContent}
+                      ImageUrl={image}
+                    />
+                  </Fragment>
                 );
               } else if (
+                !clickedButtons &&
                 message?.ConversationName === convName &&
                 message?.sender_id !== guestId
               ) {
@@ -704,12 +1303,23 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                     ImageUrl={image}
                   />
                 );
+              } else if (
+                message?.ConversationName === convName &&
+                message?.sender_id === guestId
+              ) {
+                return (
+                  <RightChatBubble
+                    key={index}
+                    message={message.body}
+                    ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s"
+                  />
+                );
               }
+              return null;
             })}
           </div>
         </div>
       </div>
-
       <div
         style={{
           width: "100%",

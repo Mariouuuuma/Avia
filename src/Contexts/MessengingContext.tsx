@@ -32,6 +32,10 @@ type MessengingContextType = {
   setMessageBot: (name: boolean) => void;
   increment: number;
   setIncrement: (name: number) => void;
+  Context: number;
+  setContext: (option: number) => void;
+  IdReclamation: string;
+  setIdReclamation: (Id: string) => void;
 };
 
 export const MessengingContext = createContext<MessengingContextType>({
@@ -61,6 +65,10 @@ export const MessengingContext = createContext<MessengingContextType>({
   setMessageBot: (name: boolean) => {},
   increment: 0,
   setIncrement: (name: number) => {},
+  Context: 0,
+  setContext: (option: number) => {},
+  IdReclamation: "",
+  setIdReclamation: (option: string) => {},
 });
 
 export const MessengingProvider: React.FC<MessengingProviderProps> = ({
@@ -79,6 +87,8 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
   const [Me, setMe] = useState<string | undefined>();
   const [messageBot, setMessageBot] = useState<boolean>(false);
   const [increment, setIncrement] = useState<number>(0);
+  const [Context, setContext] = useState<number>(0);
+  const [IdReclamation, setIdReclamation] = useState<string>("");
 
   return (
     <MessengingContext.Provider
@@ -109,6 +119,10 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
         setMessageBot,
         increment,
         setIncrement,
+        Context,
+        setContext,
+        IdReclamation,
+        setIdReclamation,
       }}
     >
       {children}

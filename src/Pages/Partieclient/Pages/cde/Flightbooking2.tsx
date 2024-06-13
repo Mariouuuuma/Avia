@@ -1,15 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Flightbooking2.css";
 import { Redirect, useHistory } from "react-router-dom";
+import { ReservationContext } from "../../../../Contexts/ReservationContext";
 
 export default function FlightBooking2() {
-  const [counterAdult, setCounterAdult] = useState<number>(1);
-  const [counterJeune, setCounterJeune] = useState<number>(0);
-  const [counterEnfant, setCounterEnfant] = useState<number>(0);
-  const [counterBébé, setCounterBébé] = useState<number>(0);
+  const {
+    Form1,
+    setBookBusinessClass,
+    bookBusinessClass,
+    setBookEconomyClass,
+    bookEconomyClass,
+    Devise,
+    setDevise,
+    CounterAdult,
+    setCounterAdult,
+    CounterBébé,
+    setCounterBébé,
+    CounterJeune,
+    setCounterJeune,
+    setCounterEnfant,
+    CounterEnfant,
+  } = useContext(ReservationContext);
+
+  const [counterAdult, setCounterAdulte] = useState<number>(CounterAdult || 1);
+  const [counterJeune, setCounterrJeune] = useState<number>(CounterJeune || 0);
+  const [counterEnfant, setcounterEnfant] = useState<number>(
+    CounterEnfant || 0
+  );
+  const [counterBébé, settCounterBébé] = useState<number>(CounterBébé || 0);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [redirect, setRedirect] = useState<boolean>(false);
+
   const history = useHistory();
+
   useEffect(() => {
     if (counterAdult + counterJeune + counterEnfant + counterBébé === 0) {
       setShowAlert(true);
@@ -27,38 +50,141 @@ export default function FlightBooking2() {
   }
 
   const handleIncrementAdult = () => {
-    setCounterAdult((prevCounter) => prevCounter + 1);
+    setCounterAdulte((prevCounter) => {
+      const newCounter = prevCounter + 1;
+      setCounterAdult(newCounter);
+      return newCounter;
+    });
   };
 
   const handleDecrementAdult = () => {
-    if (counterAdult > 0) setCounterAdult(counterAdult - 1);
+    if (counterAdult > 0) {
+      setCounterAdulte((prevCounter) => {
+        const newCounter = prevCounter - 1;
+        setCounterAdult(newCounter);
+        return newCounter;
+      });
+    }
   };
 
   const handleIncrementJeune = () => {
-    setCounterJeune((prevCounter) => prevCounter + 1);
+    setCounterrJeune((prevCounter) => {
+      const newCounter = prevCounter + 1;
+      setCounterJeune(newCounter);
+      return newCounter;
+    });
   };
 
   const handleDecrementJeune = () => {
-    if (counterJeune > 0) setCounterJeune(counterJeune - 1);
+    if (counterJeune > 0) {
+      setCounterrJeune((prevCounter) => {
+        const newCounter = prevCounter - 1;
+        setCounterJeune(newCounter);
+        return newCounter;
+      });
+    }
   };
 
   const handleIncrementEnfant = () => {
-    setCounterEnfant((prevCounter) => prevCounter + 1);
+    setcounterEnfant((prevCounter) => {
+      const newCounter = prevCounter + 1;
+      setCounterEnfant(newCounter);
+      return newCounter;
+    });
   };
 
   const handleDecrementEnfant = () => {
-    if (counterEnfant > 0) setCounterEnfant(counterEnfant - 1);
+    if (counterEnfant > 0) {
+      setcounterEnfant((prevCounter) => {
+        const newCounter = prevCounter - 1;
+        setCounterEnfant(newCounter);
+        return newCounter;
+      });
+    }
   };
 
   const handleIncrementBébé = () => {
-    setCounterBébé((prevCounter) => prevCounter + 1);
+    settCounterBébé((prevCounter) => {
+      const newCounter = prevCounter + 1;
+      setCounterBébé(newCounter);
+      return newCounter;
+    });
   };
 
   const handleDecrementBébé = () => {
-    if (counterBébé > 0) setCounterBébé(counterBébé - 1);
+    if (counterBébé > 0) {
+      settCounterBébé((prevCounter) => {
+        const newCounter = prevCounter - 1;
+        setCounterBébé(newCounter);
+        return newCounter;
+      });
+    }
   };
+
   const handleClickNext = () => {
     history.push("/Flightbooking3");
+  };
+
+  const renderPersonalInfo = () => {
+    return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          First Name: {Form1.firstName}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Last Name: {Form1.lastName}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Email: {Form1.email}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Phone Number: {Form1.phoneNumber}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Address 1: {Form1.address1}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Address 2: {Form1.address2}
+        </p>
+      </div>
+    );
+  };
+
+  const renderFlightDetails = () => {
+    return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Class:{" "}
+          {bookBusinessClass ? "Business" : bookEconomyClass ? "Economy" : ""}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>Devise: {Devise}</p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Adult Number: {counterAdult}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Jeune Number: {counterJeune}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Enfant Number: {counterEnfant}
+        </p>
+        <p style={{ margin: "0.25rem 0", color: "red" }}>
+          Babies Number: {counterBébé}
+        </p>
+      </div>
+    );
+  };
+  const handleDeviseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDevise(event.target.value);
+  };
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedClass = event.target.value;
+    if (selectedClass === "Business") {
+      setBookBusinessClass(true);
+      setBookEconomyClass(false);
+    } else if (selectedClass === "Economy") {
+      setBookBusinessClass(false);
+      setBookEconomyClass(true);
+    }
   };
 
   return (
@@ -88,12 +214,14 @@ export default function FlightBooking2() {
             className="drawer-overlay"
           ></label>
           <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-            {/* Sidebar content here */}
+            <h1 className="titleFB" style={{ marginTop: "1rem" }}>
+              Reservation
+            </h1>{" "}
             <li>
-              <a>Sidebar Item 1</a>
+              <a>Personal Info :{renderPersonalInfo()}</a>
             </li>
             <li>
-              <a>Sidebar Item 2</a>
+              <a>Flight Details:{renderFlightDetails()}</a>
             </li>
           </ul>
         </div>
@@ -116,6 +244,8 @@ export default function FlightBooking2() {
               Class:
             </label>
             <select
+              id="class-select"
+              onChange={handleClassChange}
               style={{
                 width: "80%",
                 height: "2.5rem",
@@ -126,10 +256,28 @@ export default function FlightBooking2() {
               className="Class"
             >
               <option disabled selected>
+                {bookBusinessClass
+                  ? "Business Class"
+                  : bookEconomyClass
+                  ? "Economy Class"
+                  : "Select Class"}{" "}
+              </option>
+              <option
+                value="Business"
+                onSelect={() => {
+                  setBookBusinessClass(!bookBusinessClass);
+                }}
+              >
+                Business Class
+              </option>
+              <option
+                value="Economy"
+                onSelect={() => {
+                  setBookEconomyClass(!bookEconomyClass);
+                }}
+              >
                 Economy Class
               </option>
-              <option>Business Class</option>
-              <option>Economy Class</option>
             </select>
           </div>
           <div className="form-group2">
@@ -137,6 +285,9 @@ export default function FlightBooking2() {
               Devise:
             </label>
             <select
+              id="devise-select"
+              value={Devise}
+              onChange={handleDeviseChange}
               style={{
                 width: "80%",
                 height: "2.5rem",
@@ -149,12 +300,12 @@ export default function FlightBooking2() {
               <option disabled selected>
                 TND
               </option>
-              <option>CAD</option>
-              <option>CHF</option>
-              <option>EUR</option>
-              <option>GPD</option>
-              <option>TND</option>
-              <option>USD</option>
+              <option value="TND">TND</option>
+              <option value="CAD">CAD</option>
+              <option value="CHF">CHF</option>
+              <option value="EUR">EUR</option>
+              <option value="GPD">GPD</option>
+              <option value="USD">USD</option>
             </select>
           </div>
         </form>

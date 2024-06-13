@@ -25,4 +25,10 @@ export const monDictionnaire: { [key: string]: string } = {
     "Donc je vois que vous souhaitez annuler votre réclamation?",
   "Consultation-Réclamation-Question1":
     "Donc je vois que vous souhaitez consulter votre réclamation?",
+  "poser Question":
+    "Donc je vois que vous souhaitez poser une question libre n'est ce pas?",
+  "Faire-Réclamation-Question1":
+    "Donc je vois que vous souhaitez faire votre réclamation?",
+  "Faire-Réservation-Question1":
+    "Donc je vois que vous souhaitez faire votre réservation?",
 };

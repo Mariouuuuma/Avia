@@ -40,7 +40,8 @@ let globalResponseId = 0;
 
 export default function InputContainerCli() {
   useContext(MessengingContext);
-  const { setguestId, msgGuest } = useContext(MessengingContext);
+  const { setguestId, Context, setIdReclamation } =
+    useContext(MessengingContext);
   const [chatMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [conversationId, setConversationId] = useState<number | null>(null);
@@ -91,6 +92,7 @@ export default function InputContainerCli() {
         Sender_id: clickedButtons ? lastEightDigits : conversationId,
         body: clickedButtons ? messageReclm : message,
         ResponseId: responseId,
+        Context: Context,
       });
 
       if (error) {
@@ -126,7 +128,7 @@ export default function InputContainerCli() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       localStorage.removeItem("conversationId");
-    }, 30000);
+    }, 40000);
     return () => clearTimeout(timeoutId);
   }, [conversationId]);
 

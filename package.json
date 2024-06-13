@@ -16,12 +16,13 @@
     "axios": "^1.7.2",
     "daisyui": "^4.7.3",
     "formik": "^2.4.5",
+    "googleapis": "^140.0.0",
     "postcss": "^8.4.36",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^4.9.5",
@@ -29,9 +30,9 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts buildj",
-    "test": "react-scripts test",
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
+    "test": "react-scripts --max_old_space_size=4096 test",
     "eject": "react-scripts eject",
     "email": "email dev"
   },

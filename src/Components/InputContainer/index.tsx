@@ -18,49 +18,33 @@ import send from "../../Assets/Images/send.png";
 
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  MessengingContext,
-  MessengingProvider,
-} from "../../Contexts/MessengingContext";
-import { AuthContext } from "../../Contexts/AuthContext";
+import { MessengingContext } from "../../Contexts/MessengingContext";
 import supabase from "../../Utils/api";
 import { SideBarContext } from "../../Contexts/SideBarContext";
 import { UUID } from "crypto";
-import { User } from "@supabase/supabase-js";
-import { RedboxContext } from "../../Contexts/RedboxContext";
-import sendEmail from "../../Functions/SendEmail";
-declare module "uuid";
-
+declare module "uuid"; //ajoit condition à messagesent
+let secondWord: any;
 interface ChatMessage {
   message: string;
   receiverFN: string;
   receiverLN: string;
   id: UUID;
 }
+let lastMessage: any;
 const storedConversationId = localStorage.getItem("conversationId");
 console.log("value is", storedConversationId);
 
 export default function InputContainer() {
   const uniqueId = uuidv4();
-  const { setMessagesent, convName } = useContext(MessengingContext);
-  const { setguestId, msgGuest, setmessageGuest } =
+  const { setMessagesent, convName, IdReclamation } =
     useContext(MessengingContext);
+  const { setmessageGuest } = useContext(MessengingContext);
 
   const { receiver, sender } = useContext(SideBarContext);
   const { messagesent, setmessageInbox, messageInbox } =
     useContext(MessengingContext);
-  const { currentuser } = useContext(AuthContext);
   const [error, setError] = useState<string>("");
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [message, setMessage] = useState<string>("");
-  const [newmessage, setNewmessage] = useState<string>("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [response, setResponse] = useState("");
-  const { redbox, setRedbox } = useContext(RedboxContext);
-  const { guestId, messageReclm, setMessageReclm } =
-    useContext(MessengingContext);
-  const { clickedButtons, setClickedButtons } = useContext(MessengingContext);
+  const { Context } = useContext(MessengingContext);
   const { Me, setMe } = useContext(MessengingContext);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +88,61 @@ export default function InputContainer() {
       console.error("Erreur lors de l'ajout du message :", error);
     }
   };
+  const storedIdReclam = localStorage.getItem("IdReclam");
 
+  // Access the second word (index 1)
+  if (convName !== null) {
+    const words = convName?.split(" ");
+    secondWord = words[1];
+  }
+
+  useEffect(() => {
+    console.log("le context contient déjà:");
+
+    const RespondToReclamation = async () => {
+      try {
+        // Step 1: Fetch the record to get the Context value
+        const { data, error: fetchError } = await supabase
+          .from("Reclamations")
+          .select("Context")
+          .eq("IdReclam", secondWord)
+          .single(); // Assuming IdReclam is unique and will return a single record
+
+        if (fetchError) {
+          console.error("Error fetching data:", fetchError);
+          return;
+        }
+
+        const contextValue = data?.Context;
+
+        // Step 2: Update the record based on the Context value
+        const { error: updateError } = await supabase
+          .from("Reclamations")
+          .update({
+            state: contextValue === 1 ? lastMessage : "En cours de traitement",
+          })
+          .eq("IdReclam", secondWord);
+
+        if (updateError) {
+          console.error("Error updating data:", updateError);
+        } else {
+          console.log("Data updated successfully");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    RespondToReclamation();
+  }, [messagesent, Context, IdReclamation]);
+
+  const updateLastMessage = () => {
+    setTimeout(() => {
+      lastMessage = messagesent;
+    }, 1000); // Delay of 1000 milliseconds (1 second)
+  };
+
+  // Call the function to update lastMessage after the delay
+  updateLastMessage();
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}

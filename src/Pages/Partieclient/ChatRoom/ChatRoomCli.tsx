@@ -21,7 +21,7 @@ import { TimeLike } from "fs";
 import { Link } from "react-router-dom";
 import { monDictionnaire } from "../../../Data/Dictionnaire";
 import { ClientContext } from "../../../Contexts/ClientContext";
-import sendEmail from "../../../Functions/SendEmail";
+import axios from "axios";
 
 interface ChatMessage {
   body: string;
@@ -50,9 +50,9 @@ interface FlightData {
   CityDep: string;
   CityArr: string;
   SchedateDep: string;
-  SchedateArr: Date;
-  TimeDepStart: string;
-  TimeDepEnd: string;
+  SchedateArr: string;
+  ScheTimeDep: string;
+  ScheTimeArr: string;
   TimeArrStart: TimeLike;
   TimeArrEnd: TimeLike;
   Type: string;
@@ -89,10 +89,18 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const [Fidelys, ClickFidelys] = useState<boolean>(false);
   const [Embarq, ClickEmbarq] = useState<boolean>(false);
   const [Salon, ClickSalon] = useState<boolean>(false);
-  const { clickedButtons, setClickedButtons, messageBot } =
+  const { clickedButtons, setClickedButtons, messageBot, Context } =
     useContext(MessengingContext);
-  const { convName, guestId, setMessageReclm, increment, setIncrement } =
-    useContext(MessengingContext);
+  const {
+    convName,
+    guestId,
+    setMessageReclm,
+    increment,
+    setIncrement,
+    setContext,
+    setIdReclamation,
+    IdReclamation,
+  } = useContext(MessengingContext);
   const [numBillet, setNumBillet] = useState<string>("");
   const [predefs, setPredefs] = useState<predefMessage[]>([]);
   const [Retardé, clickRetardé] = useState<boolean>(false);
@@ -108,9 +116,9 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const [numVol, setNumVol] = useState<string>("");
   const [commentaire, setComment] = useState<string>("");
   const [reserv, findReserv] = useState<any>();
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [code, sendCode] = useState<boolean>(false);
+  const [, setEmail] = useState("");
+  const [, setMessage] = useState("");
+  const [, sendCode] = useState<boolean>(false);
   const [IdReclam, setIdReclam] = useState("");
   const [réclamation, setRéclamation] = useState<boolean>(false);
   const [faireRéclam, setFaireRéclam] = useState<boolean>(false);
@@ -120,6 +128,9 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   const [reclamInfo, setReclamInfo] = useState<boolean>(false);
   const [insertIdConsult, setInsertIdConsult] = useState<string>();
   const [insertId, setInsertId] = useState<string>();
+  const [envoiMail, setEnvoiMail] = useState<boolean>(false);
+  const [faireRéserv, setFaireRéserv] = useState<boolean>(false);
+
   let predefElement = predefined[increment];
   useEffect(() => {
     const RetrieveReclam = async () => {
@@ -253,8 +264,14 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
         annulerRéclam === false
       ) {
         Context = "consulter réclamation";
+      } else if (
+        consulterRéclam === false &&
+        faireRéclam === false &&
+        annulerRéclam === false &&
+        question === true
+      ) {
+        Context = "poser question";
       }
-
       const { data: messages, error } = await supabase
         .from("MessageBot")
         .select("*")
@@ -353,15 +370,17 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
   }, [departureCity, arrivalCity, insertedData]);
 
   const ConsultFlights = async () => {
+    const dateArray = dateArr ? [dateDep, dateArr] : [dateDep];
+
     try {
       const { data, error } = await supabase
         .from("ScheduleFlights")
         .select("*")
-        .eq("CityDep", departureCity)
-        .eq("CityArr", arrivalCity)
-        .eq("Type", type)
-        .eq("SchedateDep", dateDep)
-        .eq("ShedateArr", dateArr);
+        .or(
+          `and(CityDep.eq.${departureCity},CityArr.eq.${arrivalCity}),and(CityDep.eq.${arrivalCity},CityArr.eq.${departureCity})`
+        )
+
+        .in("SchedateDep", dateArray);
 
       if (error) {
         console.error(
@@ -376,6 +395,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
       console.error("Erreur lors de la récupération des vols:", error);
     }
   };
+
   {
     /**Réccupérer les données du vol recherché dans consultation-vol*/
   }
@@ -471,6 +491,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
             Email: reserv[0]?.Email,
             Comment: commentaire,
             ConvName: convName,
+            Context: question ? 2 : faireRéclam || consulterRéclam ? 1 : null,
             IdReclam: IdReclam,
             state: "En cours de traitement",
             Type: `${reclamButtons[0] ?? "-"} ${reclamButtons[1] ?? "-"} ${
@@ -486,7 +507,41 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
       insertReclamation();
     }
   }, [commentaire]);
+  setIdReclamation(IdReclam);
+  useEffect(() => {
+    if (IdReclam) {
+      localStorage.setItem("IdReclam", IdReclam);
+    }
+  }, [IdReclam]);
+  useEffect(() => {
+    localStorage.setItem("Context", `${Context}`);
+  }, [Context]);
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  const handleSendCode = async () => {
+    try {
+      const response = await axios.post("http://localhost:4007/Mail", {
+        code: IdReclam,
+        to: "maryemsmadhi@gmail.com",
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
+  };
+
+  useEffect(() => {
+    if (envoiMail) {
+      handleSendCode();
+
+      const timer = setTimeout(() => {
+        setEnvoiMail(false);
+      }, 2000); // Set envoiMail to false after 2 seconds
+
+      return () => clearTimeout(timer); // Clean up the timeout if the component unmounts
+    }
+  }, [envoiMail]);
+  useEffect(() => {});
   return (
     <div
       style={{
@@ -532,6 +587,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               <button
                 onClick={() => {
                   setQuestion(!question);
+                  setContext(2);
                 }}
                 className="btn btn-outline btn-error"
               >
@@ -583,6 +639,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                           <button
                             onClick={() => {
                               setConsulterRéclam(!consulterRéclam);
+                              setContext(1);
                             }}
                             className="btn btn-outline btn-error"
                           >
@@ -600,6 +657,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                             onClick={() => {
                               setRéclam(!réclam);
                               setFaireRéclam(!faireRéclam);
+                              setContext(1);
                             }}
                             className="btn btn-outline btn-error"
                           >
@@ -664,6 +722,7 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                               >
                                 Hospitalité
                               </button>
+                              &
                             </div>
                             <button
                               onClick={() => {
@@ -938,30 +997,6 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                     display: "flex",
                     justifyContent: "center",
                     gap: "1.5rem",
-                    marginTop: "1rem",
-                  }}
-                >
-                  {" "}
-                  <Link to="/Reservation">
-                    {" "}
-                    <button className="btn btn-outline btn-error">
-                      Je veux faire une réservation
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      setAnnulerVol(!annulervol);
-                    }}
-                    className="btn btn-outline btn-error"
-                  >
-                    Je veux annuler une réservation
-                  </button>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "1.5rem",
                     marginTop: "0.5rem",
                   }}
                 >
@@ -977,6 +1012,23 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                     className="btn btn-outline btn-error"
                   >
                     Puis-je voir les vols disponibles?
+                  </button>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1.5rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      setAnnulerVol(!annulervol);
+                    }}
+                    className="btn btn-outline btn-error"
+                  >
+                    Je veux annuler une réservation
                   </button>
                 </div>
               </div>
@@ -1133,57 +1185,67 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               ></div>
               <div />
               <div style={{ display: "flex", gap: "1rem" }}>
-                {flights.map((flight, index) => (
-                  <div
-                    key={index}
-                    className="card card-compact w-96 bg-base-100 shadow-xl"
-                    style={{ marginBottom: "1rem" }}
-                  >
-                    <figure>
-                      <img
-                        src="https://i0.wp.com/lapresse.tn/wp-content/uploads/2019/03/tunisair.jpg?resize=740%2C421&ssl=1"
-                        alt="Shoes"
-                      />
-                    </figure>
-                    <div className="card-body">
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "0.25rem",
-                        }}
-                      >
-                        <h2
-                          className="card-title"
+                {flights
+                  .filter((flight) => {
+                    if (type1Flight) {
+                      return (
+                        flight.CityDep === departureCity &&
+                        flight.CityArr === arrivalCity
+                      );
+                    }
+                    return true; // Affiche tous les vols si ce n'est pas "Aller-simple"
+                  })
+                  .map((flight, index) => (
+                    <div
+                      key={index}
+                      className="card card-compact w-96 bg-base-100 shadow-xl"
+                      style={{ marginBottom: "1rem" }}
+                    >
+                      <figure>
+                        <img
+                          src="https://i0.wp.com/lapresse.tn/wp-content/uploads/2019/03/tunisair.jpg?resize=740%2C421&ssl=1"
+                          alt="Shoes"
+                        />
+                      </figure>
+                      <div className="card-body">
+                        <div
                           style={{
                             display: "flex",
-                            alignItems: "flex-start",
-                            marginLeft: "5rem",
+                            flexDirection: "column",
+                            gap: "0.25rem",
                           }}
                         >
-                          {flight.id} - ({flight.TimeDepStart}-
-                          {flight.TimeDepEnd})
-                        </h2>
-                        <p style={{ marginTop: "0.2rem" }}>
-                          {flight.CityDep} - {flight.CityArr}
-                        </p>
-                      </div>
-
-                      <div className="card-actions justify-end">
-                        <a href="/InfoVol" className="btn btn-primary">
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                              handleConsultClick(flight);
+                          <h2
+                            className="card-title"
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                              marginLeft: "5rem",
                             }}
                           >
-                            Consulter
-                          </button>
-                        </a>
+                            {flight.id} - ({flight.ScheTimeDep}-
+                            {flight.ScheTimeArr})
+                          </h2>
+                          <p style={{ marginTop: "0.2rem" }}>
+                            {flight.CityDep} - {flight.CityArr}
+                          </p>
+                        </div>
+
+                        <div className="card-actions justify-end">
+                          <a href="/InfoVol" className="btn btn-primary">
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => {
+                                handleConsultClick(flight);
+                              }}
+                            >
+                              Consulter
+                            </button>
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           ) : (
@@ -1247,6 +1309,19 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
               />
             </div>
           )}
+          {faireRéserv && (
+            <div
+              style={{
+                marginTop: "2rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <LeftMessage
+                message={monDictionnaire["Faire-Réservation-Question1"]}
+                ImageUrl={image}
+              />
+            </div>
+          )}
           {consulterRéclam && (
             <div
               style={{
@@ -1256,6 +1331,19 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
             >
               <LeftMessage
                 message={monDictionnaire["Consultation-Réclamation-Question1"]}
+                ImageUrl={image}
+              />
+            </div>
+          )}
+          {question && (
+            <div
+              style={{
+                marginTop: "2rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <LeftMessage
+                message={monDictionnaire["poser Question"]}
                 ImageUrl={image}
               />
             </div>
@@ -1271,12 +1359,16 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
                 : "";
 
               if (matchingPredef && matchingPredef.QuestionId === 4) {
-                leftMessageContent = `Bien reçu , pour suivre votre réclamation veuillez saisir cet ID à la demande : ${IdReclam}`;
+                leftMessageContent = `Bien reçu ,vous receverez un mail contenant l'ID pour suivre votre réclamation ,veuillez saisir cet ID à la demande : ${IdReclam}`;
+                if (!envoiMail) {
+                  // Ensure we only set envoiMail to true if it's not already true
+                  setEnvoiMail(true); // Set envoiMail to true
+                }
               }
 
               if (
                 matchingPredef &&
-                (réclam || annulerRéclam || consulterRéclam) &&
+                (réclam || annulerRéclam || consulterRéclam || question) &&
                 message?.ConversationName === convName
               ) {
                 return (

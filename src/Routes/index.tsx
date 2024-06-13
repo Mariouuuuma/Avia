@@ -5,7 +5,7 @@ import AccountVerification from "../Pages/AccountVerification";
 import WelcomeOperator from "../Pages/Authentication/LoginOperator";
 import LoginNewOperator from "../Pages/SignUpOperator";
 import ForgotPass from "../Pages/ForgotPassword";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
 import SearchBar from "../Components/Search";
 import ListOfInbox from "../Components/ListOfInbox/ListOfInbox";
@@ -29,6 +29,7 @@ import ServiceLounge from "../Pages/Partieclient/Pages/efg/ServiceLounge/Service
 import TeamManage from "../Pages/Partieclient/TeamManage/TeamManage";
 import test from "../Components/test";
 import ContactUs from "../Components/test";
+import Seat from "../Components/SS/Seat";
 
 interface ProtectedRouteProps extends RouteProps {
   children: React.ReactNode;
@@ -37,16 +38,34 @@ export default function AppRoutes() {
   const { clicked, sender } = useContext(SideBarContext);
 
   const { currentuser, loggedOut } = useContext(AuthContext);
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
 
+  interface Seat {
+    id: number;
+    number: string;
+    isReserved?: boolean;
+  }
+  const handleSeatSelected = (seat: Seat) => {
+    setSelectedSeats([...selectedSeats, seat]);
+  };
+
+  const handleSeatDeselected = (seat: Seat) => {
+    setSelectedSeats(selectedSeats.filter((s) => s.id !== seat.id));
+  };
+
+  const handleReservation = async () => {
+    try {
+      // Logique de réservation des sièges
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     children,
     ...rest
   }) => {
     const storedToken = localStorage.getItem("supabase_access_token");
 
-    if (!currentuser && !storedToken) {
-      return <Redirect to="./" />;
-    }
     if (storedToken) {
       const verifyToken = async () => {
         const { data, error } = await supabase.auth.getSession();

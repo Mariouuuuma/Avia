@@ -9,7 +9,7 @@ type Flight = {
   CityArr: string;
   Type: string;
   SchedateDep: string;
-  SchedateArr: Date;
+  SchedateArr: string;
   created_at?: number;
   id?: number;
   TimeDepStart?: TimeLike;

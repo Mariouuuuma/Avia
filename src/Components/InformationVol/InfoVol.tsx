@@ -43,8 +43,12 @@ const InfoVol: React.FC = () => {
   const [DatedeArrival, setDatedeArrival] = useState<string | undefined>(
     undefined
   );
-  const { setBookBusinessClass, setBookEconomyClass } =
-    useContext(ReservationContext);
+  const {
+    setBookBusinessClass,
+    bookBusinessClass,
+    setBookEconomyClass,
+    bookEconomyClass,
+  } = useContext(ReservationContext);
   useEffect(() => {
     const storedFlight = localStorage.getItem("selectedFlight");
     if (storedFlight) {
@@ -57,7 +61,8 @@ const InfoVol: React.FC = () => {
   console.log(selectedFlight?.SchedateArr);
   console.log(selectedFlight?.SchedateDep);
   console.log("Date arrivée", selectedFlight?.SchedateArr);
-  console.log("Date départ:");
+  console.log("booking business class is:", bookBusinessClass);
+  console.log("booking economy class is:", bookEconomyClass);
 
   return (
     <div
@@ -232,7 +237,7 @@ const InfoVol: React.FC = () => {
                 <p>
                   {" "}
                   {selectedFlight?.CityArr} - {selectedFlight?.CityDep},{"  "}
-                  {selectedFlight?.SchedateArr}
+                  {vol?.SchedateArr}
                 </p>
               </div>
             </div>
@@ -314,6 +319,7 @@ const InfoVol: React.FC = () => {
             <button
               onClick={() => {
                 setBookBusinessClass(true);
+                setBookEconomyClass(false);
               }}
               className="btn btn-wide"
               style={{ backgroundColor: "#E73838", color: "white" }}
@@ -575,6 +581,7 @@ const InfoVol: React.FC = () => {
             <button
               onClick={() => {
                 setBookEconomyClass(true);
+                setBookBusinessClass(false);
               }}
               className="btn btn-wide"
               style={{ backgroundColor: "#E73838", color: "white" }}

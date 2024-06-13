@@ -1,6 +1,13 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useContext,
+  useEffect,
+} from "react";
 import "./FlightBooking.css";
 import { useHistory } from "react-router-dom";
+import { ReservationContext } from "../../../../Contexts/ReservationContext";
 
 interface FormData {
   firstName: string;
@@ -12,29 +19,28 @@ interface FormData {
 }
 
 export default function FlightBooking() {
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    address1: "",
-    address2: "",
-  });
+  const { Form1, setForm1 } = useContext(ReservationContext);
+
+  const [formData, setFormData] = useState<FormData>(Form1);
 
   const history = useHistory();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    setForm1(formData);
+  }, [formData, setForm1]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    console.log(formData);
+    setForm1(formData);
+    console.log("Form data submitted:", formData);
   };
 
   const handleClickCancel = () => {
@@ -55,39 +61,47 @@ export default function FlightBooking() {
     }
   };
 
+  console.log("Les valeurs de formData:", formData);
+  console.log("Les valeurs de Form1:", Form1);
+  const renderPersonalInfo = () => {
+    return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <p style={{ margin: "0.25rem 0" }}>First Name: {Form1.firstName}</p>
+        <p style={{ margin: "0.25rem 0" }}>Last Name: {Form1.lastName}</p>
+        <p style={{ margin: "0.25rem 0" }}>Email: {Form1.email}</p>
+        <p style={{ margin: "0.25rem 0" }}>Phone Number: {Form1.phoneNumber}</p>
+        <p style={{ margin: "0.25rem 0" }}>Address 1: {Form1.address1}</p>
+        <p style={{ margin: "0.25rem 0" }}>Address 2: {Form1.address2}</p>
+      </div>
+    );
+  };
   return (
-    <div className="flight-booking-container ">
-      <div
-        className="drawer"
-        style={{
-          marginTop: "-38rem",
-          backgroundColor: "#E73737 !important",
-        }}
-      >
-        <input
-          id="my-drawer"
-          type="checkbox"
-          className="drawer-toggle"
-          style={{}}
-        />
-        <div className="drawer-content">
+    <div className="flight-booking-container">
+      <div className="drawer" style={{ marginTop: "-38rem" }}>
+        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+        <div>
           <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
             My Reservation
           </label>
         </div>
         <div className="drawer-side">
-          <label
-            htmlFor="my-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
+          <label htmlFor="my-drawer" className="drawer-overlay"></label>
+
           <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-            {/* Sidebar content here */}
             <li>
-              <a>Sidebar Item 1</a>
+              {" "}
+              <h1 className="titleFB" style={{ marginTop: "1rem" }}>
+                Reservation
+              </h1>
             </li>
             <li>
-              <a>Sidebar Item 2</a>
+              <a>
+                Personal Info:{" "}
+                <p style={{ color: "red" }}>{renderPersonalInfo()}</p>
+              </a>
+            </li>
+            <li>
+              <a>Flight Details:</a>
             </li>
           </ul>
         </div>
@@ -182,11 +196,7 @@ export default function FlightBooking() {
             />
           </div>
           <div
-            style={{
-              display: "flex",
-              gap: "2rem",
-              justifyContent: "center",
-            }}
+            style={{ display: "flex", gap: "2rem", justifyContent: "center" }}
           >
             <button
               onClick={handleClickCancel}

@@ -41,6 +41,8 @@ export default function Flightbooking3() {
   const [counter, changeCounter] = useState<number>(0);
   const [totalMeal, setTotalMeal] = useState<number>(0);
   const [CounterMaals, setCounterMeals] = useState<number>(0);
+  const [checkboxlounge, clickcheckboxlounge] = useState<boolean>(false);
+  const [Lounge, confirmLounge] = useState<boolean>(false);
 
   const history = useHistory();
   const handleBack = () => {
@@ -179,6 +181,9 @@ export default function Flightbooking3() {
   useEffect(() => {
     CalculTotalPet();
   }, [totalPet, CityDep, CityArr]);
+  const handleCheckboxChange = () => {
+    clickcheckboxlounge(!checkboxlounge);
+  };
 
   console.log("selected seats are,", selectedSeats);
   console.log("selected seats are,", selectedSeatsArr);
@@ -403,6 +408,7 @@ export default function Flightbooking3() {
                             >
                               <label htmlFor="exampleCheckbox">I agree</label>
                               <input
+                                onChange={handleCheckboxChange}
                                 type="checkbox"
                                 id="exampleCheckbox"
                               ></input>
@@ -433,7 +439,12 @@ export default function Flightbooking3() {
                             </p>
                             <div style={{ display: "flex", gap: "3rem" }}>
                               <p>Total Services</p>
-                              <p> 0.000 TND</p>
+                              {checkboxlounge && (
+                                <p style={{ color: "red" }}>100.000 DT </p>
+                              )}
+                              {!checkboxlounge && (
+                                <p style={{ color: "red" }}>0.000 DT </p>
+                              )}
                             </div>
                           </div>
                           <div
@@ -456,6 +467,30 @@ export default function Flightbooking3() {
                         >
                           Confirm
                         </button>
+                        {Lounge && !checkboxlounge && (
+                          <div
+                            role="alert"
+                            className="alert alert-error flex items-center p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="stroke-current shrink-0 h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span className="ml-2">
+                              Erreur : Le lounge est sélectionné, mais la case à
+                              cocher n'est pas cochée.
+                            </span>
+                          </div>
+                        )}
                         <button
                           className="btn btn-primary"
                           onClick={handleClickCancelLounge}

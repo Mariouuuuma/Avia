@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { ClientContext } from "../../Contexts/ClientContext";
 import { TimeLike } from "fs";
 import { ReservationContext } from "../../Contexts/ReservationContext";
+import { useHistory } from "react-router-dom";
 
 interface FormValues {
   firstName: string;
@@ -43,6 +44,9 @@ const InfoVol: React.FC = () => {
   const [DatedeArrival, setDatedeArrival] = useState<string | undefined>(
     undefined
   );
+  const history = useHistory();
+
+  const [montant, setMontant] = useState<number>();
   const {
     setBookBusinessClass,
     bookBusinessClass,
@@ -57,13 +61,57 @@ const InfoVol: React.FC = () => {
     setDatedeparture(selectedFlight?.SchedateDep);
     setDatedeArrival(selectedFlight?.SchedateArr);
   }, []);
-  console.log("vol est", selectedFlight);
+  {
+    /*console.log("vol est", selectedFlight);
   console.log(selectedFlight?.SchedateArr);
   console.log(selectedFlight?.SchedateDep);
   console.log("Date arrivée", selectedFlight?.SchedateArr);
   console.log("booking business class is:", bookBusinessClass);
   console.log("booking economy class is:", bookEconomyClass);
+*/
 
+    useEffect(() => {}, [montant]);
+
+    // Navigue après la mise à jour de l'état
+  }
+
+  useEffect(() => {
+    const storedFlight = localStorage.getItem("selectedFlight");
+    if (storedFlight) {
+      setSelectedFlight(JSON.parse(storedFlight));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedFlight && bookBusinessClass) {
+      setMontant(selectedFlight.PriceBC ?? 0);
+    } else if (selectedFlight && bookEconomyClass) {
+      setMontant(selectedFlight.PriceEC ?? 0);
+    }
+  }, [selectedFlight, montant, bookEconomyClass, bookBusinessClass]);
+
+  useEffect(() => {
+    localStorage.setItem("montantBillet", `${montant}`);
+  }, [montant]);
+
+  const handleBusinessClassClick = () => {
+    if (selectedFlight) {
+      setMontant(selectedFlight.PriceBC ?? 0);
+      setBookBusinessClass(true);
+      setBookEconomyClass(false);
+      history.push("/FlightBooking2");
+    }
+  };
+
+  const handleEconomyClassClick = () => {
+    if (selectedFlight) {
+      setMontant(selectedFlight.PriceEC ?? 0);
+      setBookBusinessClass(false);
+      setBookEconomyClass(true);
+      history.push("/FlightBooking2");
+    }
+  };
+  console.log("le montant est à :", `${localStorage.getItem("montantBillet")}`);
   return (
     <div
       className="flex items-center justify-center p-20 Vol"
@@ -225,21 +273,7 @@ const InfoVol: React.FC = () => {
               </div>
               <div
                 style={{ display: "flex", gap: "0.5rem", marginLeft: "2rem" }}
-              >
-                <img
-                  style={{
-                    width: "1.4rem",
-                    height: "1.4rem",
-                    marginTop: "1rem",
-                  }}
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Plane_icon.svg/238px-Plane_icon.svg.png"
-                />
-                <p>
-                  {" "}
-                  {selectedFlight?.CityArr} - {selectedFlight?.CityDep},{"  "}
-                  {vol?.SchedateArr}
-                </p>
-              </div>
+              ></div>
             </div>
           </div>
         </div>
@@ -315,18 +349,13 @@ const InfoVol: React.FC = () => {
             marginTop: "0.5rem",
           }}
         >
-          <Link to="/FlightBooking">
-            <button
-              onClick={() => {
-                setBookBusinessClass(true);
-                setBookEconomyClass(false);
-              }}
-              className="btn btn-wide"
-              style={{ backgroundColor: "#E73838", color: "white" }}
-            >
-              Book Now
-            </button>
-          </Link>
+          <button
+            onClick={handleBusinessClassClick}
+            className="btn btn-wide"
+            style={{ backgroundColor: "#E73838", color: "white" }}
+          >
+            Book Now
+          </button>
         </div>
       </div>
 
@@ -487,21 +516,7 @@ const InfoVol: React.FC = () => {
               </div>
               <div
                 style={{ display: "flex", gap: "0.5rem", marginLeft: "2rem" }}
-              >
-                <img
-                  style={{
-                    width: "1.4rem",
-                    height: "1.4rem",
-                    marginTop: "1rem",
-                  }}
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Plane_icon.svg/238px-Plane_icon.svg.png"
-                />
-                <p>
-                  {" "}
-                  {selectedFlight?.CityArr} - {selectedFlight?.CityDep},{"  "}
-                  {selectedFlight?.SchedateArr}
-                </p>
-              </div>
+              ></div>
             </div>
           </div>
         </div>
@@ -577,18 +592,13 @@ const InfoVol: React.FC = () => {
             marginTop: "0.5rem",
           }}
         >
-          <Link to="/FlightBooking">
-            <button
-              onClick={() => {
-                setBookEconomyClass(true);
-                setBookBusinessClass(false);
-              }}
-              className="btn btn-wide"
-              style={{ backgroundColor: "#E73838", color: "white" }}
-            >
-              Book Now
-            </button>
-          </Link>
+          <button
+            onClick={handleEconomyClassClick}
+            className="btn btn-wide"
+            style={{ backgroundColor: "#E73838", color: "white" }}
+          >
+            Book Now
+          </button>
         </div>
       </div>
     </div>

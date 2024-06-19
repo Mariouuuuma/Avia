@@ -1,9 +1,13 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import "./Flightbooking3.css";
 import { useHistory } from "react-router-dom";
 import Seat from "../../../../Components/SS/Seat";
 import Man from "../../../../Assets/Images/iconMan.jpg";
 import SeatArrival from "../../../../Components/SS/SeatArrival";
+import CustomAlert from "../../../../Components/Alert/Alert";
+import { TimeLike } from "fs";
+import { ReservationContext } from "../../../../Contexts/ReservationContext";
+
 interface Seat {
   id: number;
   number: string;
@@ -17,7 +21,6 @@ export default function Flightbooking3() {
   const [baggage, setBaggage] = useState<boolean>(false);
   const [extraBagDep, setextraBagDep] = useState<boolean>(false);
   const [extraBagArr, setextraBagArr] = useState<boolean>(false);
-  const [isClicked, setIsClicked] = useState(false);
   const [montantSeats, setMontantSeats] = useState<number>(0);
   const [totalBagage, settotalBagage] = useState<number>(0);
   const [animal, setAnimal] = useState<boolean>(false);
@@ -43,49 +46,101 @@ export default function Flightbooking3() {
   const [CounterMaals, setCounterMeals] = useState<number>(0);
   const [checkboxlounge, clickcheckboxlounge] = useState<boolean>(false);
   const [Lounge, confirmLounge] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState(true);
+  const [selectedFlight, setSelectedFlight] = useState<FlightData | null>(null);
+  const [serviceLounge, CheckServiceLounge] = useState<number>(0);
 
+  const {
+    ServiceLounge,
+    setServiceLounge,
+    totalServiceLounge,
+    settotalServiceLounge,
+  } = useContext(ReservationContext);
+
+  const [Datedeparture, setDatedeparture] = useState<string | undefined>(
+    undefined
+  );
+  const [DatedeArrival, setDatedeArrival] = useState<string | undefined>(
+    undefined
+  );
+  const { chosenSeatDep, setChosenSeatDep, chosenSeatArr, setChosenSeatArr } =
+    useContext(ReservationContext);
+  const [calcul, calculate] = useState<number>(0);
+
+  interface FlightData {
+    id: number;
+    created_at: EpochTimeStamp;
+    CityDep: string;
+    CityArr: string;
+    SchedateDep: string;
+    SchedateArr: string;
+    TimeDepStart: string;
+    TimeDepEnd: string;
+    TimeArrStart: TimeLike;
+    TimeArrEnd: TimeLike;
+    Type: string;
+    PriceBC: number;
+    PriceEC: number;
+  }
+  const { Form1 } = useContext(ReservationContext);
+  useEffect(() => {
+    const storedFlight = localStorage.getItem("selectedFlight");
+    if (storedFlight) {
+      setSelectedFlight(JSON.parse(storedFlight));
+    }
+    setDatedeparture(selectedFlight?.SchedateDep);
+    setDatedeArrival(selectedFlight?.SchedateArr);
+  }, []);
   const history = useHistory();
   const handleBack = () => {
     history.push("/Flightbooking2");
   };
 
-  const handlePayment = () => {
-    history.push("/Payment");
+  const handleSummary = () => {
+    localStorage.setItem("TotalServices", `${calcul}`);
+    history.push("/SummaryTrip");
   };
   const handleClickCancelLounge = () => {
     setClickLounge(false);
   };
   const handleClickConfirmLounge = () => {
-    setClickLounge(false);
+    if (checkboxlounge === false) {
+      setClickLounge(true);
+    } else {
+      setClickLounge(false);
+      confirmLounge(!Lounge);
+      CheckServiceLounge(100);
+    }
   };
   const handleClickCancelSiège = () => {
     setClickSiège(false);
   };
   const handleClickConfirmSiège = () => {
     setClickSiège(false);
+
+    localStorage.setItem("chosenSeatDep", JSON.stringify(chosenSeatDep));
+    localStorage.setItem("chosenSeatArr", JSON.stringify(chosenSeatArr));
   };
 
   const handleSeatSelectedDep = (seat: Seat) => {
     console.log("Siège sélectionné pour le départ :", seat);
-
+    setChosenSeatDep([...chosenSeatDep, seat.number]);
     setSelectedSeats([...selectedSeats, seat]);
-    setseatsNames([...seatsNames, seat.number]); // Ajouter le nom du siège à seatNames
   };
 
   const handleSeatDeselectedDep = (seat: Seat) => {
+    setChosenSeatDep(chosenSeatDep.filter((name) => name !== seat.number));
     setSelectedSeats(selectedSeats.filter((s) => s.id !== seat.id));
-    setseatsNames(seatsNames.filter((name) => name !== seat.number));
-
     setSeatDep(false);
   };
   const handleSeatSelectedArr = (seat: Seat) => {
     setSelectedSeatsArr([...selectedSeatsArr, seat]);
-    setseatsNamesArr([...seatsNamesArr, seat.number]); // Ajouter le nom du siège à seatNames
+    setChosenSeatArr([...chosenSeatArr, seat.number]);
   };
 
   const handleSeatDeselectedArr = (seat: Seat) => {
+    setChosenSeatArr(chosenSeatArr.filter((name) => name !== seat.number));
     setSelectedSeatsArr(selectedSeatsArr.filter((s) => s.id !== seat.id));
-    setseatsNamesArr(seatsNamesArr.filter((name) => name !== seat.number));
   };
 
   console.log("la valeur de aller est", aller);
@@ -135,6 +190,11 @@ export default function Flightbooking3() {
   };
 
   const handleChangeAnimal = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (CityDep === true && (totalPet === 0 || totalPet === 100)) {
+      setTotalPet(totalPet + 100);
+    } else if (CityArr === true && (totalPet === 0 || totalPet === 100)) {
+      setTotalPet(totalPet + 100);
+    }
     setAnimalName(event.target.value);
     setAnimaOption(true);
   };
@@ -153,7 +213,8 @@ export default function Flightbooking3() {
       changeCounter(counter + 1);
     }
   };
-  const handleClickSeat = (seat: Seat) => {
+  {
+    /***const handleClickSeat = (seat: Seat) => {
     // Vérifier si le siège appartient au départ ou à l'arrivée en fonction des états aller et retour
     if (aller && SeatDep) {
       if (!selectedSeats.some((s) => s.id === seat.id)) {
@@ -168,25 +229,35 @@ export default function Flightbooking3() {
         handleSeatDeselectedArr(seat);
       }
     }
-  };
+  }; */
+  }
 
-  const CalculTotalPet = () => {
-    if (CityDep === true && totalPet < 200) {
-      setTotalPet(totalPet + 100);
-    }
-    if (CityArr === true && totalPet < 200) {
-      setTotalPet(totalPet + 100);
-    }
-  };
-  useEffect(() => {
-    CalculTotalPet();
-  }, [totalPet, CityDep, CityArr]);
+  useEffect(() => {}, [totalPet, CityDep, CityArr]);
   const handleCheckboxChange = () => {
     clickcheckboxlounge(!checkboxlounge);
+    setServiceLounge(true);
+    settotalServiceLounge(100);
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 7000); // Set the timeout to 7 seconds
 
-  console.log("selected seats are,", selectedSeats);
-  console.log("selected seats are,", selectedSeatsArr);
+    return () => clearTimeout(timer);
+    // Clean up the timer on component unmount
+  }, []);
+
+  useEffect(() => {
+    calculate(
+      totalBagage + totalMeal + totalPet + serviceLounge + montantSeats
+    );
+  }, [totalBagage, totalMeal, totalPet, serviceLounge, montantSeats]);
+  console.log("le total pour service est", calcul);
+  console.log("montant seats égal à:", montantSeats);
+  console.log("montant meals égal à:", totalMeal);
+  console.log("montant pets égal à:", totalPet);
+  console.log("montant lounge égal à:", serviceLounge);
+  console.log("montant  égal à:", totalBagage);
 
   return (
     <div className="flightbooking3-container">
@@ -217,10 +288,10 @@ export default function Flightbooking3() {
             backgroundColor: "#E73737",
             color: "white",
           }}
-          onClick={handlePayment}
+          onClick={handleSummary}
           className="btn btn-primary"
         >
-          Payment
+          Trip Summary
         </button>
       </div>
 
@@ -321,7 +392,7 @@ export default function Flightbooking3() {
                   textTransform: "uppercase",
                 }}
               >
-                Réserver dans notre Lounge
+                Book in our Lounge{" "}
               </h1>
               <button
                 style={{ width: "60%" }}
@@ -330,7 +401,7 @@ export default function Flightbooking3() {
                   setClickLounge(true);
                 }}
               >
-                Réservez votre accés lounge
+                book your lounge access{" "}
               </button>
               {clickLoungeService && (
                 <div>
@@ -467,30 +538,7 @@ export default function Flightbooking3() {
                         >
                           Confirm
                         </button>
-                        {Lounge && !checkboxlounge && (
-                          <div
-                            role="alert"
-                            className="alert alert-error flex items-center p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="stroke-current shrink-0 h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                            <span className="ml-2">
-                              Erreur : Le lounge est sélectionné, mais la case à
-                              cocher n'est pas cochée.
-                            </span>
-                          </div>
-                        )}
+
                         <button
                           className="btn btn-primary"
                           onClick={handleClickCancelLounge}
@@ -503,6 +551,26 @@ export default function Flightbooking3() {
                 </div>
               )}
             </div>
+            {!Lounge && !checkboxlounge && clickLoungeService && (
+              <div
+                style={{
+                  marginTop: "-27rem",
+                  marginLeft: "35rem",
+                  position: "relative",
+                  width: "20rem",
+                  zIndex: 9999,
+                  transition: "opacity 6s", // CSS transition for opacity
+                  opacity: showAlert ? 1 : 0,
+                }}
+              >
+                {showAlert && (
+                  <CustomAlert
+                    severity="danger"
+                    message="Please click on 'I agree' to confirm!"
+                  />
+                )}
+              </div>
+            )}
           </div>
           {/* Deuxième groupe de composants */}
           <div
@@ -536,7 +604,7 @@ export default function Flightbooking3() {
                   textTransform: "uppercase",
                 }}
               >
-                Sélectionnez votre siège
+                Choose your Seat
               </h1>
               <button
                 onClick={() => {
@@ -545,7 +613,7 @@ export default function Flightbooking3() {
                 style={{ width: "60%" }}
                 className="btn btn-primary"
               >
-                Choisissez votre siège
+                Choose your Seat
               </button>
               {clickSiège && (
                 <div>
@@ -606,7 +674,7 @@ export default function Flightbooking3() {
                               color: CityDep ? "black" : "white",
                             }}
                           >
-                            CityDep-CityArr
+                            {selectedFlight?.CityDep}-{selectedFlight?.CityArr}
                           </button>
                           <button
                             onClick={() => {
@@ -619,7 +687,7 @@ export default function Flightbooking3() {
                               color: CityArr ? "black" : "white",
                             }}
                           >
-                            CityArr-CityDep
+                            {selectedFlight?.CityArr}-{selectedFlight?.CityDep}
                           </button>
                         </div>
                         <div style={{ display: "flex", gap: "2rem" }}>
@@ -653,7 +721,8 @@ export default function Flightbooking3() {
                                   type="checkbox"
                                 />
                                 <p style={{ marginTop: "2rem" }}>
-                                  Passenger's Name
+                                  {Form1?.firstName}
+                                  {""} {Form1?.lastName}{" "}
                                 </p>
                                 <img
                                   style={{
@@ -753,7 +822,7 @@ export default function Flightbooking3() {
                                 </h2>
                                 <div style={{ fontSize: "14px" }}>
                                   {" "}
-                                  Departure:
+                                  Outbound:
                                   {seatsNames.map((name, index) => (
                                     <span style={{ color: "red" }} key={index}>
                                       {name} ,{" "}
@@ -762,7 +831,7 @@ export default function Flightbooking3() {
                                 </div>
                                 <span style={{ fontSize: "14px" }}>
                                   {" "}
-                                  Arrival:
+                                  Return:
                                   {seatsNamesArr.map((name, index) => (
                                     <span style={{ color: "red" }} key={index}>
                                       {name} ,{" "}
@@ -852,7 +921,7 @@ export default function Flightbooking3() {
                 style={{ width: "60%" }}
                 className="btn btn-primary"
               >
-                Ajoutez des bagages
+                Add Luggage
               </button>
             </div>
             {baggage && (
@@ -935,7 +1004,8 @@ export default function Flightbooking3() {
                               fontSize: "0.9rem",
                             }}
                           >
-                            Passenger's Name
+                            {Form1?.firstName}
+                            {""} {Form1?.lastName}{" "}
                           </p>
                           <img
                             style={{
@@ -958,7 +1028,8 @@ export default function Flightbooking3() {
                             marginLeft: "1rem", // Ajustement de la marge du titre
                           }}
                         >
-                          CityDep-CityArr
+                          {selectedFlight?.CityDep} - {""}{" "}
+                          {selectedFlight?.CityArr}
                         </p>
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <input
@@ -1002,7 +1073,8 @@ export default function Flightbooking3() {
                             marginLeft: "1rem", // Ajustement de la marge du titre
                           }}
                         >
-                          CityArr-CityDep
+                          {selectedFlight?.CityArr} {""}-{" "}
+                          {selectedFlight?.CityDep}
                         </p>
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <input
@@ -1274,7 +1346,8 @@ export default function Flightbooking3() {
                               }}
                               className="custom-button"
                             >
-                              CityDep-CityArr
+                              {selectedFlight?.CityDep} {""}-{" "}
+                              {selectedFlight?.CityArr}{" "}
                             </button>
                             <button
                               onClick={() => {
@@ -1288,7 +1361,8 @@ export default function Flightbooking3() {
                               }}
                               className="custom-button"
                             >
-                              Cityarr-CityDep
+                              {selectedFlight?.CityArr} {""}-{" "}
+                              {selectedFlight?.CityDep}{" "}
                             </button>
                           </div>
 
@@ -1326,9 +1400,9 @@ export default function Flightbooking3() {
                                   fontSize: "0.9rem",
                                 }}
                               >
-                                Passenger's Name{" "}
-                                {CityDep && <span>(departure)</span>}{" "}
-                                {CityArr && <span>(Arrival)</span>}
+                                {Form1?.firstName} {Form1?.lastName}{" "}
+                                {CityDep && <span>(Outbound)</span>}{" "}
+                                {CityArr && <span>(Return)</span>}
                               </p>
                               <img
                                 style={{
@@ -1582,7 +1656,8 @@ export default function Flightbooking3() {
                             color: CityDep ? "black" : "white",
                           }}
                         >
-                          CityDep-CityArr
+                          {selectedFlight?.CityDep} {""}-{" "}
+                          {selectedFlight?.CityArr}{" "}
                         </button>
                         <button
                           onClick={() => {
@@ -1598,7 +1673,8 @@ export default function Flightbooking3() {
                           }}
                         >
                           {" "}
-                          CityDep-CityArr
+                          {selectedFlight?.CityArr} {""}-{" "}
+                          {selectedFlight?.CityDep}{" "}
                         </button>
                         {/* Premier conteneur */}
                         <div
@@ -1634,9 +1710,9 @@ export default function Flightbooking3() {
                                 fontSize: "0.9rem",
                               }}
                             >
-                              Passenger's Name{" "}
-                              {CityDep && <span>(departure)</span>}{" "}
-                              {CityArr && <span>(Arrival)</span>}
+                              {Form1?.firstName} {Form1?.lastName}{" "}
+                              {CityDep && <span>(Outbound)</span>}{" "}
+                              {CityArr && <span>(Return)</span>}
                             </p>
                             <img
                               style={{
@@ -1984,7 +2060,8 @@ export default function Flightbooking3() {
                                   color: CityDep ? "black" : "white",
                                 }}
                               >
-                                CityDep-CityArr
+                                {selectedFlight?.CityDep} -{" "}
+                                {selectedFlight?.CityArr}{" "}
                               </button>
                               <button
                                 onClick={() => {
@@ -2001,7 +2078,8 @@ export default function Flightbooking3() {
                                 }}
                                 className="custom-button"
                               >
-                                CityArr-CityDep
+                                {selectedFlight?.CityArr} -{" "}
+                                {selectedFlight?.CityDep}{" "}
                               </button>{" "}
                             </div>
 
@@ -2041,9 +2119,9 @@ export default function Flightbooking3() {
                                     fontSize: "0.9rem",
                                   }}
                                 >
-                                  Passenger's Name{" "}
-                                  {CityDep && <span>(departure)</span>}{" "}
-                                  {CityArr && <span>(arrival)</span>}
+                                  {Form1?.firstName} {Form1.lastName}{" "}
+                                  {CityDep && <span>(Outbound)</span>}{" "}
+                                  {CityArr && <span>(Return)</span>}
                                 </p>
                                 <img
                                   style={{

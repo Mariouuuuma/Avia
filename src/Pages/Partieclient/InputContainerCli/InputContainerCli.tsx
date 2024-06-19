@@ -49,14 +49,21 @@ export default function InputContainerCli() {
   const { convName, setConvName, increment } = useContext(MessengingContext);
   const { clickedButtons, messageReclm, setMessageBot } =
     useContext(MessengingContext);
-  const { Me } = useContext(MessengingContext);
+  const { Me, setdefaultConv } = useContext(MessengingContext);
   const generateConversationId = async () => {
     const storedConversationId = localStorage.getItem("conversationId");
 
     if (storedConversationId) {
+      setdefaultConv(`conversation ${storedConversationId}`);
       return parseInt(storedConversationId);
     } else {
       const newConversationId = generateRandomId();
+
+      localStorage.setItem(
+        "previousConversationId",
+        newConversationId.toString()
+      );
+
       localStorage.setItem("conversationId", newConversationId.toString());
 
       return newConversationId;
@@ -87,6 +94,7 @@ export default function InputContainerCli() {
       const responseId = globalResponseId;
 
       console.log(message);
+
       const { error } = await supabase.from("Messages").insert({
         ConversationName: `conversation ${conversationId}`,
         Sender_id: clickedButtons ? lastEightDigits : conversationId,
@@ -128,7 +136,9 @@ export default function InputContainerCli() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       localStorage.removeItem("conversationId");
-    }, 40000);
+      localStorage.removeItem("TotalServices");
+    }, 4000);
+
     return () => clearTimeout(timeoutId);
   }, [conversationId]);
 
@@ -171,7 +181,6 @@ export default function InputContainerCli() {
   setConvName(`conversation ${conversationId}`);
 
   const value = localStorage.getItem("redbox");
-
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}

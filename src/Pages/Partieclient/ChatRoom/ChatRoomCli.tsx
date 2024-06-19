@@ -541,7 +541,15 @@ const ChatRoomCli: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
       return () => clearTimeout(timer); // Clean up the timeout if the component unmounts
     }
   }, [envoiMail]);
-  useEffect(() => {});
+
+  useEffect(() => {
+    if (type1Flight) {
+      localStorage.setItem("typeOfFlight", "Aller-simple");
+    } else if (type2Flight) {
+      localStorage.setItem("typeOfFlight", "Aller-Retour");
+    }
+  }, [type1Flight, type2Flight]);
+
   return (
     <div
       style={{

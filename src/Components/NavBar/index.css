@@ -39,3 +39,23 @@
   justify-content: space-between;
   align-items: center;
 }
+
+/* DropdownMenu.css */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.selected-option {
+  margin-top: 10px;
+  font-weight: bold;
+}

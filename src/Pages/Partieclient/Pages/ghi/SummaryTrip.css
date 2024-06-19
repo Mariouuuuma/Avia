@@ -1,0 +1,9 @@
+.TitleSummary {
+  font-size: 2rem; /* Taille de la police */
+  color: #333; /* Couleur du texte */
+  font-weight: bold; /* Gras */
+  font-family: Georgia, "Times New Roman", Times, serif; /* Police de caractères */
+  text-align: center; /* Alignement du texte */
+  text-transform: uppercase; /* Conversion du texte en majuscules */
+  margin-bottom: 20px; /* Marge en bas */
+}

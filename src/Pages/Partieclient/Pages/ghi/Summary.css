@@ -1,0 +1,88 @@
+/* Summary.css */
+
+.flight-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  width: 42rem;
+  height: 26rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.flight-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.divider {
+  border: none;
+  border-top: 0.1px #ddd;
+  margin-top: 1.5rem;
+}
+
+.flight-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.flight-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.airport {
+  font-size: 14px;
+  color: #555;
+}
+
+.flight-duration {
+  font-size: 14px;
+  color: #888;
+}
+
+.flight-status {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: green;
+  font-weight: bold;
+}
+
+.vertical-line {
+  position: relative;
+  height: 9rem;
+  border-left: 2px solid black;
+  margin: 0 20px;
+}
+
+.dot {
+  position: absolute;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 40%;
+}
+
+.top-dot {
+  top: -5px;
+}
+
+.bottom-dot {
+  bottom: -5px;
+}
+.scroll-container {
+  overflow-y: auto; /* Ajoute une barre de défilement verticale si nécessaire */
+  height: 100vh; /* Assure que le conteneur prend toute la hauteur de la fenêtre */
+}

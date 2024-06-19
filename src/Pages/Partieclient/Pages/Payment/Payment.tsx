@@ -1,8 +1,11 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useContext, useEffect } from "react";
 import "./Payment.css";
 import { useHistory } from "react-router-dom";
 import Calendar from "../../Calendar/Calendar";
 import { Moment } from "moment";
+import { ReservationContext } from "../../../../Contexts/ReservationContext";
+import { TimeLike } from "fs";
+import { PaymentContext } from "../../../../Contexts/PaymentContext";
 
 interface FormData {
   firstName: string;
@@ -12,11 +15,29 @@ interface FormData {
   address1: string;
   address2: string;
 }
-
-interface CreditCardFormData {
+interface Payment {
+  codePromo: number;
+  masterCard: boolean;
   visa: boolean;
-  mastercard: boolean;
+  cardNumber: number;
+  SecurityCode: number;
+  Expiry: Moment | null;
+  NameOnCard: string;
+  cardHolderEmail: string;
+  cardHolderPhone: number;
 }
+
+const initialPaymentForma: Payment = {
+  codePromo: 0,
+  masterCard: false,
+  visa: false,
+  cardNumber: 0,
+  SecurityCode: 0,
+  Expiry: null,
+  NameOnCard: "",
+  cardHolderEmail: "",
+  cardHolderPhone: 0,
+};
 
 export default function Payment() {
   const [checkedmastercard, setCheckedmaster] = useState<boolean>(false);
@@ -26,7 +47,37 @@ export default function Payment() {
   const [mastercard, setmastercard] = useState<boolean>(false);
   const [visa, setvisa] = useState<boolean>(false);
   const [clickcalendar2, setClickcalendar2] = useState<boolean>(false);
+  const [selectedFlight, setSelectedFlight] = useState<FlightData | null>(null);
+  const { paymentForm, setpaymentForm } = useContext(PaymentContext);
+  const [codePromo, setCodePromo] = useState<number>(0);
+  const [CardMaster, setCardMaster] = useState<boolean>(false);
+  const [CardVisa, setCardVisa] = useState<boolean>(false);
+  const [SecurityCode, setSecurityCode] = useState<number>(0);
+  const [Expiry, setExpiry] = useState<Moment | null>(null);
+  const [NameOnCard, setNameOnCard] = useState<string>("");
+  const [cardNumber, setcardNumber] = useState<number>(0);
+  const [cardHolderEmail, setcardHolderEmail] = useState<string>("");
+  const [cardHolderPhone, setcardHolderPhone] = useState<number>(0);
+  const [paymentForma, setPaymentForma] =
+    useState<Payment>(initialPaymentForma);
 
+  let PaymentForm: Payment;
+
+  interface FlightData {
+    id: number;
+    created_at: EpochTimeStamp;
+    CityDep: string;
+    CityArr: string;
+    SchedateDep: string;
+    SchedateArr: string;
+    TimeDepStart: string;
+    TimeDepEnd: string;
+    TimeArrStart: TimeLike;
+    TimeArrEnd: TimeLike;
+    Type: string;
+    PriceBC: number;
+    PriceEC: number;
+  }
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -36,6 +87,8 @@ export default function Payment() {
     address2: "",
   });
 
+  const { Form1, bookBusinessClass, setBookEconomyClass, bookEconomyClass } =
+    useContext(ReservationContext);
   const history = useHistory();
   const handleDateSelect = (selectedDate: Moment) => {
     console.log(
@@ -43,6 +96,7 @@ export default function Payment() {
       selectedDate.format("YYYY-MM-DD")
     );
     setDateexp(selectedDate.format("YYYY-MM-DD"));
+    setExpiry(selectedDate);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +121,36 @@ export default function Payment() {
   const handleClickback = () => {
     history.push("/Flightbooking3");
   };
+  useEffect(() => {
+    const storedFlight = localStorage.getItem("selectedFlight");
+    if (storedFlight) {
+      setSelectedFlight(JSON.parse(storedFlight));
+    }
+  }, []);
+  console.log("payment form contains", paymentForm);
+  {
+    /** */
+  }
+  const handleConfirmMaster = () => {
+    const updatedPaymentForma = {
+      ...paymentForma,
+      codePromo: codePromo,
+      NameOnCard: NameOnCard,
+      SecurityCode: SecurityCode,
+      cardNumber: cardNumber,
+      cardHolderPhone: cardHolderPhone,
+      cardHolderEmail: cardHolderEmail,
+      Expiry: Expiry,
+    };
+    setPaymentForma(updatedPaymentForma);
+    setpaymentForm(updatedPaymentForma);
+    console.log("payment is at:", updatedPaymentForma);
+    console.log("payment is at:", paymentForm);
+  };
+
+  console.log("payment is at:", paymentForm);
+  console.log("payment is at:", paymentForm);
+
   return (
     <div
       className="Payment-container"
@@ -145,7 +229,12 @@ export default function Payment() {
             >
               <div>
                 <p style={{ marginTop: "0.5rem" }}>
-                  Total to be paid is TND 400.000
+                  Total to be paid is :{" "}
+                  {bookBusinessClass
+                    ? selectedFlight?.PriceBC
+                    : selectedFlight?.PriceEC}
+                  {""}
+                  .000 DT
                 </p>
                 <p>Please select a type of credit card</p>
                 <div
@@ -222,6 +311,9 @@ export default function Payment() {
                       {" "}
                       Credit Card number :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardNumber(parseInt(e.target.value))
+                        }
                         style={{
                           width: "40%",
                           padding: "0.5rem",
@@ -234,6 +326,9 @@ export default function Payment() {
                       {" "}
                       Security Code :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setSecurityCode(parseInt(e.target.value))
+                        }
                         type="password"
                         style={{
                           width: "52%",
@@ -268,6 +363,9 @@ export default function Payment() {
                     <div>
                       Name On Card :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setNameOnCard(e.target.value)
+                        }
                         style={{
                           width: "51%",
                           padding: "0.5rem",
@@ -279,6 +377,9 @@ export default function Payment() {
                     <div>
                       Card Holder e-mail :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardHolderEmail(e.target.value)
+                        }
                         style={{
                           width: "70%",
                           padding: "0.5rem",
@@ -291,6 +392,9 @@ export default function Payment() {
                     <div>
                       Card Holder Phone-number:{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardHolderPhone(parseInt(e.target.value))
+                        }
                         style={{
                           width: "40%",
                           padding: "0.5rem",
@@ -312,6 +416,7 @@ export default function Payment() {
                     >
                       Confirm
                     </button>
+
                     <button
                       type="button"
                       className="btn btn-primary"
@@ -370,10 +475,15 @@ export default function Payment() {
                       gap: "0.5rem",
                     }}
                   >
+                    {/******************************************************************************** */}
+
                     <div>
                       {" "}
                       Credit Card number :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardNumber(parseInt(e.target.value))
+                        }
                         style={{
                           width: "40%",
                           padding: "0.5rem",
@@ -386,6 +496,9 @@ export default function Payment() {
                       {" "}
                       Security Code :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setSecurityCode(parseInt(e.target.value))
+                        }
                         type="password"
                         style={{
                           width: "52%",
@@ -421,6 +534,9 @@ export default function Payment() {
                     <div>
                       Name On Card :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setSecurityCode(parseInt(e.target.value))
+                        }
                         style={{
                           width: "51%",
                           padding: "0.5rem",
@@ -432,6 +548,9 @@ export default function Payment() {
                     <div>
                       Card Holder e-mail :{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardHolderEmail(e.target.value)
+                        }
                         style={{
                           width: "70%",
                           padding: "0.5rem",
@@ -444,6 +563,9 @@ export default function Payment() {
                     <div>
                       Card Holder Phone-number:{" "}
                       <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setcardHolderPhone(parseInt(e.target.value))
+                        }
                         style={{
                           width: "40%",
                           padding: "0.5rem",
@@ -460,6 +582,7 @@ export default function Payment() {
                       type="button"
                       onClick={() => {
                         setvisa(false);
+                        handleConfirmMaster();
                       }}
                       className="btn btn-primary"
                     >

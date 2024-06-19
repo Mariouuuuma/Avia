@@ -43,6 +43,19 @@ type SideContextType = {
   setShowProfile: (value: boolean) => void;
   showTeam: boolean;
   clickShowTeam: (name: boolean) => void;
+  ArchiveClicked: boolean;
+  clickArchive: (name: boolean) => void;
+  conversations: string[];
+  addConversation: (name: string) => void;
+  removeConversation: (name: string) => void; // Nouvelle fonction pour supprimer une conversation
+  // Corrected type
+  UnArchive: boolean;
+  clickUnarchive: (name: boolean) => void;
+  unreadOnes: string[];
+  addUnreadConversation: (name: string) => void;
+  removeUnreadConversation: (name: string) => void;
+  UnRead: boolean;
+  clickUnread: (name: boolean) => void;
 };
 
 export const SideBarContext = createContext<SideContextType>({
@@ -68,6 +81,19 @@ export const SideBarContext = createContext<SideContextType>({
   setShowProfile: (value: boolean) => {},
   showTeam: false,
   clickShowTeam: (name: boolean) => {},
+  ArchiveClicked: false,
+  clickArchive: (name: boolean) => {},
+  conversations: [],
+  addConversation: (name: string) => {},
+  removeConversation: (name: string) => {}, // Placeholder function
+  // Placeholder function
+  UnArchive: false,
+  clickUnarchive: (name: boolean) => {},
+  unreadOnes: [],
+  addUnreadConversation: (name: string) => {},
+  removeUnreadConversation: (name: string) => {},
+  UnRead: false,
+  clickUnread: (name: boolean) => {},
 });
 
 export const SideBarProvider: React.FC<SideBarProviderProps> = ({
@@ -75,7 +101,7 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({
 }) => {
   const [clicked, setClicked] = useState(false);
   const [sender, setSender] = useState<Person>(emptyPerson);
-  const [searchTerm, setSearchTerm] = useState<string>(""); // Initialize sender with emptyPerson
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [receiver, setReceiver] = useState<any>(null);
   const [inboxClicked, setInboxClicked] = useState<boolean>(false);
   const [clickedName, setClickedname] = useState<boolean>(false);
@@ -84,11 +110,32 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const [showTeam, clickShowTeam] = useState<boolean>(false);
+  const [ArchiveClicked, clickArchive] = useState<boolean>(false);
+  const [UnRead, clickUnread] = useState<boolean>(false);
+
+  const [conversations, setConversations] = useState<string[]>([]);
+  const [unreadOnes, addUnreadOnes] = useState<string[]>([]);
+
+  const [UnArchive, clickUnarchive] = useState<boolean>(false);
 
   const updateClicked = (value: boolean) => {
     setClicked(value);
   };
 
+  const addConversation = (name: string) => {
+    setConversations([...conversations, name]);
+  };
+  const removeConversation = (name: string) => {
+    const updatedConversations = conversations.filter((n) => n !== name);
+    setConversations(updatedConversations);
+  };
+  const addUnreadConversation = (nom: string) => {
+    addUnreadOnes([...unreadOnes, nom]);
+  };
+  const removeUnreadConversation = (nom: string) => {
+    const updatedUnreadConversations = unreadOnes.filter((n) => n !== nom);
+    addUnreadOnes(updatedUnreadConversations);
+  };
   return (
     <SideBarContext.Provider
       value={{
@@ -114,6 +161,18 @@ export const SideBarProvider: React.FC<SideBarProviderProps> = ({
         setShowProfile,
         showTeam,
         clickShowTeam,
+        ArchiveClicked,
+        clickArchive,
+        conversations,
+        addConversation,
+        removeConversation,
+        UnArchive,
+        unreadOnes,
+        addUnreadConversation,
+        removeUnreadConversation,
+        clickUnarchive,
+        UnRead,
+        clickUnread,
       }}
     >
       {children}

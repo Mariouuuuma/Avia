@@ -30,13 +30,15 @@ interface ChatRoomProps {
   imageReceiver?: string;
 }
 const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
-  const { messagesent, convName, guestId } = useContext(MessengingContext);
+  const { defaultConv, convName, guestId } = useContext(MessengingContext);
   const { sender, receiver, inboxClicked } = useContext(SideBarContext);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [defaultMessages, setdefaultMessages] = useState<ChatMessage[]>([]);
+
   const { user, setUser } = useContext(MessengingContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [result, setResult] = useState(0);
-
+  const previousConversationId = localStorage.getItem("previousConversationId");
   useEffect(() => {
     const fetchData = async () => {
       const {
@@ -70,11 +72,29 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           sender_id: msg.Sender_id,
         }));
         setChatMessages(formattedMessages);
-        console.log();
       }
     };
 
     fetchChatMessages();
+
+    const fetchChatMessagesDfeault = async () => {
+      const { data, error } = await supabase
+        .from("Messages")
+        .select("*")
+        .eq("ConversationName", `conversation ${previousConversationId}`);
+
+      if (data) {
+        const formattedMessages: ChatMessage[] = data.map((msg: any) => ({
+          body: msg.body,
+          id: msg.id,
+          ConversationName: msg.ConversationName,
+          sender_id: msg.Sender_id,
+        }));
+        setdefaultMessages(formattedMessages);
+      }
+    };
+
+    fetchChatMessagesDfeault();
 
     const realtimeSubscription = supabase
       .channel("Messages")
@@ -104,7 +124,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
         }}
       >
         {" "}
-        {convName && (
+        {convName && inboxClicked && (
           <div>
             {chatMessages.map((message, index) => {
               if (
@@ -134,16 +154,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ children, imageReceiver }) => {
           </div>
         )}
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginTop: "1rem",
-          backgroundColor: "white",
-          width: "100%",
-        }}
-      ></div>
       <div style={{ width: "100%", backgroundColor: "white" }}>
         {" "}
         <InputContainer />

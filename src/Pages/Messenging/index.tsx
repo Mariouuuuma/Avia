@@ -15,11 +15,13 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { Session } from "@supabase/supabase-js";
 import supabase from "../../Utils/api";
 import { MessengingContext } from "../../Contexts/MessengingContext";
+import ArchivedChats from "../../Components/ArchivedChats/ArchivedChats";
 interface MessagingProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const Messenging: React.FC<MessagingProps> = ({ children }) => {
+  const { ArchiveClicked, UnRead, clickUnread } = useContext(SideBarContext);
   const { clickedName } = useContext(SideBarContext);
   const { clicked, sender } = useContext(SideBarContext);
   const { currentuser, setCurrentuser, loggedOut } = useContext(AuthContext);
@@ -27,16 +29,29 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
   const [userLastname, setUserLastname] = useState<String>("");
   const { logoInbox, setLogoinbox } = useContext(SideBarContext);
   const { guestId } = useContext(MessengingContext);
-  const storedConversationId = localStorage.getItem("conversationId");
-  let disp = "none";
+  const [unreadSelected, setUnreadSelected] = useState<boolean>(false);
+  const [SelectAll, setSelectAll] = useState<boolean>(true);
+  const [SelectResolved, setSelectResolved] = useState<boolean>(false);
+  const [SelectUnResolved, setSelectUnResolved] = useState<boolean>(false);
 
-  let mainComponent;
+  const storedConversationId = localStorage.getItem("conversationId");
+  const [selectedButton, setSelectedButton] = useState("All");
+  const [unread, setunread] = useState<boolean>(false);
+
+  const handleClick = (buttonName: string) => {
+    setSelectedButton(buttonName);
+    return {}; // Retourner un objet vide
+  };
+
+  {
+    /*let mainComponent;
   if (clicked) {
     mainComponent = <SearchBar />;
-  } else if (loggedOut) {
-    mainComponent = <Logout />;
+  } else if (ArchiveClicked) {
+    mainComponent = <ArchivedChats />;
   } else {
     mainComponent = <ListOfInbox />;
+  }*/
   }
   useEffect(() => {
     getChat();
@@ -67,6 +82,11 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
     }
   };
   console.log(logoInbox);
+  const arch = localStorage.getItem("archivedchat");
+  // Le tableau vide [] signifie que cet effet ne se déclenchera qu'une seule fois après le premier rendu
+
+  // Plus loin dans votre composant...
+
   return (
     <div className="MessengingContainer">
       <div className="SideBar" style={{ width: "4%" }}>
@@ -106,26 +126,56 @@ const Messenging: React.FC<MessagingProps> = ({ children }) => {
               <Button
                 size="small"
                 content="All"
-                bgcolor="#E73838"
-                colour="white"
+                bgcolor={
+                  selectedButton === "All" && !UnRead ? "#E73838" : "white"
+                }
+                colour={selectedButton === "All" && !UnRead ? "white" : "black"}
+                onClick={() => {
+                  handleClick("All");
+                  return {};
+                }}
               />
               <Button
                 size="small"
                 content="Unread"
-                bgcolor="white"
-                colour="black"
+                bgcolor={UnRead ? "#E73838" : "white"}
+                colour={UnRead ? "white" : "black"}
+                onClick={() => {
+                  handleClick("Unread");
+                  setunread(!unread);
+                  clickUnread(!UnRead);
+                  return {};
+                }}
               />
               <Button
                 size="small"
                 content="Unresolved"
-                bgcolor="white"
-                colour="black"
+                bgcolor={
+                  selectedButton === "Unresolved" && !UnRead
+                    ? "#E73838"
+                    : "white"
+                }
+                colour={
+                  selectedButton === "Unresolved" && !UnRead ? "white" : "black"
+                }
+                onClick={() => {
+                  handleClick("Unresolved");
+                  return {};
+                }}
               />
               <Button
                 size="small"
                 content="Resolved"
-                bgcolor="white"
-                colour="black"
+                bgcolor={
+                  selectedButton === "Resolved" && !UnRead ? "#E73838" : "white"
+                }
+                colour={
+                  selectedButton === "Resolved" && !UnRead ? "white" : "black"
+                }
+                onClick={() => {
+                  handleClick("Resolved");
+                  return {};
+                }}
               />
               <div className="flex-none">
                 <div className="dropdown dropdown-end">

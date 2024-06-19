@@ -53,3 +53,7 @@
 .seat.available {
   background-color: darkgreen;
 }
+
+.seat:hover {
+  background-color: lightgreen;
+}

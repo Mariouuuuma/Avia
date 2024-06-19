@@ -65,7 +65,9 @@ const SearchBar: React.FC = () => {
           onChange={handleSearchChange}
           ref={inputRef}
         />
-        <button type="submit">Rechercher</button>
+        <button type="submit" style={{ marginLeft: "1.5rem" }}>
+          Click
+        </button>
       </form>
 
       {receiver && (

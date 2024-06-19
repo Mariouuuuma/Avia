@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Inbox from "../../Components/ChatBar/Inbox/index";
 import { SideBarContext } from "../../Contexts/SideBarContext";
 import supabase from "../../Utils/api";
+import { MessengingContext } from "../../Contexts/MessengingContext";
 
 interface Chats {
   id: number;
@@ -10,12 +11,13 @@ interface Chats {
   created_at: string;
 }
 
-export default function ListOfInbox() {
-  const { ArchiveClicked, conversations, unreadOnes, UnRead } =
+export default function ArchivedChats() {
+  const { setClicked, conversations, ArchiveClicked, clickArchive } =
     useContext(SideBarContext);
   const { inboxClicked, setInboxClicked, setReceiver } =
     useContext(SideBarContext);
   const [listofmessages, setListOfMessages] = useState<Chats[] | null>(null);
+  const { redbox, setRedbox } = useContext(MessengingContext);
   const [lastMessageConversation, setLastMessageConversation] = useState<
     string | null
   >(null);
@@ -53,6 +55,7 @@ export default function ListOfInbox() {
               lastMessagesByConversation[message.ConversationName] = message;
             }
           });
+
           const lastMessages = Object.values(lastMessagesByConversation);
 
           lastMessages.sort(
@@ -73,32 +76,17 @@ export default function ListOfInbox() {
         console.error("Error fetching chat messages:", error);
       }
     };
-
     fetchChatMessages();
-    const realtimeSubscription = supabase
-      .channel("Messages")
-      .on("postgres_changes", { event: "*", schema: "*" }, (payload) => {
-        console.log("Change received!", payload);
-      })
-      .subscribe();
-
-    return () => {
-      realtimeSubscription.unsubscribe();
-    };
-  }, [listofmessages]);
-
-  const userChat = localStorage.getItem("archivedchat");
+  });
   return (
     <div>
+      <h2>Archived Messages</h2>
       {listofmessages &&
         listofmessages.map((message) => {
-          const backgroundColor = inboxClicked ? "white" : "#FFEFEF";
-
+          // Vérifier& si message.ConversationName correspond à userChat
           if (
-            !conversations.includes(message.ConversationName) &&
-            !unreadOnes.includes(message.ConversationName) &&
-            !ArchiveClicked &&
-            !UnRead
+            conversations.includes(message.ConversationName) &&
+            ArchiveClicked
           ) {
             // Si oui, afficher le composant Inbox
             return (
@@ -109,8 +97,7 @@ export default function ListOfInbox() {
                 avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVi9cbmMkUabLiF_3kfI94qngwPIM4gnrztEUv6Hopw&s"
                 MessageState="not read"
                 nowText="now"
-                type="Archive Chat"
-                type2="Mark as unread"
+                type="Unarchive chat"
                 ButtonColor="red"
                 onClick={() => {
                   setInboxClicked(!inboxClicked);

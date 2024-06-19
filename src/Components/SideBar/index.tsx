@@ -24,7 +24,8 @@ interface MessangingsidebarProps {
 const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
   backgroundColor,
 }) => {
-  const { clicked, setClicked } = useContext(SideBarContext);
+  const { clicked, setClicked, ArchiveClicked, clickArchive } =
+    useContext(SideBarContext);
   const [myBooleanVariable, setMyBooleanVariable] = useState(false);
   const { loggedOut } = useContext(AuthContext);
   const [ProfileClicked, setProfileClicked] = useState<boolean>(false);
@@ -32,6 +33,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
   const [settings, settingsClicked] = useState<boolean>(false);
   const [chat, chatClicked] = useState<boolean>(false);
   const { showProfile, setShowProfile } = useContext(SideBarContext);
+  const [archivedd, clickArchived] = useState(false);
 
   const handleClick = () => {
     const newClickedValue = !myBooleanVariable;
@@ -46,6 +48,9 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
     setLogoinbox(!logoInbox);
     console.log(logoInbox);
   }
+  console.log("la valeur de archivingggg est", ArchiveClicked);
+  console.log("la valeur de archivingggg est", ArchiveClicked);
+
   return (
     <div className="SideBar" style={{ backgroundColor: backgroundColor }}>
       <div className="upperSide">
@@ -57,13 +62,7 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
           {chat && <Redirect to="/Messenging" />}
           <h6 className="title">Inbox</h6>
         </div>
-        <div className="Analytics">
-          {" "}
-          <button>
-            <img src={analytics} className="photo  "></img>
-          </button>
-          <h6 className="title">Analytics</h6>
-        </div>
+
         <div className="Settings">
           {" "}
           <button>
@@ -86,9 +85,13 @@ const Messangingsidebar: React.FC<MessangingsidebarProps> = ({
           <h6 className="title">Notifications</h6>
         </div>
         <div className="Archived">
-          <button>
+          <button
+            onClick={() => {
+              clickArchive(!ArchiveClicked);
+            }}
+          >
             {" "}
-            <img src={archived} className="photo  "></img>
+            <img src={archived} className="photo"></img>
           </button>
           <h6 className="title">Archived</h6>
         </div>

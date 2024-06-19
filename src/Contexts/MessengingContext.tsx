@@ -36,6 +36,8 @@ type MessengingContextType = {
   setContext: (option: number) => void;
   IdReclamation: string;
   setIdReclamation: (Id: string) => void;
+  defaultConv: string | null;
+  setdefaultConv: (x: string | null) => void;
 };
 
 export const MessengingContext = createContext<MessengingContextType>({
@@ -69,6 +71,8 @@ export const MessengingContext = createContext<MessengingContextType>({
   setContext: (option: number) => {},
   IdReclamation: "",
   setIdReclamation: (option: string) => {},
+  defaultConv: null,
+  setdefaultConv: (x: string | null) => {},
 });
 
 export const MessengingProvider: React.FC<MessengingProviderProps> = ({
@@ -89,6 +93,7 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
   const [increment, setIncrement] = useState<number>(0);
   const [Context, setContext] = useState<number>(0);
   const [IdReclamation, setIdReclamation] = useState<string>("");
+  const [defaultConv, setdefaultConv] = useState<string | null>(null);
 
   return (
     <MessengingContext.Provider
@@ -123,6 +128,8 @@ export const MessengingProvider: React.FC<MessengingProviderProps> = ({
         setContext,
         IdReclamation,
         setIdReclamation,
+        defaultConv,
+        setdefaultConv,
       }}
     >
       {children}
